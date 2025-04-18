@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lektiekalender - Lærmere.nu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.4.0/main.min.css' rel='stylesheet' />
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.4.0/main.min.css' rel='stylesheet' />
+
+    <style>
+        /* Reset og grundlæggende styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Brug Nunito skrifttypen */
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Farver fra Elevkalender */
+        :root {
+            --primary-blue: #5DADE2; /* Lysere blå */
+            --primary-green: #82E0AA; /* Lysere grøn */
+            --primary-orange: #F5B041; /* Lysere orange */
+            --dark-teal: #1ABC9C; /* Mindre dyster teal */
+            --text-color: #2C3E50; /* Mørkere, men blød tekstfarve */
+            --background-color: #EBF5FB; /* Meget lys og venlig baggrundsblå */
+            --card-bg: #FFFFFF; /* Hvid baggrund for kort */
+            --card-border: #D6EAF8; /* Lysere blå kant til kort */
+            --header-bg: var(--primary-blue); /* Blå baggrund for header */
+            --header-text: white; /* Hvid tekst i header */
+            --button-primary-bg: var(--primary-green); /* Grøn knap baggrund */
+            --button-primary-hover: #6BB38A; /* Mørkere grøn ved hover */
+            --button-secondary-bg: white; /* Hvid knap baggrund */
+            --button-secondary-border: var(--dark-teal); /* Mørk teal kant på knap */
+            --button-secondary-hover: #ECF5EE; /* Meget lys grøn ved hover */
+            --button-danger-text: #E74C3C; /* Rød farve for fare knap */
+            --button-danger-hover: #FADBD8; /* Lys rød ved hover */
+            --activity-bg-hover: #F2F4F6; /* Meget lys grå ved hover på aktivitet */
+            --activity-border: #E5E7EB; /* Grå kant mellem aktiviteter */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-sm: 0.25rem;
+            --radius: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px; /* Lidt bredere container for layout */
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 600px; /* Juster grid for indhold og kalender */
+            gap: 1.5rem; /* Mindre mellemrum */
+        }
+
+        /* Kort styling (genbrugt fra Elevkalender) */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            padding: 1.5rem; /* Tilføj padding direkte til kortet */
+        }
+
+        .card-header {
+            background-color: var(--header-bg);
+            padding: 1.25rem;
+            color: var(--header-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem; /* Negativ margin for at strække header */
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .card-title i {
+            color: var(--header-text);
+        }
+
+        /* Knapper (genbrugt fra Elevkalender) */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary {
+            background-color: var(--button-primary-bg);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--button-primary-hover);
+            box-shadow: var(--shadow);
+        }
+
+         .btn-full {
+            width: 100%;
+            margin-top: 1rem; /* Mellemrum over knappen */
+        }
+
+        /* Sektion styling (tilpasset Elevkalender kort) */
+        .section {
+            margin-bottom: 1.5rem; /* Mindre mellemrum mellem sektioner */
+        }
+
+        .section h2 {
+            color: var(--text-color); /* Standard tekstfarve */
+            border-bottom: 2px solid var(--primary-orange); /* Orange streg under header */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem; /* Mindre mellemrum under header */
+            font-size: 1.3rem; /* Lidt mindre titel størrelse */
+            font-weight: 700;
+        }
+
+        .section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .section li {
+            background-color: var(--background-color); /* Lys baggrund for liste elementer */
+            margin-bottom: 0.8rem;
+            padding: 1rem;
+            border-radius: var(--radius); /* Afrundede hjørner */
+            box-shadow: var(--shadow-sm); /* Let skygge */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--dark-teal); /* Teal kant som standard */
+            transition: all 0.2s ease;
+        }
+
+        .section li:hover {
+             background-color: var(--activity-bg-hover); /* Hover effekt */
+        }
+
+        .section li.assignment {
+            border-left-color: var(--primary-orange); /* Orange kant for afleveringer */
+        }
+
+        .section li.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+            border-left-color: var(--completed-text); /* Grå kant for fuldførte */
+        }
+
+        /* Form container styling (tilpasset Elevkalender dialog) */
+        .form-container {
+            display: none;
+            background-color: var(--card-bg);
+            padding: 1.5rem; /* Mindre padding */
+            border-radius: var(--radius-lg); /* Afrundede hjørner */
+            box-shadow: var(--shadow-md); /* Skygge */
+            margin-top: 1.5rem; /* Mellemrum over formen */
+            border: 1px solid var(--card-border); /* Kant */
+        }
+
+        .form-container h2 {
+            color: var(--dark-teal); /* Mørk teal titel farve */
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-orange); /* Orange streg */
+            padding-bottom: 0.5rem;
+             font-size: 1.4rem;
+             font-weight: 700;
+        }
+
+        .form-group { /* Ny klasse for form felter */
+            margin-bottom: 1rem;
+        }
+
+        .form-label { /* Ny klasse for labels */
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            font-size: 1em;
+        }
+
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--activity-border); /* Grå kant */
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--dark-teal); /* Mørk teal ved focus */
+            box-shadow: 0 0 0 4px rgba(26, 188, 156, 0.2); /* Gennemsigtig teal skygge */
+        }
+
+        .form-select {
+            background-color: white;
+        }
+
+
+        .sidebar {
+             /* Sidebar er nu en del af grid containeren, fjern card styling herfra */
+             /* background-color: var(--card-background); */
+             /* border-radius: 10px; */
+             /* padding: 1.5rem; */
+             /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
+             /* min-width: 550px; */
+        }
+
+        /* FullCalendar styling (tilpasset designet) */
+        .fc {
+            background-color: var(--card-bg); /* Hvid baggrund */
+            padding: 1rem;
+            border-radius: var(--radius-lg); /* Afrundede hjørner */
+            box-shadow: var(--shadow-md); /* Skygge */
+            font-size: 1rem; /* Standard skriftstørrelse */
+            border: 1px solid var(--card-border); /* Kant */
+        }
+
+        .fc-day-grid-event {
+            border-radius: var(--radius-sm); /* Mindre afrundede hjørner på events */
+            padding: 2px 6px; /* Mindre padding */
+            cursor: pointer;
+            margin: 2px; /* Mindre margin */
+            font-size: 0.85rem; /* Mindre skriftstørrelse på events */
+            font-weight: 600; /* Lidt federe tekst */
+        }
+
+        .fc-day-grid-event .fc-content {
+            white-space: normal;
+            overflow: hidden;
+            padding: 0; /* Fjern padding her */
+        }
+
+        .fc-day-number {
+            font-size: 1em !important; /* Juster dag nummer størrelse */
+            padding: 6px !important; /* Juster padding */
+            font-weight: 700; /* Federe dag nummer */
+            color: var(--text-color); /* Standard tekstfarve */
+        }
+
+        .fc-day-top.fc-today {
+             background-color: var(--background-color); /* Lys baggrund for i dag */
+        }
+
+        .fc-day-top.fc-today .fc-day-number {
+             color: var(--dark-teal); /* Mørk teal for dagens dato nummer */
+        }
+
+
+        .fc-event.assignment {
+            background-color: var(--primary-orange); /* Orange for afleveringer */
+            border-color: var(--primary-orange);
+        }
+
+         .fc-event {
+             background-color: var(--dark-teal); /* Teal for lektier */
+             border-color: var(--dark-teal);
+             color: white; /* Hvid tekst på events */
+         }
+
+
+        /* Markér færdig knap */
+        .complete-btn {
+            background-color: var(--primary-green); /* Grøn farve */
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem; /* Mindre padding */
+            border-radius: var(--radius-sm); /* Afrundede hjørner */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.8rem; /* Mindre skriftstørrelse */
+             box-shadow: var(--shadow-sm);
+        }
+
+        .complete-btn:hover {
+            background-color: var(--button-primary-hover); /* Mørkere grøn ved hover */
+             box-shadow: var(--shadow);
+        }
+
+        .complete-btn.completed {
+            background-color: var(--completed-text); /* Grå farve når færdig */
+            color: white;
+        }
+
+         .complete-btn.completed:hover {
+             background-color: #888; /* Lidt mørkere grå ved hover */
+         }
+
+
+        .deadline-info {
+            color: var(--text-color); /* Standard tekstfarve */
+            font-size: 0.85rem; /* Mindre skriftstørrelse */
+            margin-top: 0.2rem;
+        }
+
+        /* Modal styling (tilpasset Elevkalender dialog) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 62, 80, 0.6); /* Mørkere, blødere baggrund */
+            z-index: 50;
+            display: flex; /* Brug flex til centrering */
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px); /* Blur effekt */
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: var(--card-bg); /* Hvid baggrund */
+            margin: auto; /* Centrer */
+            padding: 2rem; /* Mere padding */
+            width: 90%; /* Bredde */
+            max-width: 500px; /* Maks bredde */
+            border-radius: var(--radius-lg); /* Afrundede hjørner */
+            box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3); /* Mere markant skygge */
+             border: 1px solid var(--card-border); /* Kant */
+             animation: dialog-appear 0.3s ease; /* Animation */
+        }
+
+         @keyframes dialog-appear {
+            from {
+                opacity: 0;
+                transform: scale(0.9); /* Mindre start størrelse */
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        .close-button {
+            position: absolute;
+            right: 15px; /* Juster position */
+            top: 15px; /* Juster position */
+            background: none;
+            border: none;
+            font-size: 1.8rem; /* Større lukkeknap */
+            cursor: pointer;
+            color: var(--text-color); /* Standard tekstfarve */
+            transition: color 0.2s ease;
+        }
+
+        .close-button:hover {
+            color: var(--button-danger-text); /* Rød ved hover */
+        }
+
+        .modal-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .modal-list li {
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-radius: var(--radius); /* Afrundede hjørner */
+            background-color: var(--background-color); /* Lys baggrund */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+             border-left: 4px solid var(--dark-teal); /* Standard kantfarve */
+             box-shadow: var(--shadow-sm);
+        }
+
+         .modal-list li.assignment {
+             border-left-color: var(--primary-orange); /* Orange kant for afleveringer */
+         }
+
+         .modal-list li.completed {
+             opacity: 0.7;
+             text-decoration: line-through;
+             border-left-color: var(--completed-text); /* Grå kant for fuldførte */
+         }
+
+
+        .modal-list li:hover {
+            background-color: var(--activity-bg-hover); /* Hover effekt */
+        }
+
+
+        .homework-item {
+            flex: 1;
+            margin-right: 1rem;
+        }
+
+        .homework-title {
+            font-weight: 700; /* Federe titel */
+            margin-bottom: 0.4rem; /* Mindre mellemrum */
+             color: var(--text-color);
+        }
+
+        .homework-time {
+            font-size: 0.9rem;
+            color: var(--text-color); /* Standard tekstfarve */
+        }
+
+        /* Responsivt design */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr; /* Skift til enkelt kolonne på mindre skærme */
+                padding: 1rem; /* Mindre padding */
+            }
+
+            .card, .fc {
+                 margin-bottom: 1rem; /* Mindre mellemrum mellem elementer */
+                 padding: 1rem;
+            }
+
+             .card-header {
+                 margin: -1rem -1rem 1rem -1rem; /* Juster negativ margin */
+             }
+
+             .card-title {
+                 font-size: 1.4rem;
+             }
+
+            .sidebar {
+                min-width: auto;
+                width: 100%;
+            }
+
+             .modal-content {
+                 padding: 1.5rem;
+             }
+
+             .form-container h2 {
+                 font-size: 1.3rem;
+             }
+        }
+
+         @media (max-width: 640px) {
+             body {
+                 padding: 0.8rem;
+             }
+
+              .card-title {
+                 font-size: 1.2rem;
+             }
+
+             .card, .fc {
+                 padding: 0.8rem;
+             }
+
+             .card-header {
+                 padding: 1rem;
+                 margin: -0.8rem -0.8rem 1rem -0.8rem;
+             }
+
+             .section h2 {
+                 font-size: 1.2rem;
+                 margin-bottom: 0.8rem;
+             }
+
+             .section li {
+                 padding: 0.8rem;
+                 margin-bottom: 0.6rem;
+             }
+
+             .complete-btn {
+                 padding: 0.2rem 0.6rem;
+                 font-size: 0.7rem;
+             }
+
+             .form-container {
+                 padding: 1rem;
+                 margin-top: 1rem;
+             }
+
+             .form-container h2 {
+                 font-size: 1.1rem;
+                 margin-bottom: 1rem;
+             }
+
+             .form-group {
+                 margin-bottom: 0.8rem;
+             }
+
+             .form-label {
+                 font-size: 0.9em;
+             }
+
+              .form-input, .form-select {
+                 padding: 0.6rem;
+                 font-size: 0.9rem;
+             }
+
+             .modal-content {
+                 padding: 1rem;
+             }
+
+             .close-button {
+                 font-size: 1.5rem;
+                 right: 10px;
+                 top: 10px;
+             }
+
+             .modal-list li {
+                 padding: 0.8rem;
+                 margin-bottom: 0.6rem;
+             }
+
+              .homework-title {
+                 font-size: 0.9em;
+             }
+
+             .homework-time {
+                 font-size: 0.8em;
+             }
+
+              .deadline-info {
+                  font-size: 0.8em;
+              }
+         }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="card"> <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-calendar-check"></i> <span>Lektiekalender</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="toggleForm()">
+                    <i class="fas fa-plus"></i> Tilføj lektier
+                </button>
+                <div class="form-container" id="formContainer">
+                    <h2>Tilføj nye lektier</h2>
+                    <div class="form-group">
+                        <label class="form-label" for="type">Type</label>
+                        <select class="form-select" id="type">
+                            <option value="lektie">Lektie</option>
+                            <option value="aflevering">Aflevering</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="fag">Fag</label>
+                        <input type="text" class="form-input" id="fag" placeholder="F.eks. Matematik">
+                    </div>
+                     <div class="form-group">
+                        <label class="form-label" for="beskrivelse">Beskrivelse</label>
+                        <input type="text" class="form-input" id="beskrivelse" placeholder="F.eks. Læs side 45-50">
+                    </div>
+                    <div class="form-group">
+                         <label class="form-label" for="deadline">Deadline</label>
+                        <input type="datetime-local" class="form-input" id="deadline">
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="tilfojLektier()">Tilføj</button>
+                </div>
+                <div class="section">
+                    <h2>Lektier til i morgen</h2>
+                    <ul id="tomorrowsLektier">
+                        </ul>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <div id="homeworkModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal()">&times;</button>
+            <h2 id="modalDate"></h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.4.0/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.4.0/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.4.0/main.min.js'></script>
+<script>
+    const localStorageKey = 'lektiekalenderHomework'; // Unik nøgle til lektiekalender
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+        const savedEvents = loadHomework(); // Indlæs lektier ved start
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'dayGrid', 'interaction' ],
+            defaultView: 'dayGridMonth',
+            locale: 'da',
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth'
+            },
+            events: savedEvents, // Indlæs gemte lektier i kalenderen
+            dateClick: function(info) {
+                showDayHomework(info.date);
+            },
+            eventClick: function(info) {
+                showDayHomework(info.event.start);
+            },
+            eventRender: function(info) {
+                // Sæt baggrundsfarve baseret på type og completed status
+                if (info.event.extendedProps.completed) {
+                    info.el.style.backgroundColor = 'var(--primary-green)'; // Grøn for completed
+                    info.el.style.borderColor = 'var(--primary-green)';
+                } else if (info.event.extendedProps.type === 'aflevering') {
+                     info.el.style.backgroundColor = 'var(--primary-orange)'; // Orange for aflevering
+                     info.el.style.borderColor = 'var(--primary-orange)';
+                } else {
+                     info.el.style.backgroundColor = 'var(--dark-teal)'; // Teal for lektie
+                     info.el.style.borderColor = 'var(--dark-teal)';
+                }
+                info.el.setAttribute('title', 'Klik for at se detaljer');
+            }
+        });
+        calendar.render();
+        window.calendar = calendar; // Gør kalender objektet globalt tilgængeligt
+
+        updateTomorrowsList(); // Opdater "Lektier til i morgen" listen ved start
+    });
+
+    // --- localStorage Håndtering ---
+    function saveHomework() {
+        const events = window.calendar.getEvents().map(event => ({
+            id: event.id,
+            title: event.title,
+            start: event.start.toISOString(), // Gem dato som ISO streng
+            allDay: event.allDay,
+            className: event.classNames.join(' '), // Gem classNames som streng
+            backgroundColor: event.backgroundColor,
+            extendedProps: event.extendedProps
+        }));
+        localStorage.setItem(localStorageKey, JSON.stringify(events));
+    }
+
+    function loadHomework() {
+        const savedEvents = localStorage.getItem(localStorageKey);
+        if (savedEvents) {
+            try {
+                const events = JSON.parse(savedEvents);
+                // Konverter start dato strenge tilbage til Date objekter
+                events.forEach(event => {
+                    if (event.start) {
+                        event.start = new Date(event.start);
+                    }
+                });
+                return events;
+            } catch (e) {
+                console.error("Kunne ikke indlæse lektier fra localStorage:", e);
+                return []; // Returner tom array ved fejl
+            }
+        }
+        return []; // Returner tom array hvis intet er gemt
+    }
+    // --- Slut localStorage Håndtering ---
+
+
+    function showDayHomework(date) {
+        const modal = document.getElementById('homeworkModal');
+        const modalDate = document.getElementById('modalDate');
+        const modalContent = document.getElementById('modalContent');
+
+        const dateStr = date.toLocaleDateString('da-DK', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        modalDate.textContent = dateStr;
+
+        const events = window.calendar.getEvents().filter(event => {
+            const eventDate = new Date(event.start);
+            return eventDate.toDateString() === date.toDateString();
+        });
+
+        if (events.length > 0) {
+            // Sortér lektier efter tidspunkt
+            events.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+            const list = document.createElement('ul');
+            list.className = 'modal-list';
+
+            events.forEach(event => {
+                const li = document.createElement('li');
+                const isCompleted = event.extendedProps.completed;
+
+                // Sæt kantfarve baseret på type og completed status
+                 if (isCompleted) {
+                     li.style.borderLeft = `4px solid var(--completed-text)`;
+                 } else if (event.extendedProps.type === 'aflevering') {
+                     li.style.borderLeft = `4px solid var(--primary-orange)`;
+                 } else {
+                     li.style.borderLeft = `4px solid var(--dark-teal)`;
+                 }
+
+
+                li.innerHTML = `
+                    <div class="homework-item" style="${isCompleted ? 'text-decoration: line-through; opacity: 0.7;' : ''}">
+                        <div class="homework-title">
+                            <strong>${event.extendedProps.subject || 'Intet fag'}</strong>: ${event.extendedProps.description || 'Ingen beskrivelse'}
+                        </div>
+                        <div class="homework-time">
+                            Deadline: ${event.start.toLocaleString('da-DK', {
+                                year: 'numeric',
+                                month: 'numeric',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}
+                        </div>
+                    </div>
+                    <button onclick="toggleHomeworkComplete('${event.id}')"
+                        class="complete-btn ${isCompleted ? 'completed' : ''}">
+                        ${isCompleted ? 'Genåbn' : 'Markér færdig'}
+                    </button>`;
+
+                list.appendChild(li);
+            });
+
+            modalContent.innerHTML = '';
+            modalContent.appendChild(list);
+        } else {
+            modalContent.innerHTML = '<p>Ingen lektier denne dag</p>';
+        }
+
+        modal.style.display = 'flex'; // Brug flex til at vise modal
+    }
+
+    function closeModal() {
+        document.getElementById('homeworkModal').style.display = 'none';
+    }
+
+    function toggleHomeworkComplete(eventId) {
+        const event = window.calendar.getEventById(eventId);
+        if (event) {
+            const isCompleted = !event.extendedProps.completed;
+            event.setExtendedProp('completed', isCompleted);
+
+            // Opdater farve baseret på ny completed status
+            if (isCompleted) {
+                 event.setProp('backgroundColor', 'var(--primary-green)');
+                 event.setProp('borderColor', 'var(--primary-green)');
+             } else if (event.extendedProps.type === 'aflevering') {
+                 event.setProp('backgroundColor', 'var(--primary-orange)');
+                 event.setProp('borderColor', 'var(--primary-orange)');
+             } else {
+                 event.setProp('backgroundColor', 'var(--dark-teal)');
+                 event.setProp('borderColor', 'var(--dark-teal)');
+             }
+
+
+            saveHomework(); // Gem ændringen
+            updateTomorrowsList(); // Opdater "Lektier til i morgen" listen
+
+            // Opdater modal visning hvis den er åben
+            const modal = document.getElementById('homeworkModal');
+            if (modal.style.display === 'flex') {
+                showDayHomework(new Date(event.start)); // Vis opdateret liste for datoen
+            }
+             window.calendar.renderEvents(); // Tving kalenderen til at gen-render events for at opdatere farver
+        }
+    }
+
+    function toggleForm() {
+        const formContainer = document.getElementById('formContainer');
+        formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+         // Nulstil formen når den åbnes
+         if (formContainer.style.display === 'block') {
+             document.getElementById('fag').value = '';
+             document.getElementById('beskrivelse').value = '';
+             document.getElementById('deadline').value = '';
+             document.getElementById('type').value = 'lektie';
+         }
+    }
+
+    function tilfojLektier() {
+        const type = document.getElementById('type').value;
+        const fag = document.getElementById('fag').value.trim(); // Fjern whitespace
+        const beskrivelse = document.getElementById('beskrivelse').value.trim(); // Fjern whitespace
+        const deadlineInput = document.getElementById('deadline').value;
+
+        if (fag && beskrivelse && deadlineInput) {
+             const deadline = new Date(deadlineInput);
+
+            const eventId = Date.now().toString(); // Unikt ID
+
+            const event = {
+                id: eventId,
+                title: `${fag}: ${beskrivelse}`,
+                start: deadline,
+                allDay: type === 'aflevering',
+                className: type === 'aflevering' ? 'assignment' : '',
+                backgroundColor: type === 'aflevering' ? 'var(--primary-orange)' : 'var(--dark-teal)', // Brug CSS variabler
+                borderColor: type === 'aflevering' ? 'var(--primary-orange)' : 'var(--dark-teal)', // Brug CSS variabler
+                extendedProps: {
+                    completed: false,
+                    type: type,
+                    subject: fag,
+                    description: beskrivelse
+                }
+            };
+
+            window.calendar.addEvent(event);
+            saveHomework(); // Gem efter tilføjelse
+
+            updateTomorrowsList(); // Opdater "Lektier til i morgen" listen
+
+            // Nulstil og skjul formen
+            document.getElementById('fag').value = '';
+            document.getElementById('beskrivelse').value = '';
+            document.getElementById('deadline').value = '';
+            document.getElementById('type').value = 'lektie';
+            toggleForm();
+
+            // Kalenderen gen-render automatisk efter addEvent
+        } else {
+            alert('Udfyld venligst alle felter (Type, Fag, Beskrivelse, Deadline).');
+        }
+    }
+
+    function isTomorrow(date) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(0, 0, 0, 0);
+
+        const checkDate = new Date(date);
+        checkDate.setHours(0, 0, 0, 0);
+
+        return checkDate.getTime() === tomorrow.getTime();
+    }
+
+    function updateTomorrowsList() {
+        const tomorrowsList = document.getElementById('tomorrowsLektier');
+        tomorrowsList.innerHTML = '';
+
+        // Hent events direkte fra kalenderen, som nu indeholder gemte data
+        const allEvents = window.calendar.getEvents();
+
+        const tomorrowsEvents = allEvents.filter(event => isTomorrow(event.start));
+
+        if (tomorrowsEvents.length === 0) {
+             tomorrowsList.innerHTML = `
+                 <li>Ingen lektier til i morgen!</li>
+             `;
+             return;
+        }
+
+        // Sortér lektier til i morgen efter tidspunkt
+        tomorrowsEvents.sort((a, b) => a.start.getTime() - b.start.getTime());
+
+
+        tomorrowsEvents.forEach(event => {
+            const listItem = document.createElement('li');
+            const isCompleted = event.extendedProps.completed;
+
+            // Sæt kantfarve baseret på type og completed status
+             if (isCompleted) {
+                 listItem.style.borderLeft = `4px solid var(--completed-text)`;
+                 listItem.classList.add('completed');
+             } else if (event.extendedProps.type === 'aflevering') {
+                 listItem.style.borderLeft = `4px solid var(--primary-orange)`;
+                 listItem.classList.add('assignment');
+             } else {
+                 listItem.style.borderLeft = `4px solid var(--dark-teal)`;
+             }
+
+
+            listItem.innerHTML = `
+                <div class="homework-item" style="${isCompleted ? 'text-decoration: line-through; opacity: 0.7;' : ''}">
+                    <div class="homework-title">
+                        <strong>${event.extendedProps.subject || 'Intet fag'}</strong>: ${event.extendedProps.description || 'Ingen beskrivelse'}
+                    </div>
+                    <div class="deadline-info">
+                        Deadline: ${event.start.toLocaleTimeString('da-DK', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}
+                    </div>
+                </div>
+                <button onclick="toggleHomeworkComplete('${event.id}')"
+                    class="complete-btn ${isCompleted ? 'completed' : ''}">
+                    ${isCompleted ? 'Genåbn' : 'Markér færdig'}
+                </button>`;
+
+            tomorrowsList.appendChild(listItem);
+        });
+    }
+
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('homeworkModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+     // Luk modal med Escape tasten
+    document.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('homeworkModal');
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeModal();
+        }
+    });
+
+</script>
+</body>
+</html>
