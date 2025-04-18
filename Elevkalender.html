@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elevkalender - Lærmere.nu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Reset og grundlæggende styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      /* Brug Nunito skrifttypen */
+      font-family: 'Nunito', sans-serif;
+    }
+
+    /* Farver fra forsiden */
+    :root {
+        --primary-blue: #5DADE2; /* Lysere blå */
+        --primary-green: #82E0AA; /* Lysere grøn */
+        --primary-orange: #F5B041; /* Lysere orange */
+        --dark-teal: #1ABC9C; /* Mindre dyster teal */
+        --text-color: #2C3E50; /* Mørkere, men blød tekstfarve */
+        --background-color: #EBF5FB; /* Meget lys og venlig baggrundsblå */
+        --card-bg: #FFFFFF; /* Hvid baggrund for kort */
+        --card-border: #D6EAF8; /* Lysere blå kant til kort */
+        --header-bg: var(--primary-blue); /* Blå baggrund for header */
+        --header-text: white; /* Hvid tekst i header */
+        --tabs-bg: #D6EAF8; /* Lysere blå til tabs baggrund */
+        --tab-active-bg: white; /* Hvid baggrund for aktiv tab */
+        --tab-active-text: var(--dark-teal); /* Mørk teal tekst for aktiv tab */
+        --button-primary-bg: var(--primary-green); /* Grøn knap baggrund */
+        --button-primary-hover: #6BB38A; /* Mørkere grøn ved hover */
+        --button-secondary-bg: white; /* Hvid knap baggrund */
+        --button-secondary-border: var(--dark-teal); /* Mørk teal kant på knap */
+        --button-secondary-hover: #ECF5EE; /* Meget lys grøn ved hover */
+        --button-ghost-text: var(--dark-teal); /* Mørk teal tekst for ghost knap */
+        --button-ghost-hover: #D6EAF8; /* Lys blå ved hover */
+        --button-danger-text: #E74C3C; /* Rød farve for fare knap */
+        --button-danger-hover: #FADBD8; /* Lys rød ved hover */
+        --activity-bg-hover: #F2F4F6; /* Meget lys grå ved hover på aktivitet */
+        --activity-border: #E5E7EB; /* Grå kant mellem aktiviteter */
+        --activity-icon-bg: #D6EAF8; /* Lys blå baggrund for ikon */
+        --activity-icon-hover: #A9CCE3; /* Mørkere blå ved hover */
+        --activity-icon-lesson: var(--primary-green); /* Grøn for undervisning */
+        --activity-icon-break: var(--primary-orange); /* Orange for pause */
+        --activity-icon-homework: #AF7AC5; /* Lilla nuance */
+        --activity-icon-other: var(--text-color); /* Mørkere tekstfarve */
+        --completed-text: #9CA3AF; /* Grå for fuldført tekst */
+        --completed-bg-icon: #E5E7EB; /* Grå baggrund for fuldført ikon */
+        --completed-icon: #6B7280; /* Mørkere grå for fuldført ikon */
+        --empty-state-text: var(--text-color); /* Mørkere tekstfarve */
+        --day-header-bg: var(--sidebar-bg); /* Brug sidebar farve til dag header */
+        --day-header-today-bg: var(--menu-link-hover); /* Brug menu hover farve til i dag header */
+        --day-header-today-text: var(--text-color); /* Mørkere tekstfarve til i dag header */
+        --week-day-border: var(--activity-border); /* Grå kant mellem ugedage */
+        --week-day-hover-bg: var(--background-color); /* Lys baggrund ved hover */
+        --week-day-today-bg: var(--primary-bg); /* Meget lys blå til i dag */
+        --week-day-selected-border: var(--primary-orange); /* Orange kant for valgt dag */
+        --dialog-bg: var(--card-bg); /* Hvid baggrund for dialog */
+        --dialog-border: var(--card-border); /* Lys blå kant for dialog */
+        --dialog-shadow: rgba(44, 62, 80, 0.3); /* Mørkere, blødere skygge for dialog */
+        --form-border: var(--activity-border); /* Grå kant for form felter */
+        --form-focus-border: var(--dark-teal); /* Mørk teal ved focus */
+        --form-focus-shadow: rgba(26, 188, 156, 0.2); /* Gennemsigtig teal skygge ved focus */
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --radius-sm: 0.25rem;
+        --radius: 0.375rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      padding: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Kort styling */
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+    }
+
+    .card-header {
+      background-color: var(--header-bg);
+      padding: 1.25rem;
+      color: var(--header-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700; /* Brug federe skrifttype */
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: -0.025em;
+    }
+
+    .card-title i {
+      color: var(--header-text);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Knapper */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      font-weight: 700; /* Federe knap tekst */
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-sm); /* Let skygge på knapper */
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .btn-icon {
+      padding: 0.375rem;
+      width: 2rem;
+      height: 2rem;
+      box-shadow: none; /* Ingen skygge på ikon knap */
+    }
+
+    .btn-primary {
+      background-color: var(--button-primary-bg);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--button-primary-hover);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-outline {
+      background-color: rgba(255, 255, 255, 0.2); /* Lidt mere synlig baggrund */
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-secondary {
+      background-color: var(--button-secondary-bg);
+      color: var(--button-secondary-border);
+      border: 1px solid var(--button-secondary-border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--button-secondary-hover);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--button-ghost-text);
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--button-ghost-hover);
+    }
+
+    .btn-danger {
+      color: var(--button-danger-text);
+    }
+
+    .btn-danger:hover {
+      background-color: var(--button-danger-hover);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Tabs */
+    .tabs {
+      padding: 1rem 1rem 0;
+    }
+
+    .tabs-list {
+      display: flex;
+      background-color: var(--tabs-bg);
+      border-radius: var(--radius-md);
+      padding: 0.25rem;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 0.625rem;
+      cursor: pointer;
+      border-radius: var(--radius);
+      font-weight: 700; /* Federe tab tekst */
+      transition: all 0.2s ease;
+    }
+
+    .tab.active {
+      background-color: var(--tab-active-bg);
+      color: var(--tab-active-text);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Tab indhold */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Dag visning */
+    .date-header {
+      background-color: var(--background-color); /* Brug lys baggrund som resten af siden */
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--activity-border);
+    }
+
+    .date-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-color); /* Brug standard tekstfarve */
+    }
+
+    .activity-list {
+      border-top: 1px solid var(--activity-border);
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--activity-border);
+      transition: background-color 0.2s ease;
+    }
+
+    .activity-item:hover {
+      background-color: var(--activity-bg-hover);
+    }
+
+    .activity-icon {
+      margin-right: 0.75rem;
+      width: 2.5rem; /* Gør ikon lidt større */
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--activity-icon-bg);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      flex-shrink: 0; /* Forhindrer ikon i at skrumpe */
+      box-shadow: var(--shadow-sm); /* Let skygge på ikoner */
+    }
+
+     .activity-icon i {
+         font-size: 1.3em; /* Gør selve ikonet større */
+     }
+
+    .activity-icon:hover {
+      transform: scale(1.1);
+      background-color: var(--activity-icon-hover);
+      box-shadow: var(--shadow);
+    }
+
+    .icon-lesson {
+      color: var(--activity-icon-lesson);
+    }
+
+    .icon-break {
+      color: var(--activity-icon-break);
+    }
+
+    .icon-homework {
+      color: var(--activity-icon-homework);
+    }
+
+    .icon-other {
+      color: var(--activity-icon-other);
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-title {
+      font-weight: 700; /* Federe titel */
+      margin-bottom: 0.25rem;
+    }
+
+    .activity-time {
+      font-size: 0.875rem; /* Lidt større tidspunkt tekst */
+      color: var(--text-color); /* Brug standard tekstfarve */
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+     .activity-time i {
+         font-size: 1em; /* Standard ikon størrelse */
+     }
+
+    .activity-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0; /* Forhindrer knapper i at skrumpe */
+    }
+
+    /* Styling for fuldførte aktiviteter */
+    .activity-item.completed .activity-title {
+      text-decoration: line-through;
+      color: var(--completed-text);
+    }
+
+    .activity-item.completed .activity-time {
+      color: var(--completed-text);
+    }
+
+    .activity-item.completed .activity-icon {
+      background-color: var(--completed-bg-icon);
+    }
+
+    .activity-item.completed .activity-icon i {
+        color: var(--completed-icon);
+    }
+
+
+    .activity-item.completed .activity-icon::after {
+      content: '\2713'; /* Checkmark */
+      position: absolute;
+      font-size: 1.2rem; /* Gør checkmark større */
+      color: var(--dark-teal); /* Farve checkmarket */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
+    }
+
+    .empty-state {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: var(--empty-state-text);
+      background-color: var(--background-color);
+      font-size: 1.1em;
+    }
+
+    /* Uge visning */
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-right: 1px solid var(--week-day-border);
+    }
+
+    .week-day {
+      min-height: 150px; /* Gør dagene højere */
+      border-left: 1px solid var(--week-day-border);
+      border-bottom: 1px solid var(--week-day-border);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      padding: 0.5rem; /* Lidt padding */
+    }
+
+    .week-day:hover {
+      background-color: var(--week-day-hover-bg);
+    }
+
+    .week-day.today {
+      background-color: var(--week-day-today-bg);
+    }
+
+    .week-day.selected {
+      box-shadow: inset 0 0 0 3px var(--week-day-selected-border); /* Tykkere kant */
+    }
+
+    .day-header {
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: 700;
+      background-color: var(--day-header-bg);
+      border-bottom: 1px solid var(--week-day-border);
+      margin-bottom: 0.5rem; /* Mellemrum under header */
+    }
+
+    .today .day-header {
+      background-color: var(--day-header-today-bg);
+      color: var(--day-header-today-text);
+    }
+
+    .day-number {
+      font-size: 0.875rem; /* Lidt større dag nummer */
+      margin-top: 0.125rem;
+    }
+
+    .today .day-number {
+      font-weight: 700;
+    }
+
+    .day-activities {
+      padding: 0 0.25rem; /* Mindre padding */
+    }
+
+    .day-activity {
+      font-size: 0.875rem; /* Lidt større aktivitet tekst */
+      padding: 0.375rem; /* Lidt mere padding */
+      margin-bottom: 0.25rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem; /* Mere mellemrum */
+      border-radius: var(--radius-sm);
+      transition: background-color 0.2s ease;
+    }
+
+    .day-activity:hover {
+      background-color: var(--activity-bg-hover);
+    }
+
+    .day-activity i {
+      font-size: 1em; /* Standard ikon størrelse */
+      color: var(--dark-teal); /* Farve ikoner i uge/måned view */
+    }
+
+    .day-activity.completed {
+      text-decoration: line-through;
+      color: var(--completed-text);
+    }
+
+    .day-activity.completed i {
+      color: var(--completed-text);
+    }
+
+    .more-activities {
+      font-size: 0.875rem; /* Lidt større tekst */
+      text-align: center;
+      color: var(--text-color);
+      padding: 0.5rem 0;
+      font-weight: 700;
+    }
+
+    /* Måned visning */
+    .month-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-right: 1px solid var(--week-day-border);
+      border-bottom: 1px solid var(--week-day-border);
+    }
+
+    .month-day-name {
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: 700;
+      background-color: var(--day-header-bg);
+      border-left: 1px solid var(--week-day-border);
+    }
+
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-right: 1px solid var(--week-day-border);
+    }
+
+    .month-day {
+      min-height: 100px; /* Gør dage højere */
+      border-left: 1px solid var(--week-day-border);
+      border-bottom: 1px solid var(--week-day-border);
+      cursor: pointer;
+      position: relative;
+      transition: background-color 0.2s ease;
+      padding: 0.5rem;
+    }
+
+    .month-day:hover {
+      background-color: var(--week-day-hover-bg);
+    }
+
+    .month-day.other-month {
+      background-color: var(--background-color); /* Lys baggrund for dage udenfor måneden */
+      color: var(--completed-text);
+    }
+
+    .month-day.today {
+      background-color: var(--week-day-today-bg);
+    }
+
+    .month-day.selected {
+      box-shadow: inset 0 0 0 3px var(--week-day-selected-border);
+    }
+
+    .month-day-header {
+      padding: 0.25rem 0; /* Mindre padding */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .month-day-number {
+      font-size: 1em; /* Lidt større dag nummer */
+      font-weight: 700;
+      color: var(--text-color); /* Standard tekstfarve */
+    }
+
+    .month-day.today .month-day-number {
+      font-weight: 700;
+      color: var(--dark-teal); /* Mørk teal for dagens dato */
+    }
+
+    .activity-indicators {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .activity-indicator {
+      width: 0.6rem; /* Gør indikatorer større */
+      height: 0.6rem;
+      border-radius: 50%;
+      box-shadow: var(--shadow-sm); /* Let skygge på indikatorer */
+    }
+
+    .indicator-lesson {
+      background-color: var(--activity-icon-lesson);
+    }
+
+    .indicator-break {
+      background-color: var(--activity-icon-break);
+    }
+
+    .indicator-homework {
+      background-color: var(--activity-icon-homework);
+    }
+
+    .indicator-other {
+      background-color: var(--activity-icon-other);
+    }
+
+    .month-day-activities {
+      padding: 0 0.25rem;
+      font-size: 0.875rem; /* Lidt større tekst */
+      color: var(--text-color); /* Standard tekstfarve */
+      font-weight: 500;
+    }
+
+    /* Dialog */
+    .dialog-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.6); /* Mørkere baggrund */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      display: none;
+      backdrop-filter: blur(5px); /* Mere blur */
+    }
+
+    .dialog {
+      background-color: var(--dialog-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 20px var(--dialog-shadow); /* Mere markant skygge */
+      width: 100%;
+      max-width: 500px;
+      padding: 2rem; /* Mere padding */
+      animation: dialog-appear 0.3s ease;
+      border: 1px solid var(--dialog-border);
+    }
+
+    @keyframes dialog-appear {
+      from {
+        opacity: 0;
+        transform: scale(0.9); /* Mindre start størrelse */
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .dialog-header {
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--primary-orange); /* Streg under header */
+      padding-bottom: 1rem;
+    }
+
+    .dialog-title {
+      font-size: 1.5rem; /* Større titel */
+      font-weight: 700;
+      color: var(--dark-teal); /* Mørk teal titel farve */
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem; /* Mere mellemrum */
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.6rem; /* Mere mellemrum */
+      font-weight: 700;
+      color: var(--text-color); /* Standard tekstfarve */
+      font-size: 1.1em;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 0.75rem; /* Mere padding */
+      border: 1px solid var(--form-border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--form-focus-border);
+      box-shadow: 0 0 0 4px var(--form-focus-shadow); /* Større og farvet skygge */
+    }
+
+    .form-select {
+      background-color: white;
+    }
+
+    .form-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem; /* Mellemrum under checkbox */
+    }
+
+    .form-checkbox input[type="checkbox"] {
+      width: 1.2rem; /* Større checkbox */
+      height: 1.2rem;
+      cursor: pointer;
+    }
+
+    .form-checkbox .form-label {
+        margin-bottom: 0; /* Fjern bundmargin på label i checkbox */
+        font-weight: 400; /* Standard font-weight */
+    }
+
+    /* Udskrift knapper */
+    .print-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      padding: 0 1rem 1rem;
+    }
+
+    /* Responsivt design */
+    @media (max-width: 768px) {
+      .week-grid, .month-grid, .month-header {
+        font-size: 0.875rem; /* Lidt større skrift på mindre skærme */
+      }
+
+      .week-day {
+        min-height: 120px; /* Juster højde */
+      }
+
+      .month-day {
+        min-height: 80px; /* Juster højde */
+      }
+
+      .print-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+       .card-title {
+           font-size: 1.4rem;
+       }
+       .dialog {
+           padding: 1.5rem; /* Mindre padding i dialog på små skærme */
+       }
+       .dialog-title {
+           font-size: 1.3rem;
+       }
+       .form-group {
+           margin-bottom: 1rem;
+       }
+       .form-label {
+           font-size: 1em;
+       }
+    }
+
+    @media (max-width: 640px) {
+      .card-title {
+        font-size: 1.25rem;
+      }
+
+      .btn-sm {
+        padding: 0.375rem 0.5rem; /* Mindre padding */
+      }
+
+      .week-grid, .month-grid {
+        grid-template-columns: repeat(7, 1fr);
+      }
+
+      .day-activity {
+        font-size: 0.75rem; /* Mindre tekst */
+         padding: 0.25rem;
+      }
+       .day-activity i {
+           font-size: 0.8em; /* Mindre ikon */
+       }
+
+
+      body {
+        padding: 0.8rem; /* Mindre padding på body */
+      }
+
+       .activity-icon {
+           width: 2rem; /* Mindre ikoner i dagsvisning */
+           height: 2rem;
+       }
+
+        .activity-icon i {
+            font-size: 1em;
+        }
+        .activity-title {
+            font-size: 1em;
+        }
+        .activity-time {
+            font-size: 0.75em;
+        }
+        .week-day {
+            min-height: 100px;
+            padding: 0.3rem;
+        }
+        .day-header {
+            padding: 0.3rem;
+            font-size: 0.9em;
+        }
+         .day-number {
+             font-size: 0.7em;
+         }
+         .month-day {
+             min-height: 60px;
+             padding: 0.3rem;
+         }
+         .month-day-number {
+             font-size: 0.9em;
+         }
+         .activity-indicators {
+             gap: 0.1rem;
+         }
+          .activity-indicator {
+              width: 0.4rem;
+              height: 0.4rem;
+          }
+          .month-day-activities {
+              font-size: 0.7em;
+          }
+          .dialog {
+             padding: 1rem; /* Endnu mindre padding */
+          }
+          .dialog-title {
+             font-size: 1.2em;
+             margin-bottom: 1rem;
+             padding-bottom: 0.5rem;
+          }
+          .form-group {
+              margin-bottom: 1rem;
+          }
+           .form-input, .form-select {
+               padding: 0.5rem;
+               font-size: 0.9em;
+           }
+           .form-checkbox {
+               margin-bottom: 1rem;
+           }
+           .form-checkbox input[type="checkbox"] {
+               width: 1em;
+               height: 1em;
+           }
+           .form-label {
+               font-size: 0.9em;
+           }
+
+
+    }
+
+
+    /* Print styling */
+    @media print {
+      body {
+        background-color: white;
+        padding: 0;
+        font-family: sans-serif; /* Skift til en mere print-venlig font hvis Inter/Nunito ikke er installeret */
+        color: #000; /* Sort tekst til print */
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .card {
+        box-shadow: none;
+        border: none;
+        margin-bottom: 0;
+      }
+
+      .card-header {
+        color: var(--dark-teal); /* Print i mørk teal */
+        background-color: white;
+        border-bottom: 2px solid var(--dark-teal);
+        padding: 1rem 0;
+      }
+
+      .card-title i {
+        color: var(--dark-teal);
+      }
+
+      .tabs, .nav-buttons, .print-buttons, .btn-full, .activity-actions, .activity-icon.toggle-completed {
+        display: none !important; /* Skjul interaktive elementer */
+      }
+
+      .tab-content {
+        display: none !important;
+      }
+
+      .print-day-only #day-view,
+      .print-week-only #week-view,
+      .print-month-only #month-view {
+        display: block !important;
+      }
+
+      .date-header {
+        background-color: white;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .week-day, .month-day {
+        border: 1px solid #ddd;
+        min-height: auto !important; /* Fjern min-height ved print */
+      }
+
+      .day-header, .month-day-name {
+        background-color: #f0f0f0;
+      }
+
+      .today .day-header,
+      .week-day.today,
+      .month-day.today {
+        background-color: #e0e0e0;
+        color: #000;
+      }
+
+      .week-day.selected, .month-day.selected {
+        box-shadow: none;
+      }
+
+      .activity-item:hover, .week-day:hover, .month-day:hover, .day-activity:hover {
+        background-color: transparent;
+      }
+
+      /* Tilføj sidehoved og sidefod (komplekst med ren CSS, ofte bedre med JS libraries) */
+      /* Eksempel: */
+      /* @page {
+        margin: 2cm;
+        @top-center { content: "Elevkalender"; }
+        @bottom-right { content: counter(page); }
+      } */
+
+
+      /* Skjul dialog ved udskrift */
+      .dialog-backdrop {
+        display: none !important;
+      }
+
+       /* Sørg for at ikoner i aktiviteter vises ved print (ikke toggle ikonet) */
+       .activity-item .activity-icon:not(.toggle-completed) {
+           display: flex !important;
+           background-color: transparent !important;
+           box-shadow: none !important;
+           width: auto !important;
+           height: auto !important;
+            margin-right: 0.5rem !important;
+       }
+       .activity-item .activity-icon:not(.toggle-completed) i {
+           color: #000 !important; /* Sort ikon ved print */
+       }
+
+        .day-activity i {
+            color: #000 !important; /* Sorte ikoner i uge/måned ved print */
+        }
+
+        .activity-item.completed .activity-title,
+        .activity-item.completed .activity-time,
+        .activity-item.completed .activity-icon i,
+        .day-activity.completed,
+        .day-activity.completed i {
+            color: #888 !important; /* Lysere grå for fuldførte ved print */
+            text-decoration: line-through !important;
+        }
+
+         .activity-indicator {
+             box-shadow: none !important; /* Ingen skygge på indikatorer ved print */
+         }
+
+
+    }
+
+    /* Print-specifikke klasser */
+    .print-day-only .tab-content:not(#day-view),
+    .print-week-only .tab-content:not(#week-view),
+    .print-month-only .tab-content:not(#month-view) {
+      display: none !important;
+    }
+
+    .print-day-only #day-view,
+    .print-week-only #week-view,
+    .print-month-only #month-view {
+      display: block !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Elevkalender</span>
+        </div>
+        </div>
+
+      <div class="tabs">
+        <div class="tabs-list">
+          <div class="tab active" data-view="day">Dag</div>
+          <div class="tab" data-view="week">Uge</div>
+          <div class="tab" data-view="month">Måned</div>
+        </div>
+      </div>
+
+      <div class="print-buttons">
+        <button class="btn btn-secondary btn-sm" id="print-day-btn">
+          <i class="fas fa-print"></i> Udskriv dag
+        </button>
+        <button class="btn btn-secondary btn-sm" id="print-week-btn">
+          <i class="fas fa-print"></i> Udskriv uge
+        </button>
+        <button class="btn btn-secondary btn-sm" id="print-month-btn">
+          <i class="fas fa-print"></i> Udskriv måned
+        </button>
+      </div>
+
+      <div class="tab-content active" id="day-view">
+        <div class="date-header">
+          <h2 class="date-title" id="day-title"></h2>
+        </div>
+        <div class="activity-list" id="activity-list">
+          </div>
+      </div>
+
+      <div class="tab-content" id="week-view">
+        <div class="date-header">
+          <h2 class="date-title" id="week-title"></h2>
+        </div>
+        <div class="week-grid" id="week-grid">
+          </div>
+      </div>
+
+      <div class="tab-content" id="month-view">
+        <div class="date-header">
+          <h2 class="date-title" id="month-title"></h2>
+        </div>
+        <div class="month-header">
+          <div class="month-day-name">Man</div>
+          <div class="month-day-name">Tir</div>
+          <div class="month-day-name">Ons</div>
+          <div class="month-day-name">Tor</div>
+          <div class="month-day-name">Fre</div>
+          <div class="month-day-name">Lør</div>
+          <div class="month-day-name">Søn</div>
+        </div>
+        <div class="month-grid" id="month-grid">
+          </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" id="add-activity-btn">
+      <i class="fas fa-plus"></i> Tilføj ny aktivitet
+    </button>
+  </div>
+
+  <div class="dialog-backdrop" id="activity-dialog">
+    <div class="dialog">
+      <div class="dialog-header">
+        <h3 class="dialog-title" id="dialog-title">Tilføj ny aktivitet</h3>
+      </div>
+      <div class="dialog-content">
+        <div class="form-group">
+          <label class="form-label" for="activity-title">Titel</label>
+          <input type="text" class="form-input" id="activity-title" placeholder="F.eks. Matematik">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="activity-time">Tidspunkt</label>
+          <input type="time" class="form-input" id="activity-time">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="activity-date">Dato</label>
+          <input type="date" class="form-input" id="activity-date">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="activity-type">Type</label>
+          <select class="form-select" id="activity-type">
+            <option value="lesson">Undervisning</option>
+            <option value="break">Pause</option>
+            <option value="homework">Lektier</option>
+            <option value="other">Andet</option>
+          </select>
+        </div>
+        <div class="form-group form-checkbox">
+          <input type="checkbox" id="activity-completed">
+          <label class="form-label" for="activity-completed">Markér som fuldført</label>
+        </div>
+        <button class="btn btn-primary btn-full" id="save-activity-btn">Tilføj aktivitet</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Aktivitetstyper
+    const ActivityType = {
+      LESSON: 'lesson',
+      BREAK: 'break',
+      HOMEWORK: 'homework',
+      OTHER: 'other'
+    };
+
+    // --- localStorage Håndtering ---
+    const localStorageKey = 'elevkalenderActivities';
+
+    function saveActivities() {
+      localStorage.setItem(localStorageKey, JSON.stringify(state.activities));
+    }
+
+    function loadActivities() {
+      const savedActivities = localStorage.getItem(localStorageKey);
+      if (savedActivities) {
+        try {
+          return JSON.parse(savedActivities);
+        } catch (e) {
+          console.error("Kunne ikke indlæse aktiviteter fra localStorage:", e);
+          return []; // Returner tom array ved fejl
+        }
+      }
+      // Returner standard aktiviteter hvis intet er gemt
+      return [
+        { id: '1', time: '08:00', title: 'Matematik', type: ActivityType.LESSON, date: formatDate(new Date()), completed: false },
+        { id: '2', time: '09:45', title: 'Pause', type: ActivityType.BREAK, date: formatDate(new Date()), completed: false },
+        { id: '3', time: '10:15', title: 'Dansk', type: ActivityType.LESSON, date: formatDate(new Date()), completed: false },
+        { id: '4', time: '12:00', title: 'Frokost', type: ActivityType.BREAK, date: formatDate(new Date()), completed: false },
+        { id: '5', time: '12:45', title: 'Historie', type: ActivityType.LESSON, date: formatDate(new Date()), completed: false },
+        { id: '6', time: '14:30', title: 'Lektier - Matematik', type: ActivityType.HOMEWORK, date: formatDate(new Date()), completed: false },
+        { id: '7', time: '08:30', title: 'Engelsk', type: ActivityType.LESSON, date: formatDate(addDays(new Date(), 1)), completed: false },
+        { id: '8', time: '10:15', title: 'Idræt', type: ActivityType.LESSON, date: formatDate(addDays(new Date(), 1)), completed: false }
+      ];
+    }
+    // --- Slut localStorage Håndtering ---
+
+
+    // Kalender state
+    const state = {
+      currentDate: new Date(),
+      selectedDate: formatDate(new Date()),
+      currentView: 'day',
+      activities: loadActivities(), // Indlæs aktiviteter fra localStorage ved start
+      editingActivity: null
+    };
+
+    // DOM elementer
+    const elements = {
+      tabs: document.querySelectorAll('.tab'),
+      tabContents: document.querySelectorAll('.tab-content'),
+      dayTitle: document.getElementById('day-title'),
+      weekTitle: document.getElementById('week-title'),
+      monthTitle: document.getElementById('month-title'),
+      activityList: document.getElementById('activity-list'),
+      weekGrid: document.getElementById('week-grid'),
+      monthGrid: document.getElementById('month-grid'),
+      // prevBtn: document.getElementById('prev-btn'), // Removed
+      // nextBtn: document.getElementById('next-btn'), // Removed
+      // todayBtn: document.getElementById('today-btn'), // Removed
+      addActivityBtn: document.getElementById('add-activity-btn'),
+      activityDialog: document.getElementById('activity-dialog'),
+      dialogTitle: document.getElementById('dialog-title'),
+      activityTitleInput: document.getElementById('activity-title'),
+      activityTimeInput: document.getElementById('activity-time'),
+      activityDateInput: document.getElementById('activity-date'),
+      activityTypeInput: document.getElementById('activity-type'),
+      activityCompletedInput: document.getElementById('activity-completed'),
+      saveActivityBtn: document.getElementById('save-activity-btn'),
+      printDayBtn: document.getElementById('print-day-btn'),
+      printWeekBtn: document.getElementById('print-week-btn'),
+      printMonthBtn: document.getElementById('print-month-btn')
+    };
+
+    // Hjælpefunktioner til datoer
+    function formatDate(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    function parseDate(dateString) {
+        if (!dateString) return new Date(); // Returner dagens dato hvis strengen er tom
+        const [year, month, day] = dateString.split('-').map(Number);
+        // Bemærk: Måned er 0-indekseret i JavaScript Date objekt
+        return new Date(year, month - 1, day);
+    }
+
+
+    function formatDisplayDate(date, format = 'long') {
+         try {
+            // Tjek om datoen er gyldig
+            if (isNaN(date.getTime())) {
+                return 'Ugyldig dato';
+            }
+            return date.toLocaleDateString('da-DK', {
+                weekday: format === 'long' ? 'long' : undefined,
+                year: 'numeric',
+                month: format === 'long' ? 'long' : 'short',
+                day: 'numeric'
+            });
+         } catch (e) {
+             console.error("Fejl ved formatering af dato:", date, e);
+             return 'Dato Fejl';
+         }
+    }
+
+
+    function addDays(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
+    function addMonths(date, months) {
+      const result = new Date(date);
+      result.setMonth(result.getMonth() + months);
+      return result;
+    }
+
+    function getWeekNumber(date) {
+        try {
+             // Tjek om datoen er gyldig
+            if (isNaN(date.getTime())) {
+                return 'N/A';
+            }
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+        } catch (e) {
+            console.error("Fejl ved beregning af ugenummer:", date, e);
+            return 'N/A';
+        }
+    }
+
+
+    function getWeekDays(date) {
+      const day = date.getDay() || 7;
+      const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Juster for søndag (dag 0)
+      const monday = new Date(date);
+      monday.setDate(diff);
+
+      const weekDays = [];
+      for (let i = 0; i < 7; i++) {
+        const day = new Date(monday);
+        day.setDate(monday.getDate() + i);
+        weekDays.push(day);
+      }
+
+      return weekDays;
+    }
+
+    function getMonthDays(date) {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+
+      const firstDay = new Date(year, month, 1);
+      // getDay() returnerer 0 for søndag, 1 for mandag ... 6 for lørdag.
+      // Vi vil have mandag som første dag (1). Hvis firstDay er søndag (0), skal vi trække 6 dage fra for at komme til mandagen før. Ellers trækker vi day - 1 dage.
+      const firstDayOfWeek = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+
+      const startDate = new Date(firstDay);
+      startDate.setDate(firstDay.getDate() - firstDayOfWeek); // Gå tilbage til den første mandag, der vises i kalenderen
+
+      const daysInMonth = new Date(year, month + 1, 0).getDate(); // Antal dage i måneden
+
+      const weeks = [];
+      let currentWeek = [];
+
+      // Generer op til 6 uger (maks antal der kan vises for en måned)
+      for (let i = 0; i < 42; i++) {
+        const day = new Date(startDate);
+        day.setDate(startDate.getDate() + i);
+
+        currentWeek.push(day);
+
+        if (currentWeek.length === 7) {
+          weeks.push(currentWeek);
+          currentWeek = [];
+
+           // Stop hvis vi er i en ny måned og dagen er en søndag (slutningen af en uge)
+           // og vi har mindst nok uger til at vise hele måneden
+           if (day.getMonth() > month && day.getDay() === 0 && day.getDate() >= daysInMonth) {
+               break;
+           }
+        }
+      }
+
+       // Tilføj den sidste uge hvis den ikke er fuld, men indeholder dage fra den aktuelle måned
+       if (currentWeek.length > 0) {
+           weeks.push(currentWeek);
+       }
+
+      return weeks;
+    }
+
+
+    // Aktivitetsfunktioner
+    function getActivitiesForDate(date) {
+      return state.activities.filter(activity => activity.date === date);
+    }
+
+    function countActivitiesForDate(date) {
+      return getActivitiesForDate(date).length;
+    }
+
+    function getActivityTypesForDate(date) {
+      const activities = getActivitiesForDate(date);
+      return [...new Set(activities.map(activity => activity.type))];
+    }
+
+    function getActivityIcon(type) {
+      // Brug Font Awesome ikoner for konsistens
+      switch (type) {
+        case ActivityType.LESSON:
+          return '<i class="fas fa-book-open icon-lesson"></i>';
+        case ActivityType.BREAK:
+          return '<i class="fas fa-coffee icon-break"></i>';
+        case ActivityType.HOMEWORK:
+          return '<i class="fas fa-edit icon-homework"></i>';
+        default:
+          return '<i class="fas fa-calendar-alt icon-other"></i>';
+      }
+    }
+
+    // Render funktioner
+    function renderDayView() {
+      const activities = getActivitiesForDate(state.selectedDate);
+      elements.dayTitle.textContent = formatDisplayDate(parseDate(state.selectedDate));
+
+      if (activities.length === 0) {
+        elements.activityList.innerHTML = `
+          <div class="empty-state">
+            Ingen aktiviteter planlagt for denne dag
+          </div>
+        `;
+        return;
+      }
+
+      activities.sort((a, b) => a.time.localeCompare(b.time));
+      elements.activityList.innerHTML = activities.map(activity => `
+        <div class="activity-item ${activity.completed ? 'completed' : ''}" data-id="${activity.id}">
+          <div class="activity-icon toggle-completed" data-id="${activity.id}">
+            ${getActivityIcon(activity.type)}
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">${activity.title}</div>
+            <div class="activity-time">
+              <i class="fas fa-clock"></i> ${activity.time}
+            </div>
+          </div>
+          <div class="activity-actions">
+            <button class="btn btn-ghost btn-icon edit-activity" data-id="${activity.id}" title="Rediger">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-ghost btn-icon delete-activity btn-danger" data-id="${activity.id}" title="Slet">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      // Tilføj event listeners til knapper
+      document.querySelectorAll('.edit-activity').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.getAttribute('data-id');
+          editActivity(id);
+        });
+      });
+      document.querySelectorAll('.delete-activity').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.getAttribute('data-id');
+          deleteActivity(id);
+        });
+      });
+      // Tilføj event listeners til afkrydsning
+      document.querySelectorAll('.toggle-completed').forEach(icon => {
+        icon.addEventListener('click', () => {
+          const id = icon.getAttribute('data-id');
+          toggleActivityCompleted(id);
+        });
+      });
+    }
+
+    function renderWeekView() {
+      const weekDays = getWeekDays(state.currentDate);
+      elements.weekTitle.textContent = `Uge ${getWeekNumber(state.currentDate)} - ${state.currentDate.getFullYear()}`;
+
+      elements.weekGrid.innerHTML = weekDays.map(day => {
+        const dateStr = formatDate(day);
+        const isToday = dateStr === formatDate(new Date());
+        const isSelected = dateStr === state.selectedDate;
+        const dayActivities = state.activities.filter(activity => activity.date === dateStr)
+          .sort((a, b) => a.time.localeCompare(b.time));
+
+        return `
+          <div class="week-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${dateStr}">
+            <div class="day-header">
+              ${day.toLocaleDateString('da-DK', { weekday: 'short' })}
+              <div class="day-number">${day.getDate()}/${day.getMonth() + 1}</div>
+            </div>
+            <div class="day-activities">
+              ${dayActivities.slice(0, 3).map(activity => `
+                <div class="day-activity ${activity.completed ? 'completed' : ''}" title="${activity.time} - ${activity.title}">
+                  ${getActivityIcon(activity.type)}
+                  <span>${activity.time} ${activity.title}</span>
+                </div>
+              `).join('')}
+              ${dayActivities.length > 3 ?
+                `
+                <div class="more-activities">
+                  +${dayActivities.length - 3} mere...
+                </div>
+              `
+                : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      // Tilføj event listeners til ugedage
+      document.querySelectorAll('.week-day').forEach(day => {
+        day.addEventListener('click', () => {
+          const date = day.getAttribute('data-date');
+          state.selectedDate = date;
+          setActiveTab('day');
+          renderCalendar();
+        });
+      });
+    }
+
+    function renderMonthView() {
+      const monthDays = getMonthDays(state.currentDate);
+      elements.monthTitle.textContent = state.currentDate.toLocaleDateString('da-DK', { month: 'long', year: 'numeric' });
+
+      elements.monthGrid.innerHTML = monthDays.map(week => {
+        return week.map(day => {
+          const dateStr = formatDate(day);
+          const isCurrentMonth = day.getMonth() === state.currentDate.getMonth();
+          const isToday = dateStr === formatDate(new Date());
+          const isSelected = dateStr === state.selectedDate;
+          const activityTypes = getActivityTypesForDate(dateStr);
+
+          return `
+            <div class="month-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${dateStr}">
+              <div class="month-day-header">
+                <span class="month-day-number">${day.getDate()}</span>
+                ${activityTypes.length > 0 ? `
+                  <div class="activity-indicators">
+                    ${activityTypes.includes(ActivityType.LESSON) ? '<div class="activity-indicator indicator-lesson"></div>' : ''}
+                    ${activityTypes.includes(ActivityType.BREAK) ? '<div class="activity-indicator indicator-break"></div>' : ''}
+                    ${activityTypes.includes(ActivityType.HOMEWORK) ? '<div class="activity-indicator indicator-homework"></div>' : ''}
+                    ${activityTypes.includes(ActivityType.OTHER) ? '<div class="activity-indicator indicator-other"></div>' : ''}
+                  </div>
+                ` : ''}
+              </div>
+              ${countActivitiesForDate(dateStr) > 0 ?
+                `
+                <div class="month-day-activities">
+                  ${countActivitiesForDate(dateStr)} aktiviteter
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+      }).join('');
+
+      // Tilføj event listeners til månedsdage
+      document.querySelectorAll('.month-day').forEach(day => {
+        day.addEventListener('click', () => {
+          const date = day.getAttribute('data-date');
+          state.selectedDate = date;
+          setActiveTab('day');
+          renderCalendar();
+        });
+      });
+    }
+
+    function renderCalendar() {
+      switch (state.currentView) {
+        case 'day':
+          renderDayView();
+          break;
+        case 'week':
+          renderWeekView();
+          break;
+        case 'month':
+          renderMonthView();
+          break;
+      }
+    }
+
+    // Aktivitetshåndtering
+    function addActivity() {
+      openActivityDialog();
+    }
+
+    function editActivity(id) {
+      const activity = state.activities.find(activity => activity.id === id);
+      if (activity) {
+        state.editingActivity = activity;
+        elements.dialogTitle.textContent = 'Rediger aktivitet';
+        elements.activityTitleInput.value = activity.title;
+        elements.activityTimeInput.value = activity.time;
+        elements.activityDateInput.value = activity.date;
+        elements.activityTypeInput.value = activity.type;
+        elements.activityCompletedInput.checked = activity.completed;
+        elements.saveActivityBtn.textContent = 'Opdater aktivitet';
+        openActivityDialog();
+      }
+    }
+
+    function deleteActivity(id) {
+      state.activities = state.activities.filter(activity => activity.id !== id);
+      saveActivities(); // Gem ændringen
+      renderCalendar();
+    }
+
+    function toggleActivityCompleted(id) {
+      state.activities = state.activities.map(activity => {
+        if (activity.id === id) {
+          return {
+            ...activity,
+            completed: !activity.completed
+          };
+        }
+        return activity;
+      });
+      saveActivities(); // Gem ændringen
+      renderCalendar();
+    }
+
+    function saveActivity() {
+      const title = elements.activityTitleInput.value.trim(); // Fjern overflødig whitespace
+      const time = elements.activityTimeInput.value;
+      const date = elements.activityDateInput.value;
+      const type = elements.activityTypeInput.value;
+      const completed = elements.activityCompletedInput.checked;
+
+      if (title && time && date) {
+        if (state.editingActivity) {
+          // Opdater eksisterende aktivitet
+          state.activities = state.activities.map(activity => {
+            if (activity.id === state.editingActivity.id) {
+              return {
+                ...activity,
+                title,
+                time,
+                date,
+                type,
+                completed
+              };
+            }
+            return activity;
+          });
+        } else {
+          // Tilføj ny aktivitet
+          const newActivity = {
+            id: Date.now().toString(), // Brug timestamp som unikt ID
+            title,
+            time,
+            date,
+            type,
+            completed
+          };
+          state.activities.push(newActivity);
+        }
+
+        saveActivities(); // Gem ændringen
+        closeActivityDialog();
+        renderCalendar();
+      } else {
+          alert('Udfyld venligst alle felter (Titel, Tidspunkt, Dato)'); // Simpel validering
+      }
+    }
+
+    function openActivityDialog() {
+      if (!state.editingActivity) {
+        elements.dialogTitle.textContent = 'Tilføj ny aktivitet';
+        elements.activityTitleInput.value = '';
+        elements.activityTimeInput.value = '';
+        elements.activityDateInput.value = state.selectedDate; // Forudfyld med valgt dato
+        elements.activityTypeInput.value = ActivityType.LESSON;
+        elements.activityCompletedInput.checked = false;
+        elements.saveActivityBtn.textContent = 'Tilføj aktivitet';
+      }
+
+      elements.activityDialog.style.display = 'flex';
+    }
+
+    function closeActivityDialog() {
+      elements.activityDialog.style.display = 'none';
+      state.editingActivity = null; // Nulstil redigeringstilstand
+    }
+
+    // Navigation (These functions are no longer called by buttons but are kept in case they are used elsewhere or for future additions)
+    function goToToday() {
+      const today = new Date();
+      state.currentDate = today;
+      state.selectedDate = formatDate(today);
+      renderCalendar();
+    }
+
+    function goToPrevious() {
+      switch (state.currentView) {
+        case 'day':
+          state.currentDate = addDays(parseDate(state.selectedDate), -1); // Baseret på selectedDate
+          state.selectedDate = formatDate(state.currentDate);
+          break;
+        case 'week':
+          state.currentDate = addDays(state.currentDate, -7);
+          state.selectedDate = formatDate(state.currentDate); // Opdater selectedDate til den nye uges første dag
+          break;
+        case 'month':
+          state.currentDate = addMonths(state.currentDate, -1);
+           // Bevar den valgte dag i måneden hvis muligt, ellers vælg sidste dag
+          const dayOfMonth = parseDate(state.selectedDate).getDate();
+          const daysInNewMonth = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1, 0).getDate();
+          const newDay = Math.min(dayOfMonth, daysInNewMonth);
+          state.selectedDate = formatDate(new Date(state.currentDate.getFullYear(), state.currentDate.getMonth(), newDay));
+          break;
+      }
+
+      renderCalendar();
+    }
+
+    function goToNext() {
+      switch (state.currentView) {
+        case 'day':
+          state.currentDate = addDays(parseDate(state.selectedDate), 1); // Baseret på selectedDate
+          state.selectedDate = formatDate(state.currentDate);
+          break;
+        case 'week':
+          state.currentDate = addDays(state.currentDate, 7);
+          state.selectedDate = formatDate(state.currentDate); // Opdater selectedDate til den nye uges første dag
+          break;
+        case 'month':
+          state.currentDate = addMonths(state.currentDate, 1);
+          // Bevar den valgte dag i måneden hvis muligt, ellers vælg sidste dag
+          const dayOfMonth = parseDate(state.selectedDate).getDate();
+          const daysInNewMonth = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1, 0).getDate();
+          const newDay = Math.min(dayOfMonth, daysInNewMonth);
+          state.selectedDate = formatDate(new Date(state.currentDate.getFullYear(), state.currentDate.getMonth(), newDay));
+          break;
+      }
+
+      renderCalendar();
+    }
+
+
+    function setActiveTab(view) {
+      state.currentView = view;
+      elements.tabs.forEach(tab => {
+        if (tab.getAttribute('data-view') === view) {
+          tab.classList.add('active');
+        } else {
+          tab.classList.remove('active');
+        }
+      });
+      elements.tabContents.forEach(content => {
+        if (content.id === `${view}-view`) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+       // Juster currentDate/selectedDate baseret på den nye visning, hvis nødvendigt
+       if (view === 'day') {
+           // Forbliv på den valgte dag
+       } else if (view === 'week') {
+            // Sæt currentDate til den valgte uges start
+            const weekDays = getWeekDays(parseDate(state.selectedDate));
+            state.currentDate = weekDays[0];
+       } else if (view === 'month') {
+           // Sæt currentDate til den valgte måneds start
+           const selectedDateObj = parseDate(state.selectedDate);
+           state.currentDate = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), 1);
+       }
+
+    }
+
+    // Udskriftsfunktioner
+    function printDay() {
+      document.body.classList.add('print-day-only');
+      window.print();
+      document.body.classList.remove('print-day-only');
+    }
+
+    function printWeek() {
+      document.body.classList.add('print-week-only');
+      window.print();
+      document.body.classList.remove('print-week-only');
+    }
+
+    function printMonth() {
+      document.body.classList.add('print-month-only');
+      window.print();
+      document.body.classList.remove('print-month-only');
+    }
+
+    // Event listeners
+    elements.tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const view = tab.getAttribute('data-view');
+        setActiveTab(view);
+        renderCalendar();
+      });
+    });
+    // Removed event listeners for navigation buttons
+    // elements.prevBtn.addEventListener('click', goToPrevious);
+    // elements.nextBtn.addEventListener('click', goToNext);
+    // elements.todayBtn.addEventListener('click', goToToday);
+    elements.addActivityBtn.addEventListener('click', addActivity);
+    elements.saveActivityBtn.addEventListener('click', saveActivity);
+
+    // Luk dialog når der klikkes udenfor den
+    elements.activityDialog.addEventListener('click', (e) => {
+      if (e.target === elements.activityDialog) {
+        closeActivityDialog();
+      }
+    });
+     // Luk dialog med Escape tasten
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && elements.activityDialog.style.display === 'flex') {
+            closeActivityDialog();
+        }
+    });
+
+
+    // Udskriftsknapper
+    elements.printDayBtn.addEventListener('click', printDay);
+    elements.printWeekBtn.addEventListener('click', printWeek);
+    elements.printMonthBtn.addEventListener('click', printMonth);
+
+    // Initialiser kalenderen
+    renderCalendar();
+  </script>
+</body>
+</html>
