@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tekstoplæser - Lærmere.nu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset og grundlæggende styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Brug Nunito skrifttypen */
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Farver fra Elevkalender */
+        :root {
+            --primary-blue: #5DADE2; /* Lysere blå */
+            --primary-green: #82E0AA; /* Lysere grøn */
+            --primary-orange: #F5B041; /* Lysere orange */
+            --dark-teal: #1ABC9C; /* Mindre dyster teal */
+            --text-color: #2C3E50; /* Mørkere, men blød tekstfarve */
+            --background-color: #EBF5FB; /* Meget lys og venlig baggrundsblå */
+            --card-bg: #FFFFFF; /* Hvid baggrund for kort */
+            --card-border: #D6EAF8; /* Lysere blå kant til kort */
+            --header-bg: var(--primary-blue); /* Blå baggrund for header */
+            --header-text: white; /* Hvid tekst i header */
+            --button-primary-bg: var(--primary-green); /* Grøn knap baggrund */
+            --button-primary-hover: #6BB38A; /* Mørkere grøn ved hover */
+            --button-secondary-bg: white; /* Hvid knap baggrund */
+            --button-secondary-border: var(--dark-teal); /* Mørk teal kant på knap */
+            --button-secondary-hover: #ECF5EE; /* Meget lys grøn ved hover */
+            --button-danger-text: #E74C3C; /* Rød farve for fare knap */
+            --button-danger-hover: #FADBD8; /* Lys rød ved hover */
+            --activity-bg-hover: #F2F4F6; /* Meget lys grå ved hover på aktivitet */
+            --activity-border: #E5E7EB; /* Grå kant mellem aktiviteter */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-sm: 0.25rem;
+            --radius: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 1.5rem;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Juster for at undgå centrering i højden */
+            min-height: 100vh; /* Brug min-height for at fylde skærmen */
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .container {
+            /* Brug card styling */
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--card-border);
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 700px; /* Lidt bredere container */
+            margin: 2rem auto; /* Centrer og giv top/bund margin */
+            transition: all 0.3s ease;
+            text-align: left; /* Juster tekstjustering inde i kortet */
+        }
+
+        .card-header {
+            background-color: var(--header-bg);
+            padding: 1.25rem;
+            color: var(--header-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* Juster negativ margin for at strække header inden for padding */
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .card-title i {
+            color: var(--header-text);
+        }
+
+
+        label {
+            display: block;
+            font-size: 1em; /* Juster skriftstørrelse */
+            color: var(--text-color); /* Brug standard tekstfarve */
+            margin-bottom: 0.5rem; /* Mindre margin */
+            font-weight: 700; /* Federe skrift */
+        }
+
+        select {
+            width: 100%;
+            padding: 0.75rem; /* Juster padding */
+            margin: 0 0 1rem 0; /* Juster margin */
+            border-radius: var(--radius); /* Afrundede hjørner */
+            border: 1px solid var(--activity-border); /* Brug standard kantfarve */
+            background-color: white; /* Hvid baggrund */
+            font-size: 1rem;
+            font-weight: 400;
+            transition: all 0.2s ease;
+            color: var(--text-color); /* Standard tekstfarve */
+        }
+
+        select:focus {
+             background-color: var(--background-color); /* Lys baggrund ved focus */
+            border-color: var(--dark-teal); /* Mørk teal kant ved focus */
+            box-shadow: 0 0 0 4px rgba(26, 188, 156, 0.2); /* Gennemsigtig teal skygge */
+            outline: none;
+        }
+
+        /* Skjul den originale textarea */
+        #textInput {
+            display: none;
+        }
+
+        /* Styling for den contenteditable div */
+        #readDisplay {
+            margin-top: 0; /* Fjern top margin da det er input feltet nu */
+            padding: 0.75rem; /* Match padding fra select/textarea */
+            border: 1px solid var(--activity-border);
+            border-radius: var(--radius);
+            background-color: white; /* Hvid baggrund */
+            min-height: 200px; /* Match højde fra textarea */
+            text-align: left;
+            white-space: pre-wrap; /* Bevar whitespace og linjeskift */
+            word-wrap: break-word; /* Bryd lange ord */
+            color: var(--text-color);
+            cursor: text; /* Vis tekst cursor */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            outline: none; /* Fjern standard outline */
+             overflow-y: auto; /* Tilføj scrollbar hvis nødvendigt */
+        }
+
+         #readDisplay:focus {
+             background-color: var(--background-color); /* Lys baggrund ved focus */
+            border-color: var(--dark-teal); /* Mørk teal kant ved focus */
+            box-shadow: 0 0 0 4px rgba(26, 188, 156, 0.2); /* Gennemsigtig teal skygge */
+         }
+
+
+        /* Knapper (genbrugt fra Elevkalender) */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-right: 0.5rem; /* Mellemrum mellem knapper */
+             margin-bottom: 0.5rem; /* Mellemrum under knapper på små skærme */
+        }
+
+        .btn-primary {
+            background-color: var(--button-primary-bg);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--button-primary-hover);
+            box-shadow: var(--shadow);
+        }
+
+         .btn-secondary {
+            background-color: var(--button-secondary-bg);
+            color: var(--button-secondary-border);
+            border: 1px solid var(--button-secondary-border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--button-secondary-hover);
+            box-shadow: var(--shadow);
+        }
+
+         .btn-danger {
+            color: var(--button-danger-text);
+            background-color: transparent;
+            box-shadow: none;
+         }
+
+         .btn-danger:hover {
+             background-color: var(--button-danger-hover);
+         }
+
+
+        .button-group {
+            margin-top: 1.5rem; /* Mellemrum over knapper */
+            display: flex;
+            flex-wrap: wrap; /* Tillad wrap på små skærme */
+            gap: 0.5rem; /* Mellemrum mellem knapper */
+        }
+
+        .button-group .btn {
+            margin-right: 0; /* Fjern individuel margin, brug gap i stedet */
+            margin-bottom: 0;
+        }
+
+
+        .footer {
+            margin-top: 1.5rem; /* Juster margin */
+            font-size: 0.9rem;
+            color: var(--text-color); /* Brug standard tekstfarve */
+            text-align: center;
+        }
+
+        .contact-info {
+            margin-top: 2rem; /* Mellemrum over kontaktinfo */
+            font-size: 0.9rem;
+            color: var(--text-color); /* Brug standard tekstfarve */
+            text-align: center;
+            width: 100%; /* Sørg for at den fylder bredden */
+        }
+
+        .contact-info a {
+            color: var(--dark-teal); /* Mørk teal linkfarve */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+            color: var(--primary-blue); /* Lysere blå ved hover */
+        }
+
+        /* Styling for fremhævet tekst */
+        .highlight {
+            background-color: var(--primary-orange); /* Orange baggrund */
+            color: white; /* Hvid tekst */
+            padding: 2px 4px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+        }
+
+
+        /* Responsivt design */
+        @media (max-width: 600px) {
+            body {
+                padding: 0.8rem;
+            }
+            .container {
+                padding: 1rem;
+                margin: 1rem auto;
+            }
+
+            .card-header {
+                 padding: 1rem;
+                 margin: -1rem -1rem 1rem -1rem;
+             }
+
+             .card-title {
+                 font-size: 1.3rem;
+             }
+
+            select {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+                margin-bottom: 0.8rem;
+            }
+
+             #readDisplay {
+                 padding: 0.6rem;
+                 font-size: 0.9rem;
+             }
+
+
+            .btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                 margin-right: 0.3rem;
+                 margin-bottom: 0.3rem;
+            }
+
+            .button-group {
+                 margin-top: 1rem;
+                 gap: 0.3rem;
+            }
+
+
+             .footer, .contact-info {
+                 margin-top: 1rem;
+                 font-size: 0.8rem;
+             }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fas fa-book-reader"></i> <span>Tekstoplæser</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+             <label for="languageSelect">Vælg sprog:</label>
+            <select class="form-select" id="languageSelect">
+                <option value="da-DK">Dansk</option>
+                <option value="en-US">Engelsk</option>
+                <option value="de-DE">Tysk</option>
+                <option value="fr-FR">Fransk</option>
+                <option value="es-ES">Spansk</option>
+                <option value="it-IT">Italiensk</option>
+                <option value="nl-NL">Hollandsk</option>
+                <option value="pt-PT">Portugisisk</option>
+                <option value="ru-RU">Russisk</option>
+                <option value="zh-CN">Kinesisk (forenklet)</option>
+                <option value="bs-BA">Bosnisk</option>
+                <option value="hr-HR">Kroatisk</option>
+                <option value="cs-CZ">Tjekkisk</option>
+                <option value="hu-HU">Ungarsk</option>
+                <option value="pl-PL">Polsk</option>
+                <option value="ro-RO">Rumænsk</option>
+                <option value="sk-SK">Slovakisk</option>
+                <option value="sl-SI">Slovensk</option>
+                <option value="sv-SE">Svensk</option>
+                <option value="fi-FI">Finsk</option>
+                <option value="no-NO">Norsk</option>
+                <option value="el-GR">Græsk</option>
+                <option value="uk-UA">Ukrainsk</option> </select>
+        </div>
+
+        <textarea id="textInput" style="display: none;"></textarea>
+
+        <div id="readDisplay" contenteditable="true" aria-label="Skriv din tekst her..." placeholder="Skriv din tekst her..."></div>
+
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="readText()">
+                <i class="fas fa-play"></i> Læs teksten
+            </button>
+            <button class="btn btn-secondary" onclick="stopReading()">
+                 <i class="fas fa-stop"></i> Stop Læsning
+            </button>
+             <button class="btn btn-danger" onclick="clearText()">
+                 <i class="fas fa-trash-alt"></i> Ryd tekst
+            </button>
+        </div>
+
+
+        <div class="footer">
+            <p>Vælg et sprog, og lad mig læse det højt for dig!</p>
+        </div>
+    </div>
+
+    <div class="contact-info">
+        <p>Lavet af: <strong>BrianHS</strong> - <a href="mailto:kontakt@brianhs.dk">kontakt@brianhs.dk</a></p>
+    </div>
+
+    <script>
+        let utterance = null; // Declare utterance variable globally, initialize to null
+        // Vi bruger nu readDisplay som det primære felt i stedet for textInput
+        const textInput = document.getElementById("readDisplay"); // Opdater reference
+        const languageSelect = document.getElementById("languageSelect");
+        const readDisplay = document.getElementById("readDisplay"); // readDisplay er nu både input og display
+        const localStorageTextKey = 'textReaderText';
+        const localStorageLangKey = 'textReaderLanguage';
+
+        // --- localStorage Håndtering ---
+        function saveReaderState() {
+            // Gem textContent fra den contenteditable div
+            localStorage.setItem(localStorageTextKey, readDisplay.textContent);
+            localStorage.setItem(localStorageLangKey, languageSelect.value);
+        }
+
+        function loadReaderState() {
+            const savedText = localStorage.getItem(localStorageTextKey);
+            const savedLang = localStorage.getItem(localStorageLangKey);
+
+            if (savedText) {
+                // Indsæt gemt tekst i den contenteditable div
+                readDisplay.textContent = savedText;
+            }
+            if (savedLang) {
+                languageSelect.value = savedLang;
+            }
+             // Håndter placeholder visning ved indlæsning
+             handlePlaceholder();
+        }
+        // --- Slut localStorage Håndtering ---
+
+        // Gem ved input i den contenteditable div
+        readDisplay.addEventListener('input', () => {
+            saveReaderState(); // Gem ved input
+             handlePlaceholder(); // Håndter placeholder
+        });
+
+        // Gem sprogvalg ved ændring
+        languageSelect.addEventListener('change', () => {
+            saveReaderState(); // Gem ved sprogændring
+        });
+
+
+        function readText() {
+            stopReading(); // Stop eventuel igangværende læsning
+
+            // Brug textContent fra den contenteditable div til oplæsning
+            const text = readDisplay.textContent;
+            const language = languageSelect.value;
+
+            if (!text.trim()) { // Tjek for tom eller kun whitespace tekst
+                alert("Indtast venligst noget tekst at læse.");
+                return;
+            }
+
+            utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = language;
+
+            // Event for at fremhæve ord
+            utterance.onboundary = (event) => {
+                if (event.name === 'word') {
+                    highlightWord(event.charIndex, event.charLength);
+                }
+            };
+
+            // Event når læsning er færdig eller stoppet
+            utterance.onend = utterance.onerror = () => {
+                removeHighlight();
+                utterance = null; // Nulstil utterance
+            };
+
+             // Start oplæsning
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function stopReading() {
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+             removeHighlight(); // Sørg for at fremhævning fjernes ved stop
+             utterance = null; // Nulstil utterance
+        }
+
+         function clearText() {
+             stopReading(); // Stop læsning hvis den er igang
+             readDisplay.textContent = ''; // Ryd textContent i den contenteditable div
+             localStorage.removeItem(localStorageTextKey); // Ryd tekst fra localStorage
+              handlePlaceholder(); // Håndter placeholder
+             // languageSelect gemmes, da brugeren måske vil beholde sprogvalg
+         }
+
+
+        function highlightWord(charIndex, charLength) {
+            // Fjern tidligere fremhævning
+            removeHighlight();
+
+            const text = readDisplay.textContent; // Brug textContent til at finde ordet
+            const before = text.substring(0, charIndex);
+            const word = text.substring(charIndex, charIndex + charLength);
+            const after = text.substring(charIndex + charLength);
+
+            // Opret ny HTML med fremhævet span.
+            // Vi bruger innerHTML her for at indsætte span, men skal være forsigtige.
+            // escapeHTML bruges til at sikre, at brugerens tekst ikke indeholder skadelig HTML.
+            readDisplay.innerHTML = `${escapeHTML(before)}<span class="highlight">${escapeHTML(word)}</span>${escapeHTML(after)}`;
+
+            // Genopret markørens position efter opdatering af innerHTML (valgfrit, men god brugeroplevelse)
+            // Dette er en mere avanceret del og kan være kompleks. For nu fokuserer vi på fremhævning.
+            // Hvis markøren mister fokus, kan denne del forbedres senere.
+        }
+
+        function removeHighlight() {
+             // Find alle spans med klassen 'highlight' og erstat dem med deres textContent
+             const spans = readDisplay.querySelectorAll('span.highlight');
+             spans.forEach(span => {
+                 const textNode = document.createTextNode(span.textContent);
+                 span.parentNode.replaceChild(textNode, span);
+             });
+             // Normaliser DOM'en for at fjerne tomme tekstnoder, hvis nødvendigt
+             readDisplay.normalize();
+        }
+
+         // Hjælpefunktion til at undgå XSS og sikre korrekt visning af specialtegn
+         function escapeHTML(str) {
+             const div = document.createElement('div');
+             div.appendChild(document.createTextNode(str));
+             return div.innerHTML;
+         }
+
+         // Håndter placeholder tekst for contenteditable div
+         function handlePlaceholder() {
+             const placeholder = readDisplay.getAttribute('placeholder');
+             if (readDisplay.textContent.trim() === '') {
+                 readDisplay.setAttribute('data-placeholder-visible', 'true');
+                 readDisplay.textContent = placeholder;
+                 readDisplay.style.color = 'var(--completed-text)'; /* Grå farve for placeholder */
+             } else {
+                 if (readDisplay.getAttribute('data-placeholder-visible') === 'true') {
+                      readDisplay.textContent = readDisplay.textContent.replace(placeholder, ''); // Fjern placeholder teksten
+                      readDisplay.style.color = 'var(--text-color)'; // Standard tekstfarve
+                 }
+                 readDisplay.removeAttribute('data-placeholder-visible');
+                  readDisplay.style.color = 'var(--text-color)'; // Sæt standard farve hvis der er tekst
+             }
+         }
+
+         // Event listeners for at håndtere placeholder ved focus/blur
+         readDisplay.addEventListener('focus', () => {
+             if (readDisplay.getAttribute('data-placeholder-visible') === 'true') {
+                 readDisplay.textContent = '';
+                 readDisplay.style.color = 'var(--text-color)';
+                 readDisplay.removeAttribute('data-placeholder-visible');
+             }
+         });
+
+         readDisplay.addEventListener('blur', () => {
+             handlePlaceholder();
+         });
+
+
+        // Indlæs gemt tilstand ved sidens indlæsning
+        loadReaderState();
+        // Initial håndtering af placeholder ved sidens indlæsning
+        handlePlaceholder();
+
+
+    </script>
+
+</body>
+</html>
