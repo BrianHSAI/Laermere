@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opgaveplanlægger - Lærmere.nu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class", // Beholder dark mode klassen, selvom vi ikke definerer dark mode farver her
+            theme: {
+                container: {
+                    center: true,
+                    padding: "1.5rem", // Juster padding
+                    screens: {
+                        "2xl": "1400px",
+                    },
+                },
+                extend: {
+                    colors: {
+                        // Opdaterede farver til at matche Elevkalender/Tekstoplæser
+                        border: "hsl(var(--border))",
+                        input: "hsl(var(--input))",
+                        ring: "hsl(var(--ring))",
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        primary: {
+                            DEFAULT: "hsl(var(--primary))",
+                            foreground: "hsl(var(--primary-foreground))",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(var(--secondary))",
+                            foreground: "hsl(var(--secondary-foreground))",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(var(--destructive))",
+                            foreground: "hsl(var(--destructive-foreground))",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(var(--muted))",
+                            foreground: "hsl(var(--muted-foreground))",
+                        },
+                        accent: { // Bruges til hover på select items
+                            DEFAULT: "hsl(var(--accent))",
+                            foreground: "hsl(var(--accent-foreground))",
+                        },
+                        card: {
+                            DEFAULT: "hsl(var(--card))",
+                            foreground: "hsl(var(--card-foreground))",
+                        },
+                         // Tilføj specifikke Elevkalender farver som HSL variabler
+                         'primary-blue': 'hsl(var(--primary-blue))',
+                         'primary-green': 'hsl(var(--primary-green))',
+                         'primary-orange': 'hsl(var(--primary-orange))',
+                         'dark-teal': 'hsl(var(--dark-teal))',
+                    },
+                    borderRadius: {
+                        // Opdaterede border radius til at matche Elevkalender/Tekstoplæser
+                        lg: "var(--radius-lg)", // 0.75rem
+                        md: "var(--radius-md)", // 0.5rem
+                        sm: "var(--radius-sm)", // 0.25rem
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Opdaterede HSL farvevariabler til at matche Elevkalender/Tekstoplæser */
+        :root {
+            --background: 207 78% 95%; /* #EBF5FB */
+            --foreground: 210 29% 23%; /* #2C3E50 */
+            --card: 0 0% 100%; /* #FFFFFF */
+            --card-foreground: 210 29% 23%; /* #2C3E50 */
+            --popover: 0 0% 100%; /* #FFFFFF - Bruges af select-content */
+            --popover-foreground: 210 29% 23%; /* #2C3E50 */
+            --primary: 147 58% 70%; /* #82E0AA - Primary Green */
+            --primary-foreground: 0 0% 100%; /* White */
+            --secondary: 163 80% 42%; /* #1ABC9C - Dark Teal */
+            --secondary-foreground: 0 0% 100%; /* White - Justeret for bedre kontrast */
+            --muted: 220 14% 92%; /* #E5E7EB - Grå */
+            --muted-foreground: 210 29% 23%; /* #2C3E50 */
+            --accent: 207 67% 91%; /* #D6EAF8 - Lysere blå */
+            --accent-foreground: 210 29% 23%; /* #2C3E50 */
+            --destructive: 8 78% 57%; /* #E74C3C - Rød */
+            --destructive-foreground: 0 0% 100%; /* White */
+            --border: 220 14% 92%; /* #E5E7EB - Grå */
+            --input: 220 14% 92%; /* #E5E7EB - Grå */
+            --ring: 163 80% 42%; /* #1ABC9C - Dark Teal */
+            --radius-lg: 0.75rem;
+            --radius-md: 0.5rem;
+            --radius-sm: 0.25rem;
+
+            /* Specifikke Elevkalender farver som HSL */
+            --primary-blue: 207 60% 62%; /* #5DADE2 */
+            --primary-green: 147 58% 70%; /* #82E0AA */
+            --primary-orange: 36 91% 61%; /* #F5B041 */
+            --dark-teal: 163 80% 42%; /* #1ABC9C */
+        }
+
+        /* Beholder dark mode variabler, selvom de ikke bruges med Elevkalender farver */
+        .dark {
+            --background: 222.2 84% 4.9%;
+            --foreground: 210 40% 98%;
+            --card: 222.2 84% 4.9%;
+            --card-foreground: 210 40% 98%;
+            --popover: 222.2 84% 4.9%;
+            --popover-foreground: 210 40% 98%;
+            --primary: 210 40% 98%;
+            --primary-foreground: 222.2 47.4% 11.2%;
+            --secondary: 217.2 32.6% 17.5%;
+            --secondary-foreground: 210 40% 98%;
+            --muted: 217.2 32.6% 17.5%;
+            --muted-foreground: 215 20.2% 65.1%;
+            --accent: 217.2 32.6% 17.5%;
+            --accent-foreground: 210 40% 98%;
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 217.2 32.6% 17.5%;
+            --input: 217.2 32.6% 17.5%;
+            --ring: 212.7 26.8% 83.9%;
+        }
+
+        /* Anvend Nunito skrifttypen globalt og baggrund/tekstfarve */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6; /* Juster line height */
+        }
+
+        /* Generel container padding */
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+
+        h1 {
+            font-size: 2.5rem; /* Større skriftstørrelse */
+            font-weight: 700; /* Federe skrift */
+            text-align: center;
+            margin-bottom: 1.5rem; /* Juster margin for at give plads til border */
+             color: hsl(var(--dark-teal)); /* Anvend dark teal farve */
+             padding-bottom: 0.5rem; /* Mellemrum under tekst før border */
+             border-bottom: 3px solid hsl(var(--primary-orange)); /* Orange understregning */
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700; /* Federe skrift */
+            margin-bottom: 1rem; /* Juster margin */
+             color: hsl(var(--foreground)); /* Anvend tekstfarve */
+        }
+
+        h3 {
+             font-size: 1.2rem; /* Juster størrelse */
+             font-weight: 700; /* Federe skrift */
+             margin-bottom: 0.8rem; /* Juster margin */
+             color: hsl(var(--foreground)); /* Anvend tekstfarve */
+        }
+
+
+        /* Kort styling (genbrugt) */
+        .card {
+            background-color: hsl(var(--card));
+            border-radius: var(--radius-lg); /* Større afrunding */
+            box-shadow: var(--shadow-md); /* Kraftigere skygge */
+            overflow: hidden; /* Sikrer at border-radius gælder for header */
+             border: 1px solid hsl(var(--card-border)); /* Anvend kantfarve */
+        }
+
+         /* Card Header (genbrugt) */
+         .card-header {
+             background-color: hsl(var(--primary-blue)); /* Anvend primary blue */
+             color: white; /* Hvid tekst */
+             padding: 1.5rem; /* Juster padding */
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             /* Fjern margin her, da det nu er en del af kortet */
+             /* margin-bottom: 1.5rem; */
+         }
+
+         .card-title {
+             font-size: 1.5rem; /* Juster størrelse */
+             font-weight: 700; /* Federe skrift */
+             display: flex; /* For ikon/tekst */
+             align-items: center;
+             gap: 0.5rem;
+             letter-spacing: -0.025em;
+             color: white; /* Hvid titel i header */
+         }
+
+          .card-title i {
+              color: white; /* Hvid ikon i header */
+          }
+
+          .card-description {
+              font-size: 1rem; /* Juster størrelse */
+              color: hsl(var(--muted-foreground)); /* Anvend muted tekstfarve */
+              margin-bottom: 1.5rem; /* Juster margin */
+          }
+
+
+        /* Tabs (genbrugt) */
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem; /* Juster margin */
+            border-radius: var(--radius-md); /* Afrundede hjørner */
+            overflow: hidden;
+            border: 1px solid hsl(var(--activity-border)); /* Anvend kantfarve */
+             background-color: hsl(var(--background)); /* Lysere baggrund til tabs */
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.75rem;
+            text-align: center;
+            background-color: transparent; /* Standard gennemsigtig */
+            cursor: pointer;
+            font-weight: 700; /* Federe skrift */
+            transition: all 0.2s ease; /* Glattere overgang */
+             color: hsl(var(--foreground)); /* Standard tekstfarve */
+             border-bottom: 2px solid transparent; /* Standard gennemsigtig kant */
+        }
+
+        .tab.active {
+            background-color: hsl(var(--card)); /* Hvid baggrund for aktiv */
+            color: hsl(var(--dark-teal)); /* Mørk teal tekst for aktiv */
+            box-shadow: var(--shadow-sm); /* Let skygge */
+             /* Fjern border-radius her, da det er på .tabs container */
+             /* border-radius: var(--radius); */
+             border-color: hsl(var(--dark-teal)); /* Mørk teal kant for aktiv */
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+         /* Formularer (genbrugt) */
+         .form-group {
+             margin-bottom: 1.5rem; /* Juster margin */
+         }
+
+         label {
+             display: block;
+             margin-bottom: 0.5rem;
+             font-weight: 700; /* Federe skrift */
+             color: hsl(var(--foreground)); /* Anvend tekstfarve */
+         }
+
+         input:not([type="checkbox"]), select, textarea { /* Inkluder textarea */
+             width: 100%;
+             padding: 0.75rem; /* Juster padding */
+             border: 1px solid hsl(var(--activity-border)); /* Anvend kantfarve */
+             border-radius: var(--radius); /* Afrundede hjørner */
+             font-size: 1rem;
+             background-color: white; /* Hvid baggrund */
+             color: hsl(var(--foreground)); /* Anvend tekstfarve */
+             transition: border-color 0.2s ease, box-shadow 0.2s ease;
+         }
+
+          input:not([type="checkbox"]):focus, select:focus, textarea:focus { /* Inkluder textarea */
+              border-color: hsl(var(--dark-teal)); /* Mørk teal ved focus */
+              box-shadow: 0 0 0 4px hsla(var(--dark-teal), 0.2); /* Gennemsigtig teal skygge */
+              outline: none;
+          }
+
+         textarea {
+             min-height: 100px; /* Standard min højde */
+             resize: vertical; /* Tillad kun vertikal resize */
+         }
+
+
+        /* Knapper (genbrugt) */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            background-color: hsl(var(--primary)); /* Anvend primary farve */
+            color: hsl(var(--primary-foreground));
+            border: none;
+            border-radius: var(--radius); /* Afrundede hjørner */
+            font-weight: 700; /* Federe skrift */
+            cursor: pointer;
+            transition: all 0.2s ease; /* Glattere overgang */
+             gap: 0.5rem; /* Mellemrum mellem ikon og tekst */
+             box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background-color: hsl(var(--primary) / 0.9); /* Lidt mørkere ved hover */
+             box-shadow: var(--shadow);
+        }
+
+         /* Secondary knap (Nulstil, Tilbage) */
+        .btn-secondary {
+            background-color: hsl(var(--secondary)); /* Anvend secondary farve */
+            color: hsl(var(--secondary-foreground));
+        }
+
+        .btn-secondary:hover {
+             background-color: hsl(var(--secondary) / 0.9); /* Lidt mørkere ved hover */
+             box-shadow: var(--shadow);
+        }
+
+         /* Outline knap (Print, Download) */
+         .btn-outline {
+             background-color: transparent;
+             color: hsl(var(--secondary)); /* Anvend secondary farve til tekst/kant */
+             border: 1px solid hsl(var(--secondary)); /* Anvend secondary farve til kant */
+             box-shadow: var(--shadow-sm);
+         }
+
+         .btn-outline:hover {
+             background-color: hsla(var(--secondary), 0.1); /* Let secondary farve ved hover */
+             box-shadow: var(--shadow);
+         }
+
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem; /* Juster padding */
+            font-size: 0.875rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem; /* Juster padding */
+             width: 2.5rem; /* Gør ikon knap større */
+             height: 2.5rem;
+             border-radius: var(--radius); /* Standard afrunding */
+             box-shadow: var(--shadow-sm); /* Let skygge */
+        }
+
+         .btn-icon:hover {
+             background-color: var(--activity-bg-hover); /* Let baggrund ved hover */
+             box-shadow: var(--shadow);
+         }
+
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Ikoner (genbrugt) */
+        .icon {
+            width: 1em; /* Juster størrelse i forhold til font */
+            height: 1em;
+             fill: currentColor; /* Sæt SVG farve til tekstfarven */
+        }
+
+        /* Steps list styling */
+        #steps-list {
+            list-style: none; /* Fjern standard liste stil */
+            padding: 0;
+        }
+
+        #steps-list li {
+            background-color: hsl(var(--background)); /* Lys baggrund for listeelement */
+            border: 1px solid hsl(var(--border)); /* Kant */
+            border-radius: var(--radius); /* Afrundede hjørner */
+            padding: 0.8rem; /* Juster padding */
+            margin-bottom: 0.5rem; /* Mellemrum mellem elementer */
+             display: flex; /* Brug flex til layout */
+             align-items: center;
+             gap: 0.8rem; /* Mellemrum mellem elementer */
+             transition: background-color 0.2s ease;
+        }
+
+         #steps-list li:last-child {
+             margin-bottom: 0; /* Fjern margin på sidste element */
+         }
+
+
+        #steps-list li input[type="checkbox"] {
+             width: 1.2em; /* Gør checkbox større */
+             height: 1.2em;
+             cursor: pointer;
+             flex-shrink: 0; /* Forhindrer checkbox i at krympe */
+        }
+
+         #steps-list li label {
+             font-weight: 400; /* Standard skriftvægt for label */
+             margin-bottom: 0; /* Fjern margin på label */
+             flex-grow: 1; /* Tillad label at fylde plads */
+             line-height: 1.4; /* Juster line height for læsbarhed */
+         }
+
+         #steps-list li label.line-through {
+             text-decoration: line-through;
+             color: hsl(var(--muted-foreground)); /* Anvend muted farve */
+         }
+
+         #steps-list li .print\:inline-block {
+             display: none; /* Skjul print checkbox som standard */
+         }
+
+         @media print {
+             #steps-list li .print\:inline-block {
+                 display: inline-block !important; /* Vis print checkbox ved print */
+                 margin-right: 0.5rem; /* Mellemrum efter checkbox */
+             }
+              #steps-list li input[type="checkbox"] {
+                  display: none !important; /* Skjul input checkbox ved print */
+              }
+              #steps-list li label {
+                  color: #000 !important; /* Sort tekst ved print */
+                  text-decoration: none !important; /* Fjern streg ved print */
+              }
+         }
+
+
+        /* Print styles */
+        @media print {
+            .print-hide {
+                display: none !important;
+            }
+            body {
+                background-color: white;
+                color: black;
+            }
+
+             /* Juster kort og indhold ved print */
+             .container {
+                 padding: 0;
+             }
+             .max-w-3xl {
+                 max-width: 100%;
+             }
+             .bg-white {
+                 background-color: white;
+             }
+             .rounded-lg {
+                 border-radius: 0;
+             }
+             .shadow-md {
+                 box-shadow: none;
+             }
+             .border {
+                 border: none;
+             }
+             .p-6 {
+                 padding: 0;
+             }
+
+             /* Skjul tabs ved print */
+             .flex.border-b {
+                 display: none;
+             }
+
+             /* Vis kun approach content ved print */
+             #input-content {
+                 display: none !important;
+             }
+             #approach-content {
+                 display: block !important;
+                 padding: 0; /* Fjern padding */
+             }
+
+             /* Juster header ved print */
+             .flex.items-start.justify-between.mb-4 {
+                 display: block;
+                 margin-bottom: 1rem;
+                 border-bottom: 1px solid #eee; /* Let streg */
+                 padding-bottom: 0.8rem;
+             }
+              #approach-title {
+                  font-size: 1.5rem;
+                  margin-bottom: 0.5rem;
+                  color: #000;
+              }
+              #approach-description {
+                  font-size: 1rem;
+                  color: #555;
+              }
+
+
+             /* Juster steps list ved print */
+             .rounded-lg.border.border-gray-200.p-4.mb-6 {
+                 border: none;
+                 padding: 0;
+                 margin-bottom: 1rem;
+             }
+              .font-medium.mb-2 {
+                  font-size: 1.2rem;
+                  margin-bottom: 0.5rem;
+                  color: #000;
+              }
+              #steps-list {
+                  space-y: 0; /* Fjern margin */
+              }
+              #steps-list li {
+                  background-color: white;
+                  border: none;
+                  border-bottom: 1px dashed #ddd; /* Stiplet linje */
+                  border-radius: 0;
+                  padding: 0.5rem 0;
+                  margin-bottom: 0;
+                  gap: 0.5rem;
+              }
+               #steps-list li:last-child {
+                   border-bottom: none;
+               }
+
+
+             /* Skjul knapper i footer ved print */
+             .flex.justify-between.print-hide {
+                 display: none;
+             }
+
+
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .line-through {
+            text-decoration: line-through;
+            color: hsl(var(--muted-foreground)); /* Anvend muted farve */
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto py-8 px-4">
+        <h1>Opgaveplanlægger</h1>
+
+        <div class="card max-w-3xl mx-auto">
+            <div class="print-hide">
+                <div class="tabs"> <button id="input-tab" class="tab active"> <i class="fas fa-edit"></i> Indtast Opgave
+                    </button>
+                    <button id="approach-tab" class="tab" disabled> <i class="fas fa-list-ol"></i> Fremgangsmåde
+                    </button>
+                </div>
+            </div>
+
+            <div id="input-content" class="tab-content active p-6">
+                <div class="mb-4">
+                    <h2 class="card-description">Beskriv din opgave</h2> <p class="text-gray-600 mt-1">Fortæl os om den opgave, du skal løse, så hjælper vi dig med en fremgangsmåde.</p> </div>
+
+                <form id="task-form" class="space-y-4">
+                    <div class="form-group"> <label for="education">Uddannelsesniveau</label> <select id="education"> <option value="folkeskole">Folkeskole</option>
+                            <option value="gymnasium">Gymnasium</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group"> <label for="subject">Fag</label> <select id="subject"> </select>
+                    </div>
+
+                    <div class="form-group"> <label for="assignment-type">Opgavetype</label> <select id="assignment-type"> </select>
+                    </div>
+
+                    <div class="form-group"> <label for="task">Opgavebeskrivelse (valgfri)</label> <textarea
+                            id="task"
+                            placeholder="Beskriv din opgave her med flere detaljer, hvis du ønsker det..."
+                        ></textarea> </div>
+
+                    <div class="flex justify-between pt-4">
+                        <button
+                            type="button"
+                            id="reset-btn"
+                            class="btn btn-outline" >
+                            <i class="fas fa-redo"></i> Nulstil
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary" >
+                             <i class="fas fa-arrow-right"></i> Få Fremgangsmåde
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="approach-content" class="tab-content p-6">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h2 id="approach-title" class="text-xl font-semibold">Fremgangsmåde</h2>
+                        <p id="approach-description" class="text-gray-600 mt-1"></p>
+                    </div>
+                    <button
+                        id="back-btn"
+                        class="print-hide btn btn-icon btn-outline" >
+                         <i class="fas fa-arrow-left"></i> </button>
+                </div>
+
+                <div class="rounded-lg border border-gray-200 p-4 mb-6"> <h3>Trin for trin</h3> <ul id="steps-list" class="space-y-3">
+                        </ul>
+                </div>
+
+                <div class="flex justify-between print-hide">
+                    <div class="flex gap-2">
+                        <button
+                            id="print-btn"
+                            class="btn btn-icon btn-outline" title="Udskriv"
+                        >
+                             <i class="fas fa-print"></i> </button>
+                        <button
+                            id="download-btn"
+                            class="btn btn-icon btn-outline" title="Download"
+                        >
+                            <i class="fas fa-download"></i> </button>
+                    </div>
+                    <button
+                        id="new-task-btn"
+                        class="btn btn-primary" >
+                        <i class="fas fa-plus"></i> Ny Opgave
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const educationSelect = document.getElementById('education');
+        const subjectSelect = document.getElementById('subject');
+        const assignmentTypeSelect = document.getElementById('assignment-type');
+        const inputTab = document.getElementById('input-tab');
+        const approachTab = document.getElementById('approach-tab');
+        const inputContent = document.getElementById('input-content');
+        const approachContent = document.getElementById('approach-content');
+        const taskForm = document.getElementById('task-form');
+        const taskInput = document.getElementById('task');
+        const resetBtn = document.getElementById('reset-btn');
+        const backBtn = document.getElementById('back-btn');
+        const printBtn = document.getElementById('print-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const newTaskBtn = document.getElementById('new-task-btn');
+        const approachDescription = document.getElementById('approach-description');
+        const stepsList = document.getElementById('steps-list');
+
+        // Subject and assignment type data (Beholdt som i original kode)
+        const educationData = {
+            folkeskole: {
+                subjects: [
+                    { value: "dansk", label: "Dansk" },
+                    { value: "matematik", label: "Matematik" },
+                    { value: "engelsk", label: "Engelsk" },
+                    { value: "naturfag", label: "Naturfag" },
+                    { value: "humanistisk", label: "Humanistiske fag" },
+                    { value: "praktisk", label: "Praktisk/musisk fag" }
+                ],
+                assignmentTypes: {
+                    dansk: [
+                        { value: "retskrivning", label: "Retskrivning og læsning" },
+                        { value: "fremstilling", label: "Skriftlig fremstilling" }
+                    ],
+                    matematik: [
+                        { value: "uden_hjælpemidler", label: "Uden hjælpemidler" },
+                        { value: "med_hjælpemidler", label: "Med hjælpemidler" }
+                    ],
+                    engelsk: [
+                        { value: "skriftlig", label: "Skriftlig fremstilling" }
+                    ],
+                    naturfag: [
+                        { value: "biologi", label: "Biologi" },
+                        { value: "geografi", label: "Geografi" },
+                        { value: "fysik_kemi", label: "Fysik/kemi" }
+                    ],
+                    humanistisk: [
+                        { value: "historie", label: "Historie" },
+                        { value: "samfundsfag", label: "Samfundsfag" },
+                        { value: "kristendom", label: "Kristendomskundskab" }
+                    ],
+                    praktisk: [
+                        { value: "musik", label: "Musik" },
+                        { value: "billedkunst", label: "Billedkunst" },
+                        { value: "madkundskab", label: "Madkundskab" },
+                        { value: "håndværk", label: "Håndværk og design" }
+                    ]
+                }
+            },
+            gymnasium: {
+                subjects: [
+                    { value: "dansk", label: "Dansk" },
+                    { value: "engelsk", label: "Engelsk" },
+                    { value: "matematik", label: "Matematik" },
+                    { value: "fysik", label: "Fysik" },
+                    { value: "samfundsfag", label: "Samfundsfag" },
+                    { value: "biologi", label: "Biologi" },
+                    { value: "sprog", label: "Spansk/Tysk" },
+                    { value: "musik", label: "Musik" }
+                ],
+                assignmentTypes: {
+                    dansk: [
+                        { value: "analyserende", label: "Analyserende artikel" },
+                        { value: "debatterende", label: "Debatterende artikel" },
+                        { value: "reflekterende", label: "Reflekterende artikel" }
+                    ],
+                    engelsk: [
+                        { value: "non_fiktion", label: "Analyse af non-fiktion" },
+                        { value: "fiktion", label: "Analyse af fiktion" },
+                        { value: "film", label: "Filmanalyse" }
+                    ],
+                    matematik: [
+                        { value: "generel", label: "Generel opgaveløsning" }
+                    ],
+                    fysik: [
+                        { value: "generel", label: "Generel opgaveløsning" }
+                    ],
+                    samfundsfag: [
+                        { value: "generel", label: "Generel opgaveløsning" }
+                    ],
+                    biologi: [
+                        { value: "generel", label: "Generel opgaveløsning" }
+                    ],
+                    sprog: [
+                        { value: "generel", label: "Generel opgaveløsning" }
+                    ],
+                    musik: [
+                        { value: "generel", label: "Generel opgaveløsning" }
+                    ]
+                }
+            }
+        };
+
+        // Approach steps data (Beholdt som i original kode)
+        const approachSteps = {
+            folkeskole: {
+                dansk: {
+                    retskrivning: [
+                        "Lyt opmærksomt til diktaten og skriv teksten korrekt.",
+                        "Brug ordbøger til at tjekke stavning og grammatik.",
+                        "Læs teksten igennem for at finde og rette fejl.",
+                        "Vær opmærksom på tegnsætning og sætningsstruktur.",
+                        "Tjek for almindelige fejl som nutids-r og sammensatte ord."
+                    ],
+                    fremstilling: [
+                        "Læs alle opgaverne og vælg den, du bedst kan skrive om.",
+                        "Lav en disposition med indledning, hoveddel og afslutning.",
+                        "Skriv teksten med fokus på klarhed og sammenhæng.",
+                        "Brug passende sprog og stil til opgavetypen.",
+                        "Læs teksten igennem og ret eventuelle fejl.",
+                        "Sørg for, at teksten opfylder opgavens krav."
+                    ]
+                },
+                matematik: {
+                    uden_hjælpemidler: [
+                        "Læs opgaven grundigt og forstå, hvad der spørges om.",
+                        "Identificér relevante formler og metoder.",
+                        "Udfør beregningerne trin for trin.",
+                        "Tjek dine resultater for rimelighed.",
+                        "Skriv dine svar klart og tydeligt."
+                    ],
+                    med_hjælpemidler: [
+                        "Brug lommeregner og formelsamling effektivt.",
+                        "Analyser opgaven og planlæg din løsning.",
+                        "Udfør beregninger og dokumenter dine trin.",
+                        "Tjek dine resultater og overvej alternative metoder.",
+                        "Skriv en konklusion, der besvarer opgaven."
+                    ]
+                },
+                engelsk: {
+                    skriftlig: [
+                        "Læs opgaveformuleringen og forstå kravene.",
+                        "Lav en brainstorm over ideer og ordforråd.",
+                        "Skriv et udkast med fokus på struktur og indhold.",
+                        "Brug varieret sprog og passende grammatik.",
+                        "Læs teksten igennem og ret fejl.",
+                        "Sørg for, at teksten opfylder opgavens krav."
+                    ]
+                },
+                naturfag: {
+                    biologi: [
+                        "Læs opgaven og identificér det faglige emne.",
+                        "Anvend relevante fagbegreber og teorier.",
+                        "Analyser data og informationer.",
+                        "Besvar spørgsmålene klart og præcist.",
+                        "Tjek dine svar for faglig korrekthed.",
+                        "Læs dine svar igennem for sprogfejl."
+                    ],
+                    geografi: [
+                        "Læs opgaven og identificér det faglige emne.",
+                        "Anvend relevante fagbegreber og teorier.",
+                        "Analyser data og informationer.",
+                        "Besvar spørgsmålene klart og præcist.",
+                        "Tjek dine svar for faglig korrekthed.",
+                        "Læs dine svar igennem for sprogfejl."
+                    ],
+                    fysik_kemi: [
+                        "Læs opgaven og identificér det faglige emne.",
+                        "Anvend relevante fagbegreber og teorier.",
+                        "Analyser data og informationer.",
+                        "Besvar spørgsmålene klart og præcist.",
+                        "Tjek dine svar for faglig korrekthed.",
+                        "Læs dine svar igennem for sprogfejl."
+                    ]
+                },
+                humanistisk: {
+                    historie: [
+                        "Forbered et oplæg om det trukne emne.",
+                        "Brug relevante kilder og fagbegreber.",
+                        "Øv din præsentation og tidsstyring.",
+                        "Vær klar til at besvare spørgsmål fra censor.",
+                        "Vis sammenhæng mellem emnet og samfundet.",
+                        "Afslut med en konklusion eller refleksion."
+                    ],
+                    samfundsfag: [
+                        "Forbered et oplæg om det trukne emne.",
+                        "Brug relevante kilder og fagbegreber.",
+                        "Øv din præsentation og tidsstyring.",
+                        "Vær klar til at besvare spørgsmål fra censor.",
+                        "Vis sammenhæng mellem emnet og samfundet.",
+                        "Afslut med en konklusion eller refleksion."
+                    ],
+                    kristendom: [
+                        "Forbered et oplæg om det trukne emne.",
+                        "Brug relevante kilder og fagbegreber.",
+                        "Øv din præsentation og tidsstyring.",
+                        "Vær klar til at besvare spørgsmål fra censor.",
+                        "Vis sammenhæng mellem emnet og samfundet.",
+                        "Afslut med en konklusion eller refleksion."
+                    ]
+                },
+                praktisk: {
+                    musik: [
+                        "Forbered en praktisk opgave eller præsentation.",
+                        "Vis dine færdigheder og kreativitet.",
+                        "Forklar dine valg og metoder.",
+                        "Relatér til teori og fagbegreber.",
+                        "Vær åben for feedback og spørgsmål.",
+                        "Reflektér over din proces og resultat."
+                    ],
+                    billedkunst: [
+                        "Forbered en praktisk opgave eller præsentation.",
+                        "Vis dine færdigheder og kreativitet.",
+                        "Forklar dine valg og metoder.",
+                        "Relatér til teori og fagbegreber.",
+                        "Vær åben for feedback og spørgsmål.",
+                        "Reflektér over din proces og resultat."
+                    ],
+                    madkundskab: [
+                        "Forbered en praktisk opgave eller præsentation.",
+                        "Vis dine færdigheder og kreativitet.",
+                        "Forklar dine valg og metoder.",
+                        "Relatér til teori og fagbegreber.",
+                        "Vær åben for feedback og spørgsmål.",
+                        "Reflektér over din proces og resultat."
+                    ],
+                    håndværk: [
+                        "Forbered en praktisk opgave eller præsentation.",
+                        "Vis dine færdigheder og kreativitet.",
+                        "Forklar dine valg og metoder.",
+                        "Relatér til teori og fagbegreber.",
+                        "Vær åben for feedback og spørgsmål.",
+                        "Reflektér over din proces og resultat."
+                    ]
+                }
+            },
+            gymnasium: {
+                dansk: {
+                    analyserende: [
+                        "Læs og forstå teksten grundigt - Hvad handler den om?",
+                        "Identificér emne og genre.",
+                        "Lav en analyse af indhold, sprog og virkemidler.",
+                        "Sæt teksten i perspektiv (samfund, genre, forfatterskab).",
+                        "Strukturér din artikel med en klar indledning, analyse og konklusion.",
+                        "Brug fagbegreber og dokumentér dine pointer med citater."
+                    ],
+                    debatterende: [
+                        "Forstå emnet og udform din holdning.",
+                        "Find argumenter, der støtter din holdning.",
+                        "Undersøg og inddrag modargumenter.",
+                        "Strukturer artiklen med indledning, argumentation og afslutning.",
+                        "Skriv levende og engagerende - gerne med retoriske virkemidler.",
+                        "Underbyg dine pointer med fakta, eksempler eller citater."
+                    ],
+                    reflekterende: [
+                        "Reflektér over det stillede emne og hvad det betyder for dig/samfundet.",
+                        "Skriv åbent og undersøgende - ikke overbevisende.",
+                        "Inddrag tekst(er), der relaterer til emnet.",
+                        "Analyser relevante dele af teksten/teksterne.",
+                        "Diskutér flere synsvinkler og perspektiver.",
+                        "Afslut med at samle trådene - ikke nødvendigvis en konklusion."
+                    ]
+                },
+                engelsk: {
+                    non_fiktion: [
+                        "Læs teksten og identificér afsender, modtager og formål.",
+                        "Find hovedbudskabet og de vigtigste pointer.",
+                        "Analyser sproglige og retoriske virkemidler.",
+                        "Sæt teksten i kontekst (historisk, kulturelt, politisk).",
+                        "Brug fagbegreber som ethos, logos, pathos.",
+                        "Strukturer din opgave med indledning, analyse og vurdering."
+                    ],
+                    fiktion: [
+                        "Læs teksten og identificér genre og tema.",
+                        "Beskriv hovedpersoner og deres udvikling.",
+                        "Analyser fortæller, synsvinkel og komposition.",
+                        "Undersøg sproglige virkemidler og symbolik.",
+                        "Perspektivér til samfund, historie eller anden litteratur.",
+                        "Brug citater og analysér dem grundigt."
+                    ],
+                    film: [
+                        "Se filmen og identificér tema og budskab.",
+                        "Beskriv karakterer og konflikter.",
+                        "Analyser filmiske virkemidler (lys, lyd, kameravinkler).",
+                        "Kommentér struktur og fortælleform.",
+                        "Perspektivér filmen til samfund eller lignende værker.",
+                        "Brug filmbegreber og argumenter for dine analyser."
+                    ]
+                },
+                matematik: {
+                    generel: [
+                        "Læs opgaven grundigt - hvad bliver der spurgt om?",
+                        "Identificér, hvilke formler eller metoder du skal bruge.",
+                        "Sæt de rigtige tal ind i formlerne.",
+                        "Løs opgaven trin for trin - vis dine udregninger.",
+                        "Tjek dit resultat - giver det mening?",
+                        "Skriv en tydelig og overskuelig besvarelse."
+                    ]
+                },
+                fysik: {
+                    generel: [
+                        "Læs opgaven og find ud af, hvilket fænomen den handler om.",
+                        "Find relevante formler og størrelser.",
+                        "Tegn evt. en figur over forsøget eller problemet.",
+                        "Regn med korrekte enheder og dokumentér trin for trin.",
+                        "Forklar med ord, hvad dine resultater betyder.",
+                        "Perspektivér evt. til dagligdag eller teknologi."
+                    ]
+                },
+                samfundsfag: {
+                    generel: [
+                        "Forstå spørgsmålet - handler det om analyse, diskussion eller vurdering?",
+                        "Find relevante teorier og begreber.",
+                        "Brug aktuelle eksempler og fakta.",
+                        "Analyser med modeller (fx ideologi, økonomi, magt).",
+                        "Vurder flere synspunkter.",
+                        "Strukturer din besvarelse med tydelige afsnit og konklusion."
+                    ]
+                },
+                biologi: {
+                    generel: [
+                        "Læs opgaven og identificér det biologiske emne.",
+                        "Brug fagbegreber og forklar processer (fx fotosyntese, DNA).",
+                        "Tegn modeller/figurer hvis nødvendigt.",
+                        "Beskriv sammenhænge og årsag-virkning.",
+                        "Brug eksempler fra forsøg, naturen eller kroppen.",
+                        "Saml op i en konklusion, der besvarer spørgsmålet."
+                    ]
+                },
+                sprog: {
+                    generel: [
+                        "Læs opgaven og forstå opgavetypen (fx tekstforståelse, skrivning).",
+                        "Lav en brainstorm eller plan, hvis du selv skal skrive.",
+                        "Brug korrekt grammatik og relevante gloser.",
+                        "Hold fokus på struktur: intro, midte og slutning.",
+                        "Korrekturlæs din tekst grundigt.",
+                        "Brug evt. ordbog og husk kulturelle aspekter ved emnet."
+                    ]
+                },
+                musik: {
+                    generel: [
+                        "Lyt opmærksomt til musikken - hvad hører du?",
+                        "Identificér genre, instrumentation og form.",
+                        "Beskriv tempo, rytme, dynamik og melodik.",
+                        "Analyser brug af musikteori (akkorder, skalaer, harmonik).",
+                        "Perspektivér til kultur eller periode.",
+                        "Opsummer analysen i et klart sprog - brug musikteoretiske begreber."
+                    ]
+                }
+            }
+        };
+
+        // Populate subject dropdown based on selected education
+        function populateSubjects() {
+            const education = educationSelect.value;
+            const subjects = educationData[education].subjects;
+
+            // Clear current options
+            subjectSelect.innerHTML = '';
+
+            // Add new options
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.value;
+                option.textContent = subject.label;
+                subjectSelect.appendChild(option);
+            });
+
+            // Trigger assignment type update
+            populateAssignmentTypes();
+        }
+
+        // Populate assignment type dropdown based on selected subject
+        function populateAssignmentTypes() {
+            const education = educationSelect.value;
+            const subject = subjectSelect.value;
+            const assignmentTypes = educationData[education].assignmentTypes[subject] || [];
+
+            // Clear current options
+            assignmentTypeSelect.innerHTML = '';
+
+            // Add new options
+            assignmentTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.value;
+                option.textContent = type.label;
+                assignmentTypeSelect.appendChild(option);
+            });
+        }
+
+        // Initialize dropdowns
+        educationSelect.addEventListener('change', populateSubjects);
+        subjectSelect.addEventListener('change', populateAssignmentTypes);
+
+        // Initial population
+        populateSubjects();
+
+        // Tab switching
+        inputTab.addEventListener('click', () => {
+            inputTab.classList.add('active'); // Anvend .active klasse
+            approachTab.classList.remove('active'); // Fjern .active klasse
+            inputContent.classList.add('active');
+            approachContent.classList.remove('active');
+        });
+
+        approachTab.addEventListener('click', () => {
+            if (approachTab.disabled) return;
+
+            approachTab.classList.add('active'); // Anvend .active klasse
+            inputTab.classList.remove('active'); // Fjern .active klasse
+            approachContent.classList.add('active');
+            inputContent.classList.remove('active');
+        });
+
+        // Form submission
+        taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const education = educationSelect.value;
+            const subject = subjectSelect.value;
+            const assignmentType = assignmentTypeSelect.value;
+            const task = taskInput.value.trim();
+
+            // Get steps from our predefined data
+            const steps = approachSteps[education]?.[subject]?.[assignmentType] || []; // Brug optional chaining
+
+            // Display the approach
+            displayApproach(education, subject, assignmentType, task, steps);
+
+            // Enable and switch to approach tab
+            approachTab.disabled = false;
+             // Fjern disabled styling direkte, da .tab.active håndterer udseendet
+             // approachTab.classList.remove('text-gray-500', 'bg-gray-100');
+            approachTab.click();
+        });
+
+        // Reset form
+        resetBtn.addEventListener('click', () => {
+            taskInput.value = '';
+            educationSelect.value = 'folkeskole';
+            populateSubjects();
+        });
+
+        // Back button
+        backBtn.addEventListener('click', () => {
+            inputTab.click();
+        });
+
+        // New task button
+        newTaskBtn.addEventListener('click', () => {
+            taskInput.value = '';
+            inputTab.click();
+            approachTab.disabled = true;
+             // Tilføj disabled styling direkte, da .tab.active håndterer udseendet
+             // approachTab.classList.add('text-gray-500', 'bg-gray-100');
+        });
+
+        // Print button
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        // Download button
+        downloadBtn.addEventListener('click', () => {
+            const education = educationSelect.value;
+            const subject = subjectSelect.value;
+            const assignmentType = assignmentTypeSelect.value;
+            const task = taskInput.value.trim();
+
+            // Get the selected options' text labels
+            const educationLabel = educationData[education]?.subjects.find(s => s.value === education)?.label || education; // Fix: Find label for education
+            const subjectLabel = educationData[education]?.subjects.find(s => s.value === subject)?.label || subject;
+            const assignmentTypeLabel = educationData[education]?.assignmentTypes[subject]?.find(t => t.value === assignmentType)?.label || assignmentType;
+
+            // Get steps
+            const steps = approachSteps[education]?.[subject]?.[assignmentType] || []; // Brug optional chaining
+
+            // Create content
+            const content = `
+# Fremgangsmåde: ${assignmentTypeLabel} i ${subjectLabel}
+## Uddannelse: ${educationLabel}
+${task ? `## Opgavebeskrivelse: ${task}\n` : ''}
+
+${steps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
+            `.trim();
+
+            // Download as text file
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'fremgangsmåde.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // Display approach
+        function displayApproach(education, subject, assignmentType, task, steps) {
+            // Get the selected options' text labels
+             const educationLabel = educationData[education]?.subjects.find(s => s.value === education)?.label || education; // Fix: Find label for education
+            const subjectLabel = educationData[education]?.subjects.find(s => s.value === subject)?.label || subject;
+            const assignmentTypeLabel = educationData[education]?.assignmentTypes[subject]?.find(t => t.value === assignmentType)?.label || assignmentType;
+
+            // Set description
+            approachDescription.textContent = `${assignmentTypeLabel} i ${subjectLabel}${task ? ': ' + task : ''}`;
+
+            // Clear and populate steps list
+            stepsList.innerHTML = '';
+            steps.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-3'; // Anvend flex styling
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `step-${index}`;
+                checkbox.className = 'mt-1 print-hide'; // Anvend styling
+
+                const label = document.createElement('label');
+                label.htmlFor = `step-${index}`;
+                label.className = 'text-sm'; // Anvend styling
+                label.textContent = step;
+
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        label.classList.add('line-through');
+                    } else {
+                        label.classList.remove('line-through');
+                    }
+                });
+
+                const printCheckbox = document.createElement('span');
+                printCheckbox.className = 'hidden print:inline-block'; // Anvend print styling
+                printCheckbox.textContent = '☐ ';
+
+                li.appendChild(checkbox);
+                li.appendChild(printCheckbox);
+                li.appendChild(label);
+                stepsList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
