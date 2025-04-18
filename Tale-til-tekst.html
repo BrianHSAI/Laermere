@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tale til tekst - Lærmere.nu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class", // Beholder dark mode klassen, selvom vi ikke definerer dark mode farver her
+      theme: {
+        container: {
+          center: true,
+          padding: "1.5rem", // Juster padding
+          screens: {
+            "2xl": "1400px",
+          },
+        },
+        extend: {
+          colors: {
+            // Opdaterede farver til at matche Elevkalender/Tekstoplæser
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            destructive: {
+              DEFAULT: "hsl(var(--destructive))",
+              foreground: "hsl(var(--destructive-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            accent: { // Bruges til hover på select items
+              DEFAULT: "hsl(var(--accent))",
+              foreground: "hsl(var(--accent-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+          },
+          borderRadius: {
+            // Opdaterede border radius til at matche Elevkalender/Tekstoplæser
+            lg: "var(--radius-lg)", // 0.75rem
+            md: "var(--radius-md)", // 0.5rem
+            sm: "var(--radius-sm)", // 0.25rem
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Opdaterede HSL farvevariabler til at matche Elevkalender/Tekstoplæser */
+    :root {
+      --background: 207 78% 95%; /* #EBF5FB */
+      --foreground: 210 29% 23%; /* #2C3E50 */
+      --card: 0 0% 100%; /* #FFFFFF */
+      --card-foreground: 210 29% 23%; /* #2C3E50 */
+      --popover: 0 0% 100%; /* #FFFFFF - Bruges af select-content */
+      --popover-foreground: 210 29% 23%; /* #2C3E50 */
+      --primary: 147 58% 70%; /* #82E0AA - Primary Green */
+      --primary-foreground: 0 0% 100%; /* White */
+      --secondary: 163 80% 42%; /* #1ABC9C - Dark Teal */
+      --secondary-foreground: 0 0% 100%; /* White - Justeret for bedre kontrast */
+      --muted: 220 14% 92%; /* #E5E7EB - Grå */
+      --muted-foreground: 210 29% 23%; /* #2C3E50 */
+      --accent: 207 67% 91%; /* #D6EAF8 - Lysere blå */
+      --accent-foreground: 210 29% 23%; /* #2C3E50 */
+      --destructive: 8 78% 57%; /* #E74C3C - Rød */
+      --destructive-foreground: 0 0% 100%; /* White */
+      --border: 220 14% 92%; /* #E5E7EB - Grå */
+      --input: 220 14% 92%; /* #E5E7EB - Grå */
+      --ring: 163 80% 42%; /* #1ABC9C - Dark Teal */
+      --radius-lg: 0.75rem;
+      --radius-md: 0.5rem;
+      --radius-sm: 0.25rem;
+    }
+
+    /* Beholder dark mode variabler, selvom de ikke bruges med Elevkalender farver */
+    .dark {
+      --background: 222.2 84% 4.9%;
+      --foreground: 210 40% 98%;
+      --card: 222.2 84% 4.9%;
+      --card-foreground: 210 40% 98%;
+      --popover: 222.2 84% 4.9%;
+      --popover-foreground: 210 40% 98%;
+      --primary: 210 40% 98%;
+      --primary-foreground: 222.2 47.4% 11.2%;
+      --secondary: 217.2 32.6% 17.5%;
+      --secondary-foreground: 210 40% 98%;
+      --muted: 217.2 32.6% 17.5%;
+      --muted-foreground: 215 20.2% 65.1%;
+      --accent: 217.2 32.6% 17.5%;
+      --accent-foreground: 210 40% 98%;
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 210 40% 98%;
+      --border: 217.2 32.6% 17.5%;
+      --input: 217.2 32.6% 17.5%;
+      --ring: 212.7 26.8% 83.9%;
+    }
+
+    /* Anvend Nunito skrifttypen globalt */
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+    }
+
+    /* Juster container styling for at ligne kortet */
+    .card {
+        background-color: hsl(var(--card));
+        border-radius: var(--radius-lg);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+        border: 1px solid hsl(var(--border));
+        overflow: hidden; /* Sikrer at border-radius gælder for header */
+    }
+
+     /* Styling for kort header */
+    .card-header {
+        background-color: var(--primary-blue); /* Direkte brug af hex for header baggrund */
+        color: white; /* Direkte brug af white for header tekst */
+        padding: 1.5rem; /* Juster padding */
+        display: flex;
+        flex-direction: column; /* Stack title and description */
+        gap: 0.5rem; /* Space between title and description */
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: -0.025em;
+    }
+
+     .card-title i {
+         color: white; /* Ikon farve i header */
+     }
+
+     .card-description {
+         font-size: 0.9rem;
+         color: rgba(255, 255, 255, 0.9); /* Let gennemsigtig hvid for description */
+     }
+
+
+    /* Juster card content padding */
+    .card-content {
+        padding: 1.5rem; /* Juster padding */
+    }
+
+     /* Juster card footer padding */
+    .card-footer {
+        padding: 1.5rem; /* Juster padding */
+         border-top: 1px solid hsl(var(--border)); /* Tilføj en top border */
+    }
+
+
+    .toast-container {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 50;
+    }
+
+    .toast {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background-color: hsl(var(--card));
+      color: hsl(var(--card-foreground));
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      max-width: 350px;
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      border: 1px solid hsl(var(--border)); /* Tilføj kant */
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-title {
+      font-weight: 700; /* Federe titel */
+      margin-bottom: 0.25rem;
+       color: hsl(var(--foreground)); /* Standard tekstfarve */
+    }
+
+    .toast-description {
+      font-size: 0.875rem;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .select-container {
+      position: relative;
+       width: 100%; /* Gør select container fylder bredden */
+    }
+
+    .select-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.75rem; /* Juster padding */
+      background-color: white; /* Hvid baggrund */
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius); /* Afrundede hjørner */
+      font-size: 1rem; /* Juster skriftstørrelse */
+      line-height: 1.5; /* Juster line height */
+      height: auto; /* Auto height */
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+       color: hsl(var(--foreground)); /* Standard tekstfarve */
+    }
+
+     .select-trigger:focus {
+         border-color: hsl(var(--ring)); /* Ring farve ved focus */
+         box-shadow: 0 0 0 4px hsla(var(--ring), 0.2); /* Gennemsigtig ring skygge */
+         outline: none;
+     }
+
+
+    .select-content {
+      position: absolute;
+      top: calc(100% + 0.5rem); /* Mellemrum under trigger */
+      left: 0;
+      width: 100%;
+      background-color: hsl(var(--popover));
+      border: 1px solid hsl(var(--border));
+      border-radius: var(--radius); /* Afrundede hjørner */
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      z-index: 10;
+      max-height: 15rem;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .select-content.show {
+      display: block;
+    }
+
+    .select-item {
+      padding: 0.75rem; /* Juster padding */
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+       color: hsl(var(--foreground)); /* Standard tekstfarve */
+    }
+
+    .select-item:hover {
+      background-color: hsl(var(--accent)); /* Accent farve ved hover */
+       color: hsl(var(--accent-foreground));
+    }
+
+     /* Styling for textarea */
+     #transcript {
+         min-height: 250px; /* Gør textarea lidt højere */
+         padding: 0.75rem; /* Juster padding */
+         border-radius: var(--radius); /* Afrundede hjørner */
+         border: 1px solid hsl(var(--border)); /* Standard kantfarve */
+         background-color: white; /* Hvid baggrund */
+         font-size: 1rem;
+         color: hsl(var(--foreground)); /* Standard tekstfarve */
+         transition: border-color 0.2s ease, box-shadow 0.2s ease;
+         resize: vertical; /* Tillad kun vertikal resize */
+     }
+
+     #transcript:focus {
+         border-color: hsl(var(--ring)); /* Ring farve ved focus */
+         box-shadow: 0 0 0 4px hsla(var(--ring), 0.2); /* Gennemsigtig ring skygge */
+         outline: none;
+     }
+
+      /* Styling for knapper */
+     .btn {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         border-radius: var(--radius);
+         font-weight: 700;
+         font-size: 0.875rem;
+         padding: 0.5rem 1rem;
+         cursor: pointer;
+         transition: all 0.2s ease;
+         border: none;
+         gap: 0.5rem;
+         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+     }
+
+     .btn-primary {
+         background-color: hsl(var(--primary));
+         color: hsl(var(--primary-foreground));
+     }
+
+     .btn-primary:hover {
+         background-color: hsl(var(--primary) / 0.9); /* Lidt mørkere ved hover */
+         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow */
+     }
+
+      .btn-secondary {
+         background-color: hsl(var(--secondary));
+         color: hsl(var(--secondary-foreground));
+         border: 1px solid hsl(var(--secondary)); /* Brug secondary farve som kant */
+     }
+
+     .btn-secondary:hover {
+         background-color: hsl(var(--secondary) / 0.9); /* Lidt mørkere ved hover */
+         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow */
+     }
+
+      .btn-destructive {
+         background-color: hsl(var(--destructive));
+         color: hsl(var(--destructive-foreground));
+     }
+
+     .btn-destructive:hover {
+         background-color: hsl(var(--destructive) / 0.9); /* Lidt mørkere ved hover */
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow */
+     }
+
+
+     /* Juster layout for knapper i footer */
+     .card-footer > div {
+         display: flex;
+         flex-wrap: wrap; /* Tillad wrap på små skærme */
+         gap: 0.5rem; /* Mellemrum mellem knapper */
+     }
+
+     .card-footer .btn {
+         margin-right: 0; /* Fjern standard margin, brug gap i stedet */
+     }
+
+
+     /* Responsiv justering */
+     @media (max-width: 640px) {
+         body {
+             padding: 0.8rem;
+         }
+         .container {
+             padding: 1rem;
+         }
+         .card-header {
+             padding: 1rem;
+         }
+         .card-title {
+             font-size: 1.3rem;
+         }
+         .card-description {
+             font-size: 0.8rem;
+         }
+         .card-content {
+             padding: 1rem;
+         }
+         .card-footer {
+             padding: 1rem;
+         }
+         .select-trigger, .select-item, #transcript {
+             font-size: 0.9rem;
+             padding: 0.6rem;
+         }
+         .btn {
+             padding: 0.4rem 0.8rem;
+             font-size: 0.8rem;
+         }
+          .card-footer > div {
+              gap: 0.3rem;
+          }
+     }
+  </style>
+</head>
+<body>
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="card w-full max-w-3xl">
+      <div class="card-header">
+        <div class="card-title">
+           <i class="fas fa-microphone"></i> <span>Tale til tekst</span>
+        </div>
+        <p class="card-description">Vælg sprog og klik på mikrofonknappen for at begynde at transskribere</p>
+      </div>
+
+      <div class="card-content space-y-4">
+        <div class="grid w-full items-center gap-1.5">
+          <label for="language-trigger" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Sprog</label>
+          <div class="select-container">
+            <button id="language-trigger" class="select-trigger">
+              <span id="selected-language">Dansk</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 opacity-50"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div id="language-content" class="select-content">
+              </div>
+          </div>
+        </div>
+
+        <textarea id="transcript" placeholder="Din transskription vil vises her..." class="w-full rounded-md border bg-transparent text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"></textarea>
+      </div>
+
+      <div class="card-footer flex items-center justify-between">
+        <div>
+          <button id="record-button" class="btn btn-primary">
+            <svg id="mic-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+            <span id="record-text">Start optagelse</span>
+          </button>
+          <button id="clear-button" class="btn btn-secondary" disabled>
+            Ryd tekst
+          </button>
+        </div>
+        <div>
+          <button id="copy-button" class="btn btn-secondary" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Kopiér
+          </button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    const localStorageTextKey = 'speechToTextTranscript';
+    const localStorageLangKey = 'speechToTextLanguage';
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if browser supports the Web Speech API
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        showToast('Fejl', 'Din browser understøtter ikke talegenkendelse. Prøv Chrome, Edge eller Safari.', 'destructive');
+        document.getElementById('record-button').disabled = true;
+        return;
+      }
+
+      // Language options (Tilføjet Ukrainsk)
+      const languages = [
+        { code: "da-DK", name: "Dansk" },
+        { code: "en-US", name: "English (US)" },
+        { code: "en-GB", name: "English (UK)" },
+        { code: "sv-SE", name: "Svenska" },
+        { code: "no-NO", name: "Norsk" },
+        { code: "de-DE", name: "Deutsch" },
+        { code: "fr-FR", name: "Français" },
+        { code: "es-ES", name: "Español" },
+        { code: "it-IT", name: "Italiano" },
+        { code: "nl-NL", name: "Nederlands" },
+        { code: "fi-FI", name: "Suomi" },
+        { code: "pl-PL", name: "Polski" },
+        { code: "uk-UA", name: "Ukrainsk" }, // Ukrainsk
+      ];
+
+      // DOM elements
+      const languageTrigger = document.getElementById('language-trigger');
+      const selectedLanguageSpan = document.getElementById('selected-language');
+      const languageContent = document.getElementById('language-content');
+      const recordButton = document.getElementById('record-button');
+      const recordText = document.getElementById('record-text');
+      const micIcon = document.getElementById('mic-icon');
+      const transcriptArea = document.getElementById('transcript');
+      const clearButton = document.getElementById('clear-button');
+      const copyButton = document.getElementById('copy-button');
+      // const saveButton = document.getElementById('save-button'); // Gem knappen fjernet
+
+      // Initialize variables
+      let isRecording = false;
+      let currentLanguage = loadLanguage() || 'da-DK'; // Indlæs sprog fra localStorage
+      let finalTranscript = loadTranscript() || ''; // Indlæs transskription fra localStorage
+      let interimTranscript = '';
+
+       // Sæt initial tekst og sprog fra localStorage
+       transcriptArea.value = finalTranscript;
+       const initialLang = languages.find(lang => lang.code === currentLanguage);
+       if(initialLang) {
+            selectedLanguageSpan.textContent = initialLang.name;
+       } else {
+           selectedLanguageSpan.textContent = languages[0].name; // Sæt til Dansk hvis gemt sprog ikke findes
+           currentLanguage = languages[0].code;
+       }
+        // Opdater knap status ved indlæsning
+       updateButtonStates();
+
+
+      // Populate language dropdown
+      languages.forEach(lang => {
+        const item = document.createElement('div');
+        item.className = 'select-item';
+        item.textContent = lang.name;
+        item.dataset.value = lang.code;
+        item.addEventListener('click', () => {
+          selectedLanguageSpan.textContent = lang.name;
+          currentLanguage = lang.code;
+          languageContent.classList.remove('show');
+          saveLanguage(currentLanguage); // Gem sprogvalg
+
+          // Hvis optagelse er igang, genstart med nyt sprog
+          if (isRecording) {
+            recognition.stop();
+            setTimeout(() => {
+              recognition.lang = currentLanguage;
+              recognition.start();
+            }, 100);
+          }
+        });
+        languageContent.appendChild(item);
+      });
+
+      // Toggle language dropdown
+      languageTrigger.addEventListener('click', () => {
+        languageContent.classList.toggle('show');
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.select-container')) {
+          languageContent.classList.remove('show');
+        }
+      });
+
+      // Initialize speech recognition
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = currentLanguage;
+
+      // Speech recognition event handlers
+      recognition.onresult = (event) => {
+        let currentInterimTranscript = '';
+        let newFinalTranscriptSegment = ''; // Brug et nyt navn for at undgå forvirring
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcriptText = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            newFinalTranscriptSegment += transcriptText + ' '; // Tilføj mellemrum efter final segment
+          } else {
+            currentInterimTranscript += transcriptText;
+          }
+        }
+
+        // Tilføj nyt final segment til den samlede finalTranscript
+        if (newFinalTranscriptSegment) {
+            finalTranscript += newFinalTranscriptSegment;
+        }
+
+        // Opdater textarea med den samlede finalTranscript plus den aktuelle interimTranscript
+        // Trim for at undgå overskydende mellemrum i starten
+        transcriptArea.value = (finalTranscript + currentInterimTranscript).trim();
+
+
+        // Gem transskription ved hvert resultat (kan justeres for performance)
+        saveTranscript(transcriptArea.value);
+
+        // Opdater knap status
+        updateButtonStates();
+      };
+
+       recognition.onstart = () => {
+           isRecording = true;
+           updateRecordButton();
+            showToast('Optagelse startet', 'Tal nu for at transskribere.');
+       };
+
+       recognition.onend = () => {
+           isRecording = false;
+           updateRecordButton();
+            showToast('Optagelse stoppet', 'Transskriptionen er afsluttet.');
+       };
+
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        isRecording = false; // Sæt optagelse til false ved fejl
+        updateRecordButton(); // Opdater knap til start-tilstand
+
+        // Tjek for den specifikke 'not-allowed' fejl
+        if (event.error === 'not-allowed') {
+             showToast('Mikrofonadgang nægtet', 'Tillad venligst adgang til mikrofonen i dine browserindstillinger for at bruge tale-til-tekst.', 'destructive');
+        } else if (event.error === 'no-speech' || event.error === 'audio-capture') {
+             // Håndter andre fejl, hvor genstart kan være relevant
+             console.log('Forsøger at genstarte optagelse efter fejl...');
+             showToast('Problem med lyd', 'Hører ingen tale eller mikrofonen er ikke tilgængelig. Prøver igen...', 'destructive');
+             // Forsinket genstart for at undgå loop
+             setTimeout(() => {
+                 // Tjek igen om optagelse stadig er false (ikke startet manuelt imens)
+                 if (!isRecording) {
+                     recognition.start();
+                     // isRecording sættes til true i onstart
+                 }
+             }, 500); // Vent 0.5 sekunder før genstart
+         }
+         else {
+             // Generisk fejlbesked for andre fejltyper
+             showToast('Fejl', `Talegenkendelse fejl: ${event.error}`, 'destructive');
+         }
+      };
+
+      // Button event handlers
+      recordButton.addEventListener('click', () => {
+        if (isRecording) {
+          recognition.stop();
+          // isRecording sættes til false i onend event handleren
+        } else {
+          // Spørg brugeren om at starte ny optagelse hvis der allerede er tekst
+          if (!transcriptArea.value.trim() || confirm('Start ny optagelse? Dette vil slette den nuværende tekst.')) {
+            finalTranscript = '';
+            interimTranscript = '';
+            transcriptArea.value = '';
+            saveTranscript(''); // Ryd localStorage
+            updateButtonStates(); // Deaktiver knapper
+
+            // Sørg for at sproget er sat før start
+            recognition.lang = currentLanguage;
+            recognition.start();
+            // isRecording sættes til true i onstart event handleren
+          }
+        }
+        // updateRecordButton() kaldes i onstart/onend
+      });
+
+      clearButton.addEventListener('click', () => {
+        finalTranscript = '';
+        interimTranscript = '';
+        transcriptArea.value = '';
+        saveTranscript(''); // Ryd localStorage
+        updateButtonStates(); // Deaktiver knapper
+      });
+
+      copyButton.addEventListener('click', () => {
+        if (transcriptArea.value.trim()) {
+             navigator.clipboard.writeText(transcriptArea.value.trim());
+             showToast('Kopieret', 'Tekst kopieret til udklipsholder');
+        } else {
+             showToast('Info', 'Ingen tekst at kopiere.');
+        }
+      });
+
+      // Helper functions
+      function updateRecordButton() {
+        if (isRecording) {
+          recordText.textContent = 'Stop optagelse';
+          recordButton.classList.remove('bg-primary');
+          recordButton.classList.add('bg-destructive'); // Brug destructive farve til stop
+          // Skift ikon til stop (f.eks. et kvadrat, eller behold mikrofon med streg)
+          micIcon.innerHTML = '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/>'; // Beholder mikrofonikonet
+        } else {
+          recordText.textContent = 'Start optagelse';
+          recordButton.classList.remove('bg-destructive');
+          recordButton.classList.add('bg-primary'); // Brug primary farve til start
+          micIcon.innerHTML = '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/>'; // Beholder mikrofonikonet
+        }
+      }
+
+       function updateButtonStates() {
+           const hasText = transcriptArea.value.trim().length > 0;
+           clearButton.disabled = !hasText;
+           copyButton.disabled = !hasText;
+           // saveButton.disabled = !hasText; // Gem knappen fjernet
+       }
+
+
+      function showToast(title, description, variant = 'default') {
+        const toastContainer = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+
+        // Anvend farver baseret på variant
+        if (variant === 'destructive') {
+          // Brug destructive farver defineret i CSS variabler
+          toast.style.backgroundColor = `hsl(var(--destructive))`;
+          toast.style.color = `hsl(var(--destructive-foreground))`;
+           toast.style.borderColor = `hsl(var(--destructive))`;
+        } else {
+           // Brug standard kort farver
+           toast.style.backgroundColor = `hsl(var(--card))`;
+           toast.style.color = `hsl(var(--card-foreground))`;
+           toast.style.borderColor = `hsl(var(--border))`;
+        }
+
+
+        toast.innerHTML = `
+          <div class="toast-title">${title}</div>
+          <div class="toast-description">${description}</div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        // Trigger reflow to enable transition
+        toast.offsetHeight;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => {
+            if(toastContainer.contains(toast)) { // Tjek om elementet stadig eksisterer
+                 toastContainer.removeChild(toast);
+            }
+          }, 300); // Skal matche CSS transition-duration
+        }, 4000); // Vis toast i 4 sekunder
+      }
+
+       // localStorage funktioner
+       function saveTranscript(text) {
+           localStorage.setItem(localStorageTextKey, text);
+       }
+
+       function loadTranscript() {
+           return localStorage.getItem(localStorageTextKey);
+       }
+
+       function saveLanguage(langCode) {
+           localStorage.setItem(localStorageLangKey, langCode);
+       }
+
+       function loadLanguage() {
+           return localStorage.getItem(localStorageLangKey);
+       }
+
+
+    });
+  </script>
+</body>
+</html>
