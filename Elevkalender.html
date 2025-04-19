@@ -142,6 +142,7 @@
       border: none;
       gap: 0.5rem;
       box-shadow: var(--shadow-sm); /* Let skygge på knapper */
+      text-decoration: none; /* Fjern understregning fra <a> tags */
     }
 
     .btn-sm {
@@ -741,7 +742,7 @@
       .day-activity {
         font-size: 0.75rem; /* Mindre tekst */
          padding: 0.25rem;
-      }
+       }
        .day-activity i {
            font-size: 0.8em; /* Mindre ikon */
        }
@@ -853,9 +854,11 @@
         color: var(--dark-teal);
       }
 
+      /* START ÆNDRING: Skjul Tilbage-knap ved print */
       .tabs, .nav-buttons, .print-buttons, .btn-full, .activity-actions, .activity-icon.toggle-completed {
         display: none !important; /* Skjul interaktive elementer */
       }
+      /* SLUT ÆNDRING */
 
       .tab-content {
         display: none !important;
@@ -965,8 +968,12 @@
           <i class="fas fa-calendar-alt"></i>
           <span>Elevkalender</span>
         </div>
+        <div class="nav-buttons">
+            <a href="index.html" class="btn btn-outline btn-sm">
+              <i class="fas fa-arrow-left"></i> Tilbage
+            </a>
         </div>
-
+      </div>
       <div class="tabs">
         <div class="tabs-list">
           <div class="tab active" data-view="day">Dag</div>
@@ -1122,9 +1129,6 @@
       activityList: document.getElementById('activity-list'),
       weekGrid: document.getElementById('week-grid'),
       monthGrid: document.getElementById('month-grid'),
-      // prevBtn: document.getElementById('prev-btn'), // Removed
-      // nextBtn: document.getElementById('next-btn'), // Removed
-      // todayBtn: document.getElementById('today-btn'), // Removed
       addActivityBtn: document.getElementById('add-activity-btn'),
       activityDialog: document.getElementById('activity-dialog'),
       dialogTitle: document.getElementById('dialog-title'),
@@ -1139,10 +1143,24 @@
       printMonthBtn: document.getElementById('print-month-btn')
     };
 
+    // START ÆNDRING: Opdateret formatDate funktion
     // Hjælpefunktioner til datoer
     function formatDate(date) {
-      return date.toISOString().split('T')[0];
+      // Tjek om input er et Date objekt
+      if (!(date instanceof Date) || isNaN(date.getTime())) {
+          console.error("formatDate modtog ugyldig dato:", date);
+          // Returner en standard eller tom streng for at undgå yderligere fejl
+          // Afhængigt af hvordan det bruges, kan det være bedre at kaste en fejl
+          return ''; // Eller returner f.eks. formatDate(new Date())
+      }
+      const year = date.getFullYear();
+      // getMonth() er 0-baseret, så tilføj 1. PadStart sikrer to cifre (01, 02 osv.)
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      // getDate() returnerer dagen i måneden. PadStart sikrer to cifre.
+      const day = date.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`; // Returnerer i YYYY-MM-DD format
     }
+    // SLUT ÆNDRING
 
     function parseDate(dateString) {
         if (!dateString) return new Date(); // Returner dagens dato hvis strengen er tom
@@ -1202,77 +1220,65 @@
 
 
     function getWeekDays(date) {
-      const day = date.getDay() || 7;
-      const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Juster for søndag (dag 0)
+      const day = date.getDay() || 7; // Juster søndag (0) til 7
+      const diff = date.getDate() - day + 1; // Find mandag
       const monday = new Date(date);
       monday.setDate(diff);
-
       const weekDays = [];
       for (let i = 0; i < 7; i++) {
         const day = new Date(monday);
         day.setDate(monday.getDate() + i);
         weekDays.push(day);
       }
-
       return weekDays;
     }
 
     function getMonthDays(date) {
-      const year = date.getFullYear();
-      const month = date.getMonth();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const firstDayOfMonth = new Date(year, month, 1);
+        // getDay() returnerer 0 for søndag, 1 for mandag ... 6 for lørdag.
+        // Vi justerer til ISO 8601 ugestart (mandag = 1, søndag = 7)
+        const firstDayOfWeekIndex = firstDayOfMonth.getDay() === 0 ? 7 : firstDayOfMonth.getDay();
+        // Beregn startdatoen for kalendervisningen (mandagen i den første uge)
+        const startDate = new Date(firstDayOfMonth);
+        startDate.setDate(firstDayOfMonth.getDate() - (firstDayOfWeekIndex - 1));
 
-      const firstDay = new Date(year, month, 1);
-      // getDay() returnerer 0 for søndag, 1 for mandag ... 6 for lørdag.
-      // Vi vil have mandag som første dag (1). Hvis firstDay er søndag (0), skal vi trække 6 dage fra for at komme til mandagen før. Ellers trækker vi day - 1 dage.
-      const firstDayOfWeek = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
-
-      const startDate = new Date(firstDay);
-      startDate.setDate(firstDay.getDate() - firstDayOfWeek); // Gå tilbage til den første mandag, der vises i kalenderen
-
-      const daysInMonth = new Date(year, month + 1, 0).getDate(); // Antal dage i måneden
-
-      const weeks = [];
-      let currentWeek = [];
-
-      // Generer op til 6 uger (maks antal der kan vises for en måned)
-      for (let i = 0; i < 42; i++) {
-        const day = new Date(startDate);
-        day.setDate(startDate.getDate() + i);
-
-        currentWeek.push(day);
-
-        if (currentWeek.length === 7) {
-          weeks.push(currentWeek);
-          currentWeek = [];
-
-           // Stop hvis vi er i en ny måned og dagen er en søndag (slutningen af en uge)
-           // og vi har mindst nok uger til at vise hele måneden
-           if (day.getMonth() > month && day.getDay() === 0 && day.getDate() >= daysInMonth) {
-               break;
-           }
+        const weeks = [];
+        // Generer 6 uger (42 dage) for at dække alle mulige månedslayouts
+        for (let i = 0; i < 6; i++) {
+            const week = [];
+            for (let j = 0; j < 7; j++) {
+                const day = new Date(startDate);
+                day.setDate(startDate.getDate() + (i * 7) + j);
+                week.push(day);
+            }
+            weeks.push(week);
+            // Tjek om den sidste dag i ugen er i den *næste* måned.
+            // Hvis ja, og måneden ikke er december (hvor næste måned har et lavere tal),
+            // kan vi stoppe med at generere uger.
+            const lastDayOfWeek = week[6];
+            if (lastDayOfWeek.getMonth() !== month && lastDayOfWeek.getMonth() !== (month + 1) % 12) {
+                 if (lastDayOfWeek.getFullYear() > year || (lastDayOfWeek.getFullYear() === year && lastDayOfWeek.getMonth() > month)) {
+                    break; // Stop hvis vi er gået ind i måneden efter den aktuelle
+                 }
+            }
         }
-      }
-
-       // Tilføj den sidste uge hvis den ikke er fuld, men indeholder dage fra den aktuelle måned
-       if (currentWeek.length > 0) {
-           weeks.push(currentWeek);
-       }
-
-      return weeks;
+        return weeks;
     }
 
 
     // Aktivitetsfunktioner
-    function getActivitiesForDate(date) {
-      return state.activities.filter(activity => activity.date === date);
+    function getActivitiesForDate(dateStr) { // Ændret til at tage dateStr
+      return state.activities.filter(activity => activity.date === dateStr);
     }
 
-    function countActivitiesForDate(date) {
-      return getActivitiesForDate(date).length;
+    function countActivitiesForDate(dateStr) { // Ændret til at tage dateStr
+      return getActivitiesForDate(dateStr).length;
     }
 
-    function getActivityTypesForDate(date) {
-      const activities = getActivitiesForDate(date);
+    function getActivityTypesForDate(dateStr) { // Ændret til at tage dateStr
+      const activities = getActivitiesForDate(dateStr);
       return [...new Set(activities.map(activity => activity.type))];
     }
 
@@ -1326,6 +1332,7 @@
           </div>
         </div>
       `).join('');
+
       // Tilføj event listeners til knapper
       document.querySelectorAll('.edit-activity').forEach(button => {
         button.addEventListener('click', () => {
@@ -1349,14 +1356,15 @@
     }
 
     function renderWeekView() {
-      const weekDays = getWeekDays(state.currentDate);
-      elements.weekTitle.textContent = `Uge ${getWeekNumber(state.currentDate)} - ${state.currentDate.getFullYear()}`;
+      const currentSelectedDate = parseDate(state.selectedDate); // Brug selectedDate til at bestemme ugen
+      const weekDays = getWeekDays(currentSelectedDate);
+      elements.weekTitle.textContent = `Uge ${getWeekNumber(currentSelectedDate)} - ${currentSelectedDate.getFullYear()}`;
 
       elements.weekGrid.innerHTML = weekDays.map(day => {
         const dateStr = formatDate(day);
         const isToday = dateStr === formatDate(new Date());
         const isSelected = dateStr === state.selectedDate;
-        const dayActivities = state.activities.filter(activity => activity.date === dateStr)
+        const dayActivities = getActivitiesForDate(dateStr) // Brug getActivitiesForDate med dateStr
           .sort((a, b) => a.time.localeCompare(b.time));
 
         return `
@@ -1388,60 +1396,74 @@
         day.addEventListener('click', () => {
           const date = day.getAttribute('data-date');
           state.selectedDate = date;
-          setActiveTab('day');
+          setActiveTab('day'); // Gå altid til dagsvisning ved klik
           renderCalendar();
         });
       });
     }
 
     function renderMonthView() {
-      const monthDays = getMonthDays(state.currentDate);
-      elements.monthTitle.textContent = state.currentDate.toLocaleDateString('da-DK', { month: 'long', year: 'numeric' });
+       const currentSelectedDate = parseDate(state.selectedDate); // Brug selectedDate til at bestemme måneden
+       const monthWeeks = getMonthDays(currentSelectedDate);
+       elements.monthTitle.textContent = currentSelectedDate.toLocaleDateString('da-DK', { month: 'long', year: 'numeric' });
 
-      elements.monthGrid.innerHTML = monthDays.map(week => {
-        return week.map(day => {
-          const dateStr = formatDate(day);
-          const isCurrentMonth = day.getMonth() === state.currentDate.getMonth();
-          const isToday = dateStr === formatDate(new Date());
-          const isSelected = dateStr === state.selectedDate;
-          const activityTypes = getActivityTypesForDate(dateStr);
+       elements.monthGrid.innerHTML = monthWeeks.map(week => {
+         return week.map(day => {
+           const dateStr = formatDate(day);
+           const isCurrentMonth = day.getMonth() === currentSelectedDate.getMonth();
+           const isToday = dateStr === formatDate(new Date());
+           const isSelected = dateStr === state.selectedDate;
+           const activitiesCount = countActivitiesForDate(dateStr); // Brug countActivitiesForDate med dateStr
+           const activityTypes = getActivityTypesForDate(dateStr); // Brug getActivityTypesForDate med dateStr
 
-          return `
-            <div class="month-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${dateStr}">
-              <div class="month-day-header">
-                <span class="month-day-number">${day.getDate()}</span>
-                ${activityTypes.length > 0 ? `
-                  <div class="activity-indicators">
-                    ${activityTypes.includes(ActivityType.LESSON) ? '<div class="activity-indicator indicator-lesson"></div>' : ''}
-                    ${activityTypes.includes(ActivityType.BREAK) ? '<div class="activity-indicator indicator-break"></div>' : ''}
-                    ${activityTypes.includes(ActivityType.HOMEWORK) ? '<div class="activity-indicator indicator-homework"></div>' : ''}
-                    ${activityTypes.includes(ActivityType.OTHER) ? '<div class="activity-indicator indicator-other"></div>' : ''}
-                  </div>
-                ` : ''}
-              </div>
-              ${countActivitiesForDate(dateStr) > 0 ?
-                `
-                <div class="month-day-activities">
-                  ${countActivitiesForDate(dateStr)} aktiviteter
-                </div>
-              ` : ''}
-            </div>
-          `;
-        }).join('');
-      }).join('');
+           return `
+             <div class="month-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${dateStr}">
+               <div class="month-day-header">
+                 <span class="month-day-number">${day.getDate()}</span>
+                 ${activityTypes.length > 0 ? `
+                   <div class="activity-indicators">
+                     ${activityTypes.includes(ActivityType.LESSON) ? '<div class="activity-indicator indicator-lesson"></div>' : ''}
+                     ${activityTypes.includes(ActivityType.BREAK) ? '<div class="activity-indicator indicator-break"></div>' : ''}
+                     ${activityTypes.includes(ActivityType.HOMEWORK) ? '<div class="activity-indicator indicator-homework"></div>' : ''}
+                     ${activityTypes.includes(ActivityType.OTHER) ? '<div class="activity-indicator indicator-other"></div>' : ''}
+                   </div>
+                 ` : ''}
+               </div>
+               ${activitiesCount > 0 ? `
+                 <div class="month-day-activities">
+                   ${activitiesCount} aktivitet${activitiesCount > 1 ? 'er' : ''}
+                 </div>
+               ` : ''}
+             </div>
+           `;
+         }).join('');
+       }).join('');
+
 
       // Tilføj event listeners til månedsdage
       document.querySelectorAll('.month-day').forEach(day => {
         day.addEventListener('click', () => {
           const date = day.getAttribute('data-date');
           state.selectedDate = date;
-          setActiveTab('day');
+          setActiveTab('day'); // Gå altid til dagsvisning ved klik
           renderCalendar();
         });
       });
     }
 
     function renderCalendar() {
+      // Opdater currentDate baseret på selectedDate før rendering af uge/måned
+       const selectedDateObj = parseDate(state.selectedDate);
+       if (state.currentView === 'week') {
+            const weekDays = getWeekDays(selectedDateObj);
+            state.currentDate = weekDays[0]; // Sæt til mandag i den valgte uge
+       } else if (state.currentView === 'month') {
+           state.currentDate = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), 1); // Sæt til den første i den valgte måned
+       } else {
+            state.currentDate = selectedDateObj; // Sæt til den valgte dag
+       }
+
+
       switch (state.currentView) {
         case 'day':
           renderDayView();
@@ -1476,9 +1498,11 @@
     }
 
     function deleteActivity(id) {
-      state.activities = state.activities.filter(activity => activity.id !== id);
-      saveActivities(); // Gem ændringen
-      renderCalendar();
+      if (confirm('Er du sikker på, at du vil slette denne aktivitet?')) { // Tilføj bekræftelse
+        state.activities = state.activities.filter(activity => activity.id !== id);
+        saveActivities(); // Gem ændringen
+        renderCalendar();
+      }
     }
 
     function toggleActivityCompleted(id) {
@@ -1532,8 +1556,9 @@
         }
 
         saveActivities(); // Gem ændringen
+        state.selectedDate = date; // Sørg for at kalenderen viser dagen med den nye/ændrede aktivitet
         closeActivityDialog();
-        renderCalendar();
+        renderCalendar(); // Gengiv kalenderen for at vise ændringen
       } else {
           alert('Udfyld venligst alle felter (Titel, Tidspunkt, Dato)'); // Simpel validering
       }
@@ -1558,90 +1583,70 @@
       state.editingActivity = null; // Nulstil redigeringstilstand
     }
 
-    // Navigation (These functions are no longer called by buttons but are kept in case they are used elsewhere or for future additions)
+    // Navigation (disse funktioner bruges ikke af knapper pt, men kan være nyttige)
     function goToToday() {
       const today = new Date();
-      state.currentDate = today;
       state.selectedDate = formatDate(today);
+      state.currentDate = today; // Opdater også currentDate
       renderCalendar();
     }
 
+    // Funktioner til at gå frem/tilbage (bruges ikke af knapper pt)
     function goToPrevious() {
-      switch (state.currentView) {
-        case 'day':
-          state.currentDate = addDays(parseDate(state.selectedDate), -1); // Baseret på selectedDate
-          state.selectedDate = formatDate(state.currentDate);
-          break;
-        case 'week':
-          state.currentDate = addDays(state.currentDate, -7);
-          state.selectedDate = formatDate(state.currentDate); // Opdater selectedDate til den nye uges første dag
-          break;
-        case 'month':
-          state.currentDate = addMonths(state.currentDate, -1);
-           // Bevar den valgte dag i måneden hvis muligt, ellers vælg sidste dag
-          const dayOfMonth = parseDate(state.selectedDate).getDate();
-          const daysInNewMonth = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1, 0).getDate();
-          const newDay = Math.min(dayOfMonth, daysInNewMonth);
-          state.selectedDate = formatDate(new Date(state.currentDate.getFullYear(), state.currentDate.getMonth(), newDay));
-          break;
-      }
-
-      renderCalendar();
+        let current = parseDate(state.selectedDate);
+        let newDate;
+        switch (state.currentView) {
+            case 'day':
+                newDate = addDays(current, -1);
+                break;
+            case 'week':
+                newDate = addDays(getWeekDays(current)[0], -7); // Gå til forrige mandag
+                break;
+            case 'month':
+                newDate = addMonths(new Date(current.getFullYear(), current.getMonth(), 1), -1); // Gå til første dag i forrige måned
+                 // Bevar ca. samme dag i måneden hvis muligt
+                 const dayOfMonth = current.getDate();
+                 const daysInNewMonth = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0).getDate();
+                 newDate.setDate(Math.min(dayOfMonth, daysInNewMonth));
+                break;
+        }
+         state.selectedDate = formatDate(newDate);
+         renderCalendar();
     }
 
     function goToNext() {
-      switch (state.currentView) {
-        case 'day':
-          state.currentDate = addDays(parseDate(state.selectedDate), 1); // Baseret på selectedDate
-          state.selectedDate = formatDate(state.currentDate);
-          break;
-        case 'week':
-          state.currentDate = addDays(state.currentDate, 7);
-          state.selectedDate = formatDate(state.currentDate); // Opdater selectedDate til den nye uges første dag
-          break;
-        case 'month':
-          state.currentDate = addMonths(state.currentDate, 1);
-          // Bevar den valgte dag i måneden hvis muligt, ellers vælg sidste dag
-          const dayOfMonth = parseDate(state.selectedDate).getDate();
-          const daysInNewMonth = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1, 0).getDate();
-          const newDay = Math.min(dayOfMonth, daysInNewMonth);
-          state.selectedDate = formatDate(new Date(state.currentDate.getFullYear(), state.currentDate.getMonth(), newDay));
-          break;
-      }
-
-      renderCalendar();
+        let current = parseDate(state.selectedDate);
+        let newDate;
+        switch (state.currentView) {
+             case 'day':
+                newDate = addDays(current, 1);
+                break;
+            case 'week':
+                newDate = addDays(getWeekDays(current)[0], 7); // Gå til næste mandag
+                break;
+            case 'month':
+                 newDate = addMonths(new Date(current.getFullYear(), current.getMonth(), 1), 1); // Gå til første dag i næste måned
+                 // Bevar ca. samme dag i måneden hvis muligt
+                 const dayOfMonth = current.getDate();
+                 const daysInNewMonth = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0).getDate();
+                 newDate.setDate(Math.min(dayOfMonth, daysInNewMonth));
+                break;
+        }
+        state.selectedDate = formatDate(newDate);
+        renderCalendar();
     }
 
 
     function setActiveTab(view) {
       state.currentView = view;
       elements.tabs.forEach(tab => {
-        if (tab.getAttribute('data-view') === view) {
-          tab.classList.add('active');
-        } else {
-          tab.classList.remove('active');
-        }
+        tab.classList.toggle('active', tab.getAttribute('data-view') === view);
       });
       elements.tabContents.forEach(content => {
-        if (content.id === `${view}-view`) {
-          content.classList.add('active');
-        } else {
-          content.classList.remove('active');
-        }
+        content.classList.toggle('active', content.id === `${view}-view`);
       });
-       // Juster currentDate/selectedDate baseret på den nye visning, hvis nødvendigt
-       if (view === 'day') {
-           // Forbliv på den valgte dag
-       } else if (view === 'week') {
-            // Sæt currentDate til den valgte uges start
-            const weekDays = getWeekDays(parseDate(state.selectedDate));
-            state.currentDate = weekDays[0];
-       } else if (view === 'month') {
-           // Sæt currentDate til den valgte måneds start
-           const selectedDateObj = parseDate(state.selectedDate);
-           state.currentDate = new Date(selectedDateObj.getFullYear(), selectedDateObj.getMonth(), 1);
-       }
-
+       // Render kalenderen efter skift af faneblad for at sikre korrekt visning
+       renderCalendar();
     }
 
     // Udskriftsfunktioner
@@ -1667,14 +1672,10 @@
     elements.tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         const view = tab.getAttribute('data-view');
-        setActiveTab(view);
-        renderCalendar();
+        setActiveTab(view); // renderCalendar kaldes nu inde i setActiveTab
       });
     });
-    // Removed event listeners for navigation buttons
-    // elements.prevBtn.addEventListener('click', goToPrevious);
-    // elements.nextBtn.addEventListener('click', goToNext);
-    // elements.todayBtn.addEventListener('click', goToToday);
+
     elements.addActivityBtn.addEventListener('click', addActivity);
     elements.saveActivityBtn.addEventListener('click', saveActivity);
 
@@ -1698,7 +1699,8 @@
     elements.printMonthBtn.addEventListener('click', printMonth);
 
     // Initialiser kalenderen
-    renderCalendar();
+    setActiveTab(state.currentView); // Sørg for korrekt faneblad og indhold ved start
+    renderCalendar(); // Initial render
   </script>
 </body>
 </html>
