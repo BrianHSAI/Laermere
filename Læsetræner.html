@@ -155,12 +155,12 @@
         }
 
         /* Primary knap (Start træning, Start) */
-        button:not(.back-button):not(.button-stop) {
+        button:not(.back-button):not(.button-stop):not(.home-button) {
              background-color: var(--button-primary-bg);
              color: white;
         }
 
-        button:not(.back-button):not(.button-stop):hover {
+        button:not(.back-button):not(.button-stop):not(.home-button):hover {
              background-color: var(--button-primary-hover);
              box-shadow: var(--shadow);
         }
@@ -182,7 +182,29 @@
 
         .back-button:hover {
             background-color: var(--button-secondary-hover);
-             box-shadow: var(--shadow);
+            box-shadow: var(--shadow);
+        }
+
+        /* Tilbage til forside knap styling */
+        .home-button {
+            background-color: var(--dark-teal); /* Changed from white */
+            color: white; /* Changed from var(--header-text) to white for better contrast */
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            border: none; /* Removed border */
+            box-shadow: var(--shadow-sm);
+        }
+
+        .home-button:hover {
+            background-color: #159C84; /* Slightly darker teal on hover */
+            box-shadow: var(--shadow);
         }
 
 
@@ -334,17 +356,30 @@
 <body>
     <div class="container">
         <div id="inputPage" class="page active">
-            <div class="card"> <div class="card-header">
-                     <div class="card-title">
-                         <i class="fas fa-book-open"></i> <span>Læsetræner</span>
-                     </div>
-                 </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+
+                       <i class="fas fa-book-open"></i> <span>Læsetræner</span>
+                    </div>
+                    <a href="index.html" class="home-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+                            <path d="m12 19-7-7 7-7"></path>
+                            <path d="M19 12H5"></path>
+                        </svg>
+                        Tilbage
+
+                    </a>
+                </div>
                 <div style="padding: 1.5rem;"> <div class="form-group">
                         <label for="text">Indsæt tekst</label>
-                        <textarea
+
+                    <textarea
                             id="text"
                             placeholder="Indsæt den tekst, du vil træne med..."
                             required
+
                         ></textarea>
                     </div>
 
@@ -353,15 +388,18 @@
                         <input
                             id="wpm"
                             type="number"
+
                             value="100"
                             min="10"
                             max="1000"
                             required
+
                         >
                     </div>
 
                     <button id="startTrainingButton" class="button-full">
                         <i class="fas fa-play"></i> Start læsetræning
+
                     </button>
                 </div>
             </div>
@@ -370,10 +408,21 @@
         <div id="readerPage" class="page">
              <div class="card"> <div class="card-header">
                      <div class="card-title">
-                         <i class="fas fa-book-reader"></i> <span id="readerTitle">Læsetræning</span>
+
+                       <i class="fas fa-book-reader"></i> <span id="readerTitle">Læsetræning</span>
                      </div>
-                     <div>
-                         <button id="startButton">
+                     <div style="display: flex; gap: 1rem; align-items: center;">
+                         <a href="index.html" class="home-button">
+
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                 <path d="m12 19-7-7 7-7"></path>
+
+                             <path d="M19 12H5"></path>
+                             </svg>
+                             Tilbage
+                         </a>
+
+                        <button id="startButton">
                              <i class="fas fa-play"></i> Start
                          </button>
                          <button id="stopButton" class="button-stop" style="display: none;">
@@ -381,25 +430,30 @@
                          </button>
                      </div>
                  </div>
+
                 <div style="padding: 1.5rem;"> <button class="back-button" id="backButton">
                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
                              <path d="m12 19-7-7 7-7"></path>
+
                              <path d="M19 12H5"></path>
                          </svg>
                          Tilbage
                      </button>
 
-                     <div class="reader-container">
+
+                    <div class="reader-container">
                          <div class="reader-content" id="readerContent">
                              </div>
                      </div>
 
-                     <div class="status" id="status">
+
+                    <div class="status" id="status">
                          Tryk på Start for at begynde læsetræningen
                      </div>
                 </div>
              </div>
-        </div>
+
+         </div>
     </div>
 
     <script>
@@ -413,7 +467,6 @@
         const textInput = document.getElementById('text');
         const wpmInput = document.getElementById('wpm');
         const startTrainingButton = document.getElementById('startTrainingButton');
-
         // DOM elementer - Læse side
         const readerTitle = document.getElementById('readerTitle');
         const readerContent = document.getElementById('readerContent');
@@ -421,15 +474,13 @@
         const startButton = document.getElementById('startButton');
         const stopButton = document.getElementById('stopButton');
         const backButton = document.getElementById('backButton');
-
         // Variabler til læsning
         let lines = [];
         let currentLineIndex = 0;
         let isReading = false;
         let timer = null;
         let wordsPerMinute = 100;
-
-         // --- localStorage Håndtering ---
+        // --- localStorage Håndtering ---
          function saveReadingTrainerState() {
              localStorage.setItem(localStorageTextKey, textInput.value);
              localStorage.setItem(localStorageWpmKey, wpmInput.value);
@@ -454,6 +505,7 @@
             // Skjul alle sider
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
+
             });
 
             // Vis den valgte side
@@ -474,14 +526,12 @@
             const words = text.split(/\s+/);
             const wordsPerLine = 10; // Antal ord per linje i læsevisningen
             lines = [];
-
             for (let i = 0; i < words.length; i += wordsPerLine) {
                 lines.push(words.slice(i, i + wordsPerLine).join(' '));
             }
 
             // Opdater titel
             readerTitle.textContent = `Læsetræning (${wordsPerMinute} ord/min)`;
-
             // Nulstil læsning
             currentLineIndex = 0;
             isReading = false;
@@ -493,10 +543,8 @@
             // Vis start-knap, skjul stop-knap
             startButton.style.display = 'inline-flex'; // Brug inline-flex for ikon/tekst
             stopButton.style.display = 'none';
-
             // Render linjer
             renderLines();
-
             // Skift til læseside
             showPage('readerPage');
         }
@@ -504,7 +552,6 @@
         // Render linjer baseret på nuværende indeks
         function renderLines() {
             readerContent.innerHTML = '';
-
             if (lines.length === 0) {
                  readerContent.innerHTML = '<div class="line line-current">Ingen tekst at vise</div>';
                  status.textContent = 'Indsæt tekst på forrige side.';
@@ -535,9 +582,11 @@
 
             // Opdater status
             status.textContent = isReading
-                ? `Læser linje ${currentLineIndex + 1} af ${lines.length}`
+                ?
+                `Læser linje ${currentLineIndex + 1} af ${lines.length}`
                 : (currentLineIndex === lines.length -1 && !isReading)
-                    ? `Færdig. Linje ${currentLineIndex + 1} af ${lines.length}`
+                    ?
+                    `Færdig. Linje ${currentLineIndex + 1} af ${lines.length}`
                     : 'Tryk på Start for at begynde læsetræningen';
         }
 
@@ -545,20 +594,16 @@
         function startReading() {
             currentLineIndex = 0; // Start fra begyndelsen
             isReading = true;
-
             // Vis stop-knap, skjul start-knap
             startButton.style.display = 'none';
             stopButton.style.display = 'inline-flex'; // Brug inline-flex
 
             renderLines();
-
             // Beregn tid pr. linje baseret på ord pr. minut
             const wordsPerLine = 10; // Antal ord per linje
             const wordsInCurrentLine = lines[currentLineIndex].split(/\s+/).length;
             // Beregn tid baseret på det faktiske antal ord i linjen
             const millisecondsPerLine = (wordsInCurrentLine / wordsPerMinute) * 60 * 1000;
-
-
             // Start timer
             timer = setInterval(() => {
                 currentLineIndex++;
@@ -566,6 +611,7 @@
                 if (currentLineIndex >= lines.length) {
                     stopReading();
                     status.textContent = `Færdig! Læste ${lines.length} linjer.`;
+
                     return;
                 }
 
@@ -573,50 +619,54 @@
 
                  // Juster intervallet for næste linje baseret på dens ordantal
                  const nextWordsInLine = lines[currentLineIndex].split(/\s+/).length;
+
                  const nextMillisecondsPerLine = (nextWordsInLine / wordsPerMinute) * 60 * 1000;
                  // Nulstil og start intervallet igen med den nye tid
                  clearInterval(timer);
                  timer = setInterval(() => {
-                      currentLineIndex++;
+
+                   currentLineIndex++;
                       if (currentLineIndex >= lines.length) {
                          stopReading();
                          status.textContent = `Færdig! Læste ${lines.length} linjer.`;
                          return;
                       }
                       renderLines();
-                      // Gentag justeringen for den næste linje igen inde i intervallet
+                       // Gentag justeringen for den næste linje igen inde i intervallet
                        const nextNextWordsInLine = lines[currentLineIndex].split(/\s+/).length;
                        const nextNextMillisecondsPerLine = (nextNextWordsInLine / wordsPerMinute) * 60 * 1000;
                        clearInterval(timer);
                        timer = setInterval(() => {
                            // Dette indikerer behov for en mere robust timer/scheduler
                            // For nu beholder vi den simple logik, der genstarter intervallet
+
                            // ved hver linje, men en bedre løsning ville spore samlet tid.
                            // For demonstration er dette acceptabelt.
                             currentLineIndex++;
-                            if (currentLineIndex >= lines.length) {
+
+                           if (currentLineIndex >= lines.length) {
                                 stopReading();
                                 status.textContent = `Færdig! Læste ${lines.length} linjer.`;
+
                                 return;
                             }
                             renderLines();
                              // ... logik til at beregne og genstarte timer for næste linje ...
                              // Dette bliver hurtigt komplekst med setInterval.
                              // En bedre tilgang ville være at bruge setTimeout rekursivt.
-                       }, (lines[currentLineIndex].split(/\s+/).length / wordsPerMinute) * 60 * 1000);
+                         }, (lines[currentLineIndex].split(/\s+/).length / wordsPerMinute) * 60 * 1000);
 
                  }, nextMillisecondsPerLine);
 
 
             }, millisecondsPerLine);
-             status.textContent = `Læser linje ${currentLineIndex + 1} af ${lines.length}`; // Initial status
+            status.textContent = `Læser linje ${currentLineIndex + 1} af ${lines.length}`; // Initial status
         }
 
          // Bedre start læsning funktion med rekursiv setTimeout
          function startReadingRecursive() {
              currentLineIndex = 0; // Start fra begyndelsen
              isReading = true;
-
              // Vis stop-knap, skjul start-knap
              startButton.style.display = 'none';
              stopButton.style.display = 'inline-flex';
@@ -637,7 +687,6 @@
              // Beregn tid baseret på det faktiske antal ord i den aktuelle linje
              const wordsInCurrentLine = lines[currentLineIndex].split(/\s+/).length;
              const millisecondsPerLine = (wordsInCurrentLine / wordsPerMinute) * 60 * 1000;
-
              // Planlæg læsning af næste linje
              timer = setTimeout(() => {
                  currentLineIndex++;
@@ -649,7 +698,6 @@
         // Stop læsning
         function stopReading() {
             isReading = false;
-
             // Vis start-knap, skjul stop-knap
             startButton.style.display = 'inline-flex';
             stopButton.style.display = 'none';
