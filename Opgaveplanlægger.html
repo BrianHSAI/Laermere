@@ -52,7 +52,7 @@
                             DEFAULT: "hsl(var(--card))",
                             foreground: "hsl(var(--card-foreground))",
                         },
-                         // Tilføj specifikke Elevkalender farver som HSL variabler
+                        // Tilføj specifikke Elevkalender farver som HSL variabler
                          'primary-blue': 'hsl(var(--primary-blue))',
                          'primary-green': 'hsl(var(--primary-green))',
                          'primary-orange': 'hsl(var(--primary-orange))',
@@ -60,7 +60,7 @@
                     },
                     borderRadius: {
                         // Opdaterede border radius til at matche Elevkalender/Tekstoplæser
-                        lg: "var(--radius-lg)", // 0.75rem
+                         lg: "var(--radius-lg)", // 0.75rem
                         md: "var(--radius-md)", // 0.5rem
                         sm: "var(--radius-sm)", // 0.25rem
                     },
@@ -99,6 +99,17 @@
             --primary-green: 147 58% 70%; /* #82E0AA */
             --primary-orange: 36 91% 61%; /* #F5B041 */
             --dark-teal: 163 80% 42%; /* #1ABC9C */
+
+             /* Definitioner for shadow variabler (fra Elevkalender) */
+             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+             --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+             /* Definition for activity-border (fra Elevkalender) */
+             --activity-border: 220 14% 92%; /* #E5E7EB - Grå */
+
+              /* Definition for activity-bg-hover (fra Elevkalender) */
+             --activity-bg-hover: 216 12% 95%; /* #F2F4F6 */
         }
 
         /* Beholder dark mode variabler, selvom de ikke bruges med Elevkalender farver */
@@ -170,7 +181,7 @@
             border-radius: var(--radius-lg); /* Større afrunding */
             box-shadow: var(--shadow-md); /* Kraftigere skygge */
             overflow: hidden; /* Sikrer at border-radius gælder for header */
-             border: 1px solid hsl(var(--card-border)); /* Anvend kantfarve */
+             border: 1px solid hsl(var(--border)); /* Anvend kantfarve - Bytter fra card-border til border */
         }
 
          /* Card Header (genbrugt) */
@@ -212,7 +223,7 @@
             margin-bottom: 1.5rem; /* Juster margin */
             border-radius: var(--radius-md); /* Afrundede hjørner */
             overflow: hidden;
-            border: 1px solid hsl(var(--activity-border)); /* Anvend kantfarve */
+            border: 1px solid hsl(var(--border)); /* Anvend kantfarve - Bytter fra activity-border til border */
              background-color: hsl(var(--background)); /* Lysere baggrund til tabs */
         }
 
@@ -226,6 +237,13 @@
             transition: all 0.2s ease; /* Glattere overgang */
              color: hsl(var(--foreground)); /* Standard tekstfarve */
              border-bottom: 2px solid transparent; /* Standard gennemsigtig kant */
+        }
+
+        .tab:disabled { /* Styling for disabled tab */
+            color: hsl(var(--muted-foreground));
+            cursor: not-allowed;
+            background-color: transparent;
+            border-color: transparent;
         }
 
         .tab.active {
@@ -260,7 +278,7 @@
          input:not([type="checkbox"]), select, textarea { /* Inkluder textarea */
              width: 100%;
              padding: 0.75rem; /* Juster padding */
-             border: 1px solid hsl(var(--activity-border)); /* Anvend kantfarve */
+             border: 1px solid hsl(var(--border)); /* Anvend kantfarve - Bytter fra activity-border til border */
              border-radius: var(--radius); /* Afrundede hjørner */
              font-size: 1rem;
              background-color: white; /* Hvid baggrund */
@@ -270,7 +288,7 @@
 
           input:not([type="checkbox"]):focus, select:focus, textarea:focus { /* Inkluder textarea */
               border-color: hsl(var(--dark-teal)); /* Mørk teal ved focus */
-              box-shadow: 0 0 0 4px hsla(var(--dark-teal), 0.2); /* Gennemsigtig teal skygge */
+              box-shadow: 0 0 0 4px hsla(var(--ring), 0.2); /* Brug ring farve med alpha */
               outline: none;
           }
 
@@ -298,7 +316,7 @@
         }
 
         .btn:hover {
-            background-color: hsl(var(--primary) / 0.9); /* Lidt mørkere ved hover */
+            background-color: hsl(147 58% 65%); /* Lidt mørkere ved hover - specific color */
              box-shadow: var(--shadow);
         }
 
@@ -309,7 +327,7 @@
         }
 
         .btn-secondary:hover {
-             background-color: hsl(var(--secondary) / 0.9); /* Lidt mørkere ved hover */
+             background-color: hsl(163 80% 38%); /* Lidt mørkere ved hover - specific color */
              box-shadow: var(--shadow);
         }
 
@@ -338,11 +356,14 @@
              height: 2.5rem;
              border-radius: var(--radius); /* Standard afrunding */
              box-shadow: var(--shadow-sm); /* Let skygge */
+             color: hsl(var(--foreground)); /* Standard tekstfarve til ikoner */
+             background-color: transparent; /* Gennemsigtig baggrund */
         }
 
          .btn-icon:hover {
-             background-color: var(--activity-bg-hover); /* Let baggrund ved hover */
+             background-color: hsl(var(--accent)); /* Lys accent farve ved hover */
              box-shadow: var(--shadow);
+             color: hsl(var(--accent-foreground)); /* Accent tekstfarve ved hover */
          }
 
 
@@ -354,7 +375,7 @@
         .icon {
             width: 1em; /* Juster størrelse i forhold til font */
             height: 1em;
-             fill: currentColor; /* Sæt SVG farve til tekstfarven */
+            fill: currentColor; /* Sæt SVG farve til tekstfarven */
         }
 
         /* Steps list styling */
@@ -370,7 +391,7 @@
             padding: 0.8rem; /* Juster padding */
             margin-bottom: 0.5rem; /* Mellemrum mellem elementer */
              display: flex; /* Brug flex til layout */
-             align-items: center;
+             align-items: flex-start; /* Align items to the top */
              gap: 0.8rem; /* Mellemrum mellem elementer */
              transition: background-color 0.2s ease;
         }
@@ -385,6 +406,7 @@
              height: 1.2em;
              cursor: pointer;
              flex-shrink: 0; /* Forhindrer checkbox i at krympe */
+             margin-top: 0.15em; /* Juster checkbox position */
         }
 
          #steps-list li label {
@@ -392,6 +414,7 @@
              margin-bottom: 0; /* Fjern margin på label */
              flex-grow: 1; /* Tillad label at fylde plads */
              line-height: 1.4; /* Juster line height for læsbarhed */
+             color: hsl(var(--foreground)); /* Standard tekstfarve */
          }
 
          #steps-list li label.line-through {
@@ -426,6 +449,7 @@
             body {
                 background-color: white;
                 color: black;
+                font-family: sans-serif; /* Brug standard print font */
             }
 
              /* Juster kort og indhold ved print */
@@ -435,25 +459,28 @@
              .max-w-3xl {
                  max-width: 100%;
              }
-             .bg-white {
+             .card { /* Fjern card styling */
                  background-color: white;
-             }
-             .rounded-lg {
                  border-radius: 0;
-             }
-             .shadow-md {
                  box-shadow: none;
-             }
-             .border {
                  border: none;
-             }
-             .p-6 {
                  padding: 0;
+                 overflow: visible;
+             }
+
+             /* Juster header ved print */
+             h1 {
+                font-size: 2rem;
+                text-align: left;
+                border-bottom: 2px solid black;
+                color: black;
+                margin-bottom: 1rem;
+                padding-bottom: 0.3rem;
              }
 
              /* Skjul tabs ved print */
-             .flex.border-b {
-                 display: none;
+             .tabs {
+                 display: none !important;
              }
 
              /* Vis kun approach content ved print */
@@ -465,58 +492,65 @@
                  padding: 0; /* Fjern padding */
              }
 
-             /* Juster header ved print */
-             .flex.items-start.justify-between.mb-4 {
+             /* Juster approach header ved print */
+             #approach-content .flex.items-start.justify-between {
                  display: block;
                  margin-bottom: 1rem;
-                 border-bottom: 1px solid #eee; /* Let streg */
+                 border-bottom: 1px solid #ccc; /* Let streg */
                  padding-bottom: 0.8rem;
              }
               #approach-title {
-                  font-size: 1.5rem;
-                  margin-bottom: 0.5rem;
-                  color: #000;
+                  font-size: 1.3rem;
+                  margin-bottom: 0.3rem;
+                  color: black;
+                  font-weight: 700;
               }
               #approach-description {
                   font-size: 1rem;
-                  color: #555;
+                  color: #333;
               }
 
 
              /* Juster steps list ved print */
-             .rounded-lg.border.border-gray-200.p-4.mb-6 {
-                 border: none;
-                 padding: 0;
-                 margin-bottom: 1rem;
+             #approach-content .rounded-lg.border.p-4 { /* Fjern border/padding fra container */
+                  border: none;
+                  padding: 0;
+                  margin-bottom: 1rem;
              }
-              .font-medium.mb-2 {
-                  font-size: 1.2rem;
+              #approach-content h3 { /* Steps titel */
+                  font-size: 1.1rem;
                   margin-bottom: 0.5rem;
-                  color: #000;
+                  color: black;
+                  font-weight: 700;
               }
               #steps-list {
-                  space-y: 0; /* Fjern margin */
+                  /* space-y-0; Fjernes da vi ikke bruger tailwind classes her */
               }
               #steps-list li {
                   background-color: white;
                   border: none;
-                  border-bottom: 1px dashed #ddd; /* Stiplet linje */
+                  border-bottom: 1px dashed #ccc; /* Stiplet linje */
                   border-radius: 0;
                   padding: 0.5rem 0;
                   margin-bottom: 0;
                   gap: 0.5rem;
+                  align-items: flex-start; /* Align items to the top */
               }
                #steps-list li:last-child {
                    border-bottom: none;
                }
 
+              #steps-list li .print\:inline-block { /* Print checkbox */
+                 margin-top: 0.15em; /* Juster position */
+                 font-family: sans-serif; /* Sørg for at boksen vises */
+                 color: black;
+              }
+
 
              /* Skjul knapper i footer ved print */
-             .flex.justify-between.print-hide {
+             #approach-content .flex.justify-between.print-hide {
                  display: none;
              }
-
-
         }
 
         .tab-content {
@@ -531,90 +565,92 @@
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <div class="container mx-auto py-8 px-4">
+<body class="bg-[hsl(var(--background))]"> <div class="container mx-auto py-8 px-4">
         <h1>Opgaveplanlægger</h1>
 
+        <div class="mb-6"> <a href="index.html" class="btn btn-sm btn-outline"> <i class="fas fa-arrow-left mr-2"></i> Tilbage </a>
+        </div>
         <div class="card max-w-3xl mx-auto">
             <div class="print-hide">
-                <div class="tabs"> <button id="input-tab" class="tab active"> <i class="fas fa-edit"></i> Indtast Opgave
-                    </button>
-                    <button id="approach-tab" class="tab" disabled> <i class="fas fa-list-ol"></i> Fremgangsmåde
-                    </button>
+                <div class="tabs">
+                     <button id="input-tab" class="tab active">
+                         <i class="fas fa-edit mr-2"></i> Indtast Opgave </button>
+                    <button id="approach-tab" class="tab" disabled>
+                        <i class="fas fa-list-ol mr-2"></i> Fremgangsmåde </button>
                 </div>
             </div>
 
             <div id="input-content" class="tab-content active p-6">
-                <div class="mb-4">
-                    <h2 class="card-description">Beskriv din opgave</h2> <p class="text-gray-600 mt-1">Fortæl os om den opgave, du skal løse, så hjælper vi dig med en fremgangsmåde.</p> </div>
+                 <div class="mb-6"> <h2 class="text-lg font-semibold">Beskriv din opgave</h2> <p class="text-[hsl(var(--muted-foreground))] mt-1">Fortæl os om den opgave, du skal løse, så hjælper vi dig med en fremgangsmåde.</p>
+                 </div>
 
-                <form id="task-form" class="space-y-4">
-                    <div class="form-group"> <label for="education">Uddannelsesniveau</label> <select id="education"> <option value="folkeskole">Folkeskole</option>
+                <form id="task-form" class="space-y-6"> <div class="form-group">
+                        <label for="education">Uddannelsesniveau</label>
+                        <select id="education">
+                             <option value="folkeskole">Folkeskole</option>
                             <option value="gymnasium">Gymnasium</option>
                         </select>
                     </div>
 
-                    <div class="form-group"> <label for="subject">Fag</label> <select id="subject"> </select>
+                    <div class="form-group">
+                        <label for="subject">Fag</label>
+                        <select id="subject">
+                            </select>
                     </div>
 
-                    <div class="form-group"> <label for="assignment-type">Opgavetype</label> <select id="assignment-type"> </select>
+                    <div class="form-group">
+                        <label for="assignment-type">Opgavetype</label>
+                        <select id="assignment-type">
+                             </select>
                     </div>
 
-                    <div class="form-group"> <label for="task">Opgavebeskrivelse (valgfri)</label> <textarea
-                            id="task"
+                    <div class="form-group">
+                        <label for="task">Opgavebeskrivelse (valgfri)</label>
+                        <textarea
+                             id="task"
                             placeholder="Beskriv din opgave her med flere detaljer, hvis du ønsker det..."
-                        ></textarea> </div>
+                        ></textarea>
+                    </div>
 
-                    <div class="flex justify-between pt-4">
-                        <button
+                    <div class="flex justify-between pt-4 border-t border-[hsl(var(--border))]"> <button
                             type="button"
                             id="reset-btn"
-                            class="btn btn-outline" >
-                            <i class="fas fa-redo"></i> Nulstil
-                        </button>
+                             class="btn btn-outline" > <i class="fas fa-redo mr-2"></i> Nulstil </button>
                         <button
-                            type="submit"
-                            class="btn btn-primary" >
-                             <i class="fas fa-arrow-right"></i> Få Fremgangsmåde
-                        </button>
+                             type="submit"
+                            class="btn" > <i class="fas fa-arrow-right mr-2"></i> Få Fremgangsmåde </button>
                     </div>
                 </form>
             </div>
 
             <div id="approach-content" class="tab-content p-6">
-                <div class="flex items-start justify-between mb-4">
-                    <div>
-                        <h2 id="approach-title" class="text-xl font-semibold">Fremgangsmåde</h2>
-                        <p id="approach-description" class="text-gray-600 mt-1"></p>
+                <div class="flex items-start justify-between mb-6 border-b border-[hsl(var(--border))] pb-4"> <div>
+                        <h2 id="approach-title" class="text-lg font-semibold">Fremgangsmåde</h2> <p id="approach-description" class="text-[hsl(var(--muted-foreground))] mt-1"></p>
                     </div>
                     <button
                         id="back-btn"
-                        class="print-hide btn btn-icon btn-outline" >
-                         <i class="fas fa-arrow-left"></i> </button>
+                        class="print-hide btn-icon" title="Tilbage til indtastning" > <i class="fas fa-arrow-left"></i>
+                     </button>
                 </div>
 
-                <div class="rounded-lg border border-gray-200 p-4 mb-6"> <h3>Trin for trin</h3> <ul id="steps-list" class="space-y-3">
-                        </ul>
+                <div class="mb-6"> <h3 class="font-semibold mb-3">Trin for trin</h3> <ul id="steps-list" class="space-y-2"> </ul>
                 </div>
 
-                <div class="flex justify-between print-hide">
-                    <div class="flex gap-2">
+                <div class="flex justify-between print-hide pt-4 border-t border-[hsl(var(--border))]"> <div class="flex gap-2">
                         <button
                             id="print-btn"
-                            class="btn btn-icon btn-outline" title="Udskriv"
-                        >
-                             <i class="fas fa-print"></i> </button>
+                            class="btn-icon" title="Udskriv" >
+                             <i class="fas fa-print"></i>
+                         </button>
                         <button
                             id="download-btn"
-                            class="btn btn-icon btn-outline" title="Download"
-                        >
-                            <i class="fas fa-download"></i> </button>
+                            class="btn-icon" title="Download" >
+                            <i class="fas fa-download"></i>
+                         </button>
                     </div>
                     <button
                         id="new-task-btn"
-                        class="btn btn-primary" >
-                        <i class="fas fa-plus"></i> Ny Opgave
-                    </button>
+                        class="btn" > <i class="fas fa-plus mr-2"></i> Ny Opgave </button>
                 </div>
             </div>
         </div>
@@ -980,7 +1016,6 @@
 
             // Clear current options
             subjectSelect.innerHTML = '';
-
             // Add new options
             subjects.forEach(subject => {
                 const option = document.createElement('option');
@@ -998,10 +1033,8 @@
             const education = educationSelect.value;
             const subject = subjectSelect.value;
             const assignmentTypes = educationData[education].assignmentTypes[subject] || [];
-
             // Clear current options
             assignmentTypeSelect.innerHTML = '';
-
             // Add new options
             assignmentTypes.forEach(type => {
                 const option = document.createElement('option');
@@ -1020,8 +1053,8 @@
 
         // Tab switching
         inputTab.addEventListener('click', () => {
-            inputTab.classList.add('active'); // Anvend .active klasse
-            approachTab.classList.remove('active'); // Fjern .active klasse
+            inputTab.classList.add('active');
+            approachTab.classList.remove('active');
             inputContent.classList.add('active');
             approachContent.classList.remove('active');
         });
@@ -1029,8 +1062,8 @@
         approachTab.addEventListener('click', () => {
             if (approachTab.disabled) return;
 
-            approachTab.classList.add('active'); // Anvend .active klasse
-            inputTab.classList.remove('active'); // Fjern .active klasse
+            approachTab.classList.add('active');
+            inputTab.classList.remove('active');
             approachContent.classList.add('active');
             inputContent.classList.remove('active');
         });
@@ -1052,8 +1085,7 @@
 
             // Enable and switch to approach tab
             approachTab.disabled = false;
-             // Fjern disabled styling direkte, da .tab.active håndterer udseendet
-             // approachTab.classList.remove('text-gray-500', 'bg-gray-100');
+             // approachTab.classList.remove('text-gray-500', 'bg-gray-100'); // Fjernet styling, da .tab:disabled håndterer det
             approachTab.click();
         });
 
@@ -1061,21 +1093,20 @@
         resetBtn.addEventListener('click', () => {
             taskInput.value = '';
             educationSelect.value = 'folkeskole';
-            populateSubjects();
+            populateSubjects(); // Dette vil også kalde populateAssignmentTypes
         });
 
-        // Back button
+        // Back button (til input)
         backBtn.addEventListener('click', () => {
             inputTab.click();
         });
 
         // New task button
         newTaskBtn.addEventListener('click', () => {
-            taskInput.value = '';
+            taskInput.value = ''; // Nulstil kun beskrivelse
             inputTab.click();
             approachTab.disabled = true;
-             // Tilføj disabled styling direkte, da .tab.active håndterer udseendet
-             // approachTab.classList.add('text-gray-500', 'bg-gray-100');
+            // approachTab.classList.add('text-gray-500', 'bg-gray-100'); // Fjernet styling, da .tab:disabled håndterer det
         });
 
         // Print button
@@ -1091,9 +1122,18 @@
             const task = taskInput.value.trim();
 
             // Get the selected options' text labels
-            const educationLabel = educationData[education]?.subjects.find(s => s.value === education)?.label || education; // Fix: Find label for education
+            // Find label for education (lidt omvendt logik, da education vælges først)
+            let educationLabel = '';
+            for (const key in educationData) {
+                if (key === education) {
+                    // Find en passende label, f.eks. fra første fag
+                     educationLabel = education === 'folkeskole' ? 'Folkeskole' : 'Gymnasium';
+                    break;
+                }
+            }
             const subjectLabel = educationData[education]?.subjects.find(s => s.value === subject)?.label || subject;
             const assignmentTypeLabel = educationData[education]?.assignmentTypes[subject]?.find(t => t.value === assignmentType)?.label || assignmentType;
+
 
             // Get steps
             const steps = approachSteps[education]?.[subject]?.[assignmentType] || []; // Brug optional chaining
@@ -1108,11 +1148,13 @@ ${steps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
             `.trim();
 
             // Download as text file
-            const blob = new Blob([content], { type: 'text/plain' });
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' }); // Tilføjet charset=utf-8
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'fremgangsmåde.txt';
+            // Lav et mere beskrivende filnavn
+            const filename = `Fremgangsmåde-${subjectLabel}-${assignmentTypeLabel}.txt`.replace(/[/\\?%*:|"<>]/g, '-'); // Erstat ugyldige tegn
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1122,7 +1164,13 @@ ${steps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
         // Display approach
         function displayApproach(education, subject, assignmentType, task, steps) {
             // Get the selected options' text labels
-             const educationLabel = educationData[education]?.subjects.find(s => s.value === education)?.label || education; // Fix: Find label for education
+            let educationLabel = '';
+             for (const key in educationData) {
+                 if (key === education) {
+                     educationLabel = education === 'folkeskole' ? 'Folkeskole' : 'Gymnasium';
+                     break;
+                 }
+             }
             const subjectLabel = educationData[education]?.subjects.find(s => s.value === subject)?.label || subject;
             const assignmentTypeLabel = educationData[education]?.assignmentTypes[subject]?.find(t => t.value === assignmentType)?.label || assignmentType;
 
@@ -1133,32 +1181,28 @@ ${steps.map((step, index) => `${index + 1}. ${step}`).join('\n')}
             stepsList.innerHTML = '';
             steps.forEach((step, index) => {
                 const li = document.createElement('li');
-                li.className = 'flex items-start gap-3'; // Anvend flex styling
+                // li.className = 'flex items-start gap-3'; // Fjernet Tailwind klasse, da vi bruger CSS
 
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.id = `step-${index}`;
-                checkbox.className = 'mt-1 print-hide'; // Anvend styling
+                // checkbox.className = 'mt-1 print-hide'; // Fjernet Tailwind klasse
 
                 const label = document.createElement('label');
                 label.htmlFor = `step-${index}`;
-                label.className = 'text-sm'; // Anvend styling
+                // label.className = 'text-sm'; // Fjernet Tailwind klasse
                 label.textContent = step;
 
                 checkbox.addEventListener('change', () => {
-                    if (checkbox.checked) {
-                        label.classList.add('line-through');
-                    } else {
-                        label.classList.remove('line-through');
-                    }
+                    label.classList.toggle('line-through', checkbox.checked); // Brug toggle
                 });
 
                 const printCheckbox = document.createElement('span');
-                printCheckbox.className = 'hidden print:inline-block'; // Anvend print styling
-                printCheckbox.textContent = '☐ ';
+                printCheckbox.className = 'print:inline-block'; // Brug kun print-specifik klasse
+                printCheckbox.textContent = '☐ '; // Tom firkant til print
 
                 li.appendChild(checkbox);
-                li.appendChild(printCheckbox);
+                li.appendChild(printCheckbox); // Print checkbox før label
                 li.appendChild(label);
                 stepsList.appendChild(li);
             });
