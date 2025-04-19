@@ -63,15 +63,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            /* Fjern justify-content: center for at tillade indhold at starte øverst */
+            /* justify-content: center; */
             padding: 1.5rem; /* Juster padding */
             line-height: 1.6; /* Juster line height */
+        }
+
+        /* NY STIL: Styling for tilbage-knap container */
+        .back-button-container {
+            width: 100%;
+            max-width: 500px; /* Match container bredde */
+            margin: 0 auto 1rem auto; /* Centrer og giv bundmargin */
+            text-align: left; /* Juster knap til venstre */
         }
 
         .container {
             width: 100%;
             max-width: 500px;
-            margin: 0 auto;
+            margin: 0 auto; /* Behold centreret margin */
         }
 
         .app-title {
@@ -185,7 +194,7 @@
         }
 
         /* Knapper (genbrugt) */
-        button {
+        button, a.btn { /* Tilføj a.btn for at style link som knap */
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -198,6 +207,7 @@
              gap: 0.5rem; /* Mellemrum mellem ikon og tekst */
              box-shadow: var(--shadow-sm);
              font-size: 1rem; /* Standard skriftstørrelse */
+             text-decoration: none; /* Fjern understregning fra link-knap */
         }
 
         .btn-primary {
@@ -219,6 +229,7 @@
         .btn-secondary:hover {
             background-color: var(--button-secondary-hover); /* Anvend secondary hover farve */
              box-shadow: var(--shadow);
+             color: var(--button-secondary-border); /* Sørg for at tekstfarve forbliver ved hover */
         }
 
 
@@ -401,6 +412,10 @@
              .print-hide {
                  display: none !important;
              }
+              /* NY print regel */
+              .back-button-container {
+                  display: none !important;
+              }
              .container {
                  padding: 0;
              }
@@ -445,6 +460,14 @@
     </style>
 </head>
 <body>
+    <!-- START: Tilbage-knap -->
+    <div class="back-button-container print-hide">
+        <a href="index.html" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Tilbage
+        </a>
+    </div>
+    <!-- SLUT: Tilbage-knap -->
+
     <div class="container">
         <h1 class="app-title">Pomodoro Opgave App</h1>
 
@@ -462,13 +485,15 @@
                 <button class="btn-primary" id="addNewTaskBtn">
                      <i class="fas fa-plus"></i> Tilføj opgave
                 </button>
-                <button class="btn-primary" id="startTasksBtn">
+                <button class="btn-primary" id="startTasksBtn" disabled> <!-- Start deaktiveret -->
                      <i class="fas fa-play"></i> Start Pomodoro
                 </button>
             </div>
 
             <div class="task-list" id="taskList">
-                </div>
+                <!-- Opgaveliste indsættes her af JS -->
+                 <div class="text-center text-muted mt-4">Ingen opgaver tilføjet endnu.</div>
+            </div>
         </div>
 
         <div class="card task-card hidden" id="taskCard">
@@ -477,7 +502,7 @@
                 <div class="task-text" id="taskText"></div>
             </div>
             <div class="button-container">
-                <button class="btn-secondary" id="startPauseBtn">
+                <button class="btn-primary" id="startPauseBtn"> <!-- Start som primær knap -->
                      <i class="fas fa-play"></i> Start
                 </button>
                 <button class="btn-primary" id="completeBtn">
@@ -491,13 +516,14 @@
             <div class="break-text" id="breakText">Pause</div>
             <div class="long-break-message hidden" id="longBreakMessage"></div>
             <div class="timer-display" id="breakTimerDisplay">05:00</div>
+            <!-- Knapper til pause er ikke nødvendige her, da den starter/stopper automatisk -->
         </div>
 
         <div class="completion-animation" id="completionAnimation">
             <div class="check-mark">✓</div>
         </div>
 
-        </div>
+    </div> <!-- Slut .container -->
 
     <script>
         // DOM Elements
@@ -535,8 +561,8 @@
         let pomodoroCount = 0; // Antal gennemførte pomodoroer
 
         // Sound effects (Beholdt som i original kode)
-        // En simpel base64 encodet bip lyd
-        const beepSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...');
+        // En simpel base64 encodet bip lyd (forkortet for læsbarhed)
+        const beepSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YS');
 
 
         // Initialize the app
@@ -551,7 +577,7 @@
             console.log("Updating task display. Current task index:", currentTaskIndex, "Tasks length:", tasks.length); // Debug log
             if (tasks.length === 0 || currentTaskIndex >= tasks.length) {
                 console.log("No more tasks. Showing initial input."); // Debug log
-                showInitialInput();
+                showInitialInput(); // Vis startskærm hvis der ikke er flere opgaver
                 return;
             }
 
@@ -571,14 +597,11 @@
             modeIndicator.textContent = 'Fokustid';
             modeIndicator.style.color = 'var(--pomodoro-primary)'; // Orange farve for fokus
 
-            // Auto-start the timer (Optional, user might prefer to click start)
-            // if (!isRunning) {
-            //     toggleTimer();
-            // }
              // Sæt knappen til Start, men start ikke automatisk
-             isRunning = false;
-             startPauseBtn.textContent = 'Start';
-             startPauseBtn.classList.remove('btn-secondary'); // Sørg for korrekt knapfarve
+             isRunning = false; // Sørg for at timeren ikke tror den kører
+             clearInterval(timerInterval); // Stop evt. kørende interval
+             startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start'; // Sæt til Start
+             startPauseBtn.classList.remove('btn-secondary'); // Brug primær farve
              startPauseBtn.classList.add('btn-primary');
              console.log("Task display updated. Ready to start timer."); // Debug log
         }
@@ -650,7 +673,11 @@
             console.log("Starting break timer. Pomodoro count:", pomodoroCount); // Debug log
             clearInterval(timerInterval); // Stop fokus timer
             isRunning = false;
-            startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start'; // Nulstil fokus knap tekst/ikon
+             // Nulstil fokus knap tekst/ikon og klasser
+             startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+             startPauseBtn.classList.remove('btn-secondary');
+             startPauseBtn.classList.add('btn-primary');
+
 
             // Determine break duration based on pomodoro count
             if (pomodoroCount > 0 && pomodoroCount % 4 === 0) { // Lang pause efter hver 4. pomodoro
@@ -677,6 +704,7 @@
 
             // Auto-start the break timer
             if (!isBreakRunning) {
+                 clearInterval(breakTimerInterval); // Ryd evt. gammelt interval
                 breakTimerInterval = setInterval(updateBreakTimer, 1000);
                 isBreakRunning = true;
                 playBeep(); // Afspil lyd ved start af pause
@@ -689,7 +717,8 @@
             if (timeRemaining <= 0) {
                 clearInterval(timerInterval);
                 isRunning = false;
-                startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+                 // Knap skal ikke ændres her, den nulstilles når pausen starter
+                // startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start';
 
                 // Increment pomodoro count
                 pomodoroCount++;
@@ -731,7 +760,11 @@
             // Stop den nuværende timer, hvis den kører
             clearInterval(timerInterval);
             isRunning = false;
+            // Nulstil knappen til "Start" state
             startPauseBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+            startPauseBtn.classList.remove('btn-secondary');
+            startPauseBtn.classList.add('btn-primary');
+
 
             // Vis completion animation
             completionAnimation.classList.add('active');
@@ -766,7 +799,8 @@
             isBreakRunning = false;
             currentTaskIndex = 0; // Nulstil opgaveindeks når vi går tilbage til input
              pomodoroCount = 0; // Nulstil pomodoro tæller
-             renderTaskList(); // Vis den nuværende opgaveliste
+             tasks = []; // Nulstil opgavelisten når vi går helt tilbage
+             renderTaskList(); // Vis den (nu tomme) opgaveliste
         }
 
         // Add a new task to the list
@@ -788,12 +822,12 @@
             }
         }
 
-        // Render the task list
+        // Render the task list in the initial view
         function renderTaskList() {
-            taskList.innerHTML = '';
+            taskList.innerHTML = ''; // Ryd eksisterende liste
 
             if (tasks.length === 0) {
-                 taskList.innerHTML = '<div class="text-center text-muted mt-4">Ingen opgaver tilføjet endnu.</div>'; // Vis besked hvis tom
+                 taskList.innerHTML = '<div style="text-align: center; color: var(--text-color); opacity: 0.7; margin-top: 1rem;">Ingen opgaver tilføjet endnu.</div>'; // Vis besked hvis tom
                  startTasksBtn.disabled = true; // Deaktiver start knap hvis ingen opgaver
                  startTasksBtn.classList.add('btn-secondary'); // Grå knap
                  startTasksBtn.classList.remove('btn-primary');
@@ -810,8 +844,8 @@
                 taskItem.className = 'task-item';
                 taskItem.innerHTML = `
                     <span>${index + 1}. ${task.text}</span>
-                    <button class="btn btn-secondary btn-sm remove-task" data-id="${task.id}">
-                         <i class="fas fa-trash-alt"></i> Fjern
+                    <button class="btn btn-secondary btn-sm remove-task" data-id="${task.id}" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;"> <!-- Mindre fjern knap -->
+                         <i class="fas fa-trash-alt" style="pointer-events: none;"></i> <!-- Ikon skal ikke fange klik -->
                     </button>
                 `;
                 taskList.appendChild(taskItem);
@@ -820,10 +854,16 @@
             // Add event listeners to remove buttons
             document.querySelectorAll('.remove-task').forEach(button => {
                 button.addEventListener('click', (e) => {
-                    const taskId = parseInt(e.target.closest('button').getAttribute('data-id')); // Find data-id på knappen
+                    const taskId = parseInt(button.getAttribute('data-id')); // Få id fra knappen
                     tasks = tasks.filter(task => task.id !== taskId);
-                    renderTaskList();
+                    renderTaskList(); // Opdater listen med det samme
                      console.log("Task removed. Remaining tasks:", tasks); // Debug log
+                     // Hvis den sidste opgave fjernes, deaktiver start knappen igen
+                     if (tasks.length === 0) {
+                         startTasksBtn.disabled = true;
+                         startTasksBtn.classList.add('btn-secondary');
+                         startTasksBtn.classList.remove('btn-primary');
+                     }
                 });
             });
         }
@@ -832,6 +872,7 @@
         function startPomodoro() {
             console.log("Starting Pomodoro."); // Debug log
             if (tasks.length === 0) {
+                // Burde ikke ske pga. disabled knap, men god praksis at tjekke
                 alert('Tilføj mindst én opgave for at starte');
                 return;
             }
@@ -839,11 +880,11 @@
             currentTaskIndex = 0; // Start fra første opgave
             pomodoroCount = 0; // Nulstil pomodoro tæller ved ny start
             isFocusMode = true; // Start i fokus mode
-            updateTaskDisplay(); // Vis første opgave og start timer (hvis auto-start er aktiveret)
-             // Hvis auto-start ikke er aktiveret i updateTaskDisplay, start timeren her:
-             if (!isRunning) { // Tjek om timeren allerede kører (hvis auto-start var aktiv)
-                 toggleTimer();
-             }
+            updateTaskDisplay(); // Vis første opgave og gør klar til start
+             // Start timeren automatisk når "Start Pomodoro" klikkes
+             // if (!isRunning) { // Tjek overflødigt, da updateTaskDisplay nulstiller isRunning
+                 toggleTimer(); // Start timeren
+            // }
         }
 
         // Play beep sound
@@ -875,36 +916,52 @@
             // Swipe to complete (Basic implementation)
             let startX = 0;
             let moveX = 0;
+            let swiping = false; // Flag to track if a swipe is in progress
+
             swipeArea.addEventListener('touchstart', e => {
+                 if (isRunning) return; // Don't allow swipe actions while timer is running
                 startX = e.touches[0].clientX;
+                 moveX = startX; // Initialize moveX
+                 swiping = true;
                  swipeArea.classList.add('swiping'); // Tilføj swiping klasse for visuel feedback
             });
 
             swipeArea.addEventListener('touchmove', e => {
+                 if (!swiping || isRunning) return; // Only process if swiping and timer paused
                 moveX = e.touches[0].clientX;
                 const diff = moveX - startX;
 
                 // Begræns swipe til højre
                 if (diff > 0) {
+                     taskCard.style.transition = 'none'; // Disable transition during swipe for smoothness
                     taskCard.style.transform = `translateX(${Math.min(diff, 150)}px)`; // Begræns hvor langt man kan swipe
                 } else {
                      // Nulstil transform hvis man swiper til venstre
+                     taskCard.style.transition = 'transform 0.3s ease'; // Re-enable transition
                      taskCard.style.transform = 'translateX(0)';
                 }
             });
 
             swipeArea.addEventListener('touchend', e => {
-                const diff = moveX - startX;
+                 if (!swiping || isRunning) { // Check if a valid swipe was in progress and timer paused
+                     swiping = false; // Reset swipe flag regardless
+                     return;
+                 }
 
-                if (diff > 100) {
+                const diff = moveX - startX;
+                 taskCard.style.transition = 'transform 0.3s ease'; // Re-enable transition
+
+                if (diff > 100) { // Threshold for completion
                     // Swiped far enough to complete (juster tærskel efter behov)
                     completeTask();
+                } else {
+                     // Snap back if not swiped far enough
+                    taskCard.style.transform = 'translateX(0)';
                 }
 
-                // Nulstil position og swiping klasse
-                taskCard.style.transform = 'translateX(0)';
+                // Nulstil swiping klasse og tilstand
                  swipeArea.classList.remove('swiping');
-                 // Nulstil startX og moveX
+                 swiping = false;
                  startX = 0;
                  moveX = 0;
             });
