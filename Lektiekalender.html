@@ -42,6 +42,7 @@
             --button-danger-hover: #FADBD8; /* Lys rød ved hover */
             --activity-bg-hover: #F2F4F6; /* Meget lys grå ved hover på aktivitet */
             --activity-border: #E5E7EB; /* Grå kant mellem aktiviteter */
+             --completed-text: #9CA3AF; /* Grå for fuldført tekst */
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -75,7 +76,7 @@
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
             margin-bottom: 1.5rem;
-            overflow: hidden;
+            overflow: hidden; /* Ændret fra visible for at respektere padding/margin */
             border: 1px solid var(--card-border);
             padding: 1.5rem; /* Tilføj padding direkte til kortet */
         }
@@ -103,6 +104,13 @@
             color: var(--header-text);
         }
 
+        /* START ÆNDRING: Tilføjet nav-buttons CSS */
+        .nav-buttons {
+          display: flex;
+          gap: 0.5rem;
+        }
+        /* SLUT ÆNDRING */
+
         /* Knapper (genbrugt fra Elevkalender) */
         .btn {
             display: inline-flex;
@@ -117,7 +125,26 @@
             border: none;
             gap: 0.5rem;
             box-shadow: var(--shadow-sm);
+            text-decoration: none; /* Fjern understregning fra <a> tags */
         }
+
+        /* START ÆNDRING: Tilføjet btn-sm og btn-outline */
+        .btn-sm {
+          padding: 0.375rem 0.75rem;
+          font-size: 0.75rem;
+        }
+
+        .btn-outline {
+          background-color: rgba(255, 255, 255, 0.2); /* Lidt mere synlig baggrund */
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline:hover {
+          background-color: rgba(255, 255, 255, 0.3);
+          box-shadow: var(--shadow);
+        }
+        /* SLUT ÆNDRING */
 
         .btn-primary {
             background-color: var(--button-primary-bg);
@@ -196,7 +223,7 @@
             margin-bottom: 1.5rem;
             border-bottom: 2px solid var(--primary-orange); /* Orange streg */
             padding-bottom: 0.5rem;
-             font-size: 1.4rem;
+            font-size: 1.4rem;
              font-weight: 700;
         }
 
@@ -236,12 +263,7 @@
 
 
         .sidebar {
-             /* Sidebar er nu en del af grid containeren, fjern card styling herfra */
-             /* background-color: var(--card-background); */
-             /* border-radius: 10px; */
-             /* padding: 1.5rem; */
-             /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
-             /* min-width: 550px; */
+             /* Sidebar er nu en del af grid containeren, fjern styling herfra */
         }
 
         /* FullCalendar styling (tilpasset designet) */
@@ -334,7 +356,7 @@
 
         /* Modal styling (tilpasset Elevkalender dialog) */
         .modal {
-            display: none;
+            display: none; /* START ÆNDRING: Fjernet display: flex; herfra */
             position: fixed;
             top: 0;
             left: 0;
@@ -342,11 +364,11 @@
             height: 100%;
             background-color: rgba(44, 62, 80, 0.6); /* Mørkere, blødere baggrund */
             z-index: 50;
-            display: flex; /* Brug flex til centrering */
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(5px); /* Blur effekt */
         }
+        /* SLUT ÆNDRING */
 
         .modal-content {
             position: relative;
@@ -457,7 +479,7 @@
 
              .card-title {
                  font-size: 1.4rem;
-             }
+            }
 
             .sidebar {
                 min-width: auto;
@@ -466,11 +488,11 @@
 
              .modal-content {
                  padding: 1.5rem;
-             }
+            }
 
              .form-container h2 {
                  font-size: 1.3rem;
-             }
+            }
         }
 
          @media (max-width: 640px) {
@@ -561,14 +583,21 @@
 <body>
     <div class="container">
         <div class="content">
-            <div class="card"> <div class="card-header">
+             <div class="card">
+                 <div class="card-header">
                     <div class="card-title">
                         <i class="fas fa-calendar-check"></i> <span>Lektiekalender</span>
                     </div>
-                </div>
+                    <div class="nav-buttons">
+                        <a href="index.html" class="btn btn-outline btn-sm">
+                          <i class="fas fa-arrow-left"></i> Tilbage
+                        </a>
+                    </div>
+                 </div>
                 <button class="btn btn-primary btn-full" onclick="toggleForm()">
                     <i class="fas fa-plus"></i> Tilføj lektier
                 </button>
+
                 <div class="form-container" id="formContainer">
                     <h2>Tilføj nye lektier</h2>
                     <div class="form-group">
@@ -592,13 +621,14 @@
                     </div>
                     <button class="btn btn-primary btn-full" onclick="tilfojLektier()">Tilføj</button>
                 </div>
+
                 <div class="section">
                     <h2>Lektier til i morgen</h2>
                     <ul id="tomorrowsLektier">
                         </ul>
                 </div>
             </div>
-        </div>
+             </div>
         <div class="sidebar">
             <div id="calendar"></div>
         </div>
@@ -666,8 +696,8 @@
             title: event.title,
             start: event.start.toISOString(), // Gem dato som ISO streng
             allDay: event.allDay,
-            className: event.classNames.join(' '), // Gem classNames som streng
-            backgroundColor: event.backgroundColor,
+            // className: event.classNames.join(' '), // classNames er muligvis ikke nødvendigt at gemme direkte, hvis extendedProps bruges
+            // backgroundColor: event.backgroundColor, // Gemmes ikke, sættes dynamisk i eventRender
             extendedProps: event.extendedProps
         }));
         localStorage.setItem(localStorageKey, JSON.stringify(events));
@@ -682,6 +712,10 @@
                 events.forEach(event => {
                     if (event.start) {
                         event.start = new Date(event.start);
+                    }
+                    // Sørg for at extendedProps eksisterer
+                    if (!event.extendedProps) {
+                        event.extendedProps = {};
                     }
                 });
                 return events;
@@ -706,7 +740,6 @@
             month: 'long',
             day: 'numeric'
         });
-
         modalDate.textContent = dateStr;
 
         const events = window.calendar.getEvents().filter(event => {
@@ -715,8 +748,12 @@
         });
 
         if (events.length > 0) {
-            // Sortér lektier efter tidspunkt
-            events.sort((a, b) => a.start.getTime() - b.start.getTime());
+            // Sortér lektier efter tidspunkt (hvis ikke allDay)
+            events.sort((a, b) => {
+                if (a.allDay && !b.allDay) return -1;
+                if (!a.allDay && b.allDay) return 1;
+                return a.start.getTime() - b.start.getTime();
+            });
 
             const list = document.createElement('ul');
             list.className = 'modal-list';
@@ -724,29 +761,29 @@
             events.forEach(event => {
                 const li = document.createElement('li');
                 const isCompleted = event.extendedProps.completed;
+                const type = event.extendedProps.type || 'lektie'; // Standard til lektie
 
-                // Sæt kantfarve baseret på type og completed status
-                 if (isCompleted) {
-                     li.style.borderLeft = `4px solid var(--completed-text)`;
-                 } else if (event.extendedProps.type === 'aflevering') {
-                     li.style.borderLeft = `4px solid var(--primary-orange)`;
-                 } else {
-                     li.style.borderLeft = `4px solid var(--dark-teal)`;
-                 }
+                // Sæt klasser for nemmere styling
+                li.classList.add(type); // 'lektie' eller 'aflevering'
+                if (isCompleted) {
+                    li.classList.add('completed');
+                }
 
 
                 li.innerHTML = `
-                    <div class="homework-item" style="${isCompleted ? 'text-decoration: line-through; opacity: 0.7;' : ''}">
+                    <div class="homework-item">
                         <div class="homework-title">
-                            <strong>${event.extendedProps.subject || 'Intet fag'}</strong>: ${event.extendedProps.description || 'Ingen beskrivelse'}
+                             <strong>${event.extendedProps.subject || 'Intet fag'}</strong>: ${event.extendedProps.description || 'Ingen beskrivelse'}
                         </div>
                         <div class="homework-time">
-                            Deadline: ${event.start.toLocaleString('da-DK', {
-                                year: 'numeric',
-                                month: 'numeric',
+                            ${type === 'aflevering' ? 'Aflevering senest' : 'Deadline'}: ${event.start.toLocaleString('da-DK', {
+                                // Kun vis tid hvis det ikke er en heldagsbegivenhed
+                                hour: !event.allDay ? '2-digit' : undefined,
+                                minute: !event.allDay ? '2-digit' : undefined,
+                                // Vis altid dato
                                 day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
+                                month: 'numeric',
+                                year: 'numeric'
                             })}
                         </div>
                     </div>
@@ -777,36 +814,34 @@
             const isCompleted = !event.extendedProps.completed;
             event.setExtendedProp('completed', isCompleted);
 
-            // Opdater farve baseret på ny completed status
-            if (isCompleted) {
-                 event.setProp('backgroundColor', 'var(--primary-green)');
-                 event.setProp('borderColor', 'var(--primary-green)');
-             } else if (event.extendedProps.type === 'aflevering') {
-                 event.setProp('backgroundColor', 'var(--primary-orange)');
-                 event.setProp('borderColor', 'var(--primary-orange)');
-             } else {
-                 event.setProp('backgroundColor', 'var(--dark-teal)');
-                 event.setProp('borderColor', 'var(--dark-teal)');
-             }
+            // Tving gen-rendering for at opdatere farver via eventRender
+            // calendar.render() er for tungt her, vi trigger eventRender indirekte
+             event.setProp('title', event.title); // Lille trick for at få eventRender til at køre igen
 
 
             saveHomework(); // Gem ændringen
             updateTomorrowsList(); // Opdater "Lektier til i morgen" listen
 
-            // Opdater modal visning hvis den er åben
+            // Opdater modal visning hvis den er åben for den specifikke dato
             const modal = document.getElementById('homeworkModal');
             if (modal.style.display === 'flex') {
-                showDayHomework(new Date(event.start)); // Vis opdateret liste for datoen
+                 // Vi skal tjekke om modalen viser den dato, hvor lektien hører til
+                 const modalDateStr = document.getElementById('modalDate').textContent;
+                 const eventDateStr = event.start.toLocaleDateString('da-DK', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                 if (modalDateStr === eventDateStr) {
+                    showDayHomework(new Date(event.start)); // Vis opdateret liste for datoen
+                 }
             }
-             window.calendar.renderEvents(); // Tving kalenderen til at gen-render events for at opdatere farver
         }
     }
 
     function toggleForm() {
         const formContainer = document.getElementById('formContainer');
-        formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+        const isVisible = formContainer.style.display === 'block';
+        formContainer.style.display = isVisible ? 'none' : 'block';
+
          // Nulstil formen når den åbnes
-         if (formContainer.style.display === 'block') {
+         if (!isVisible) {
              document.getElementById('fag').value = '';
              document.getElementById('beskrivelse').value = '';
              document.getElementById('deadline').value = '';
@@ -822,38 +857,35 @@
 
         if (fag && beskrivelse && deadlineInput) {
              const deadline = new Date(deadlineInput);
+             if (isNaN(deadline.getTime())) { // Tjek om datoen er gyldig
+                 alert('Ugyldigt datoformat for deadline.');
+                 return;
+             }
 
-            const eventId = Date.now().toString(); // Unikt ID
+             const eventId = Date.now().toString(); // Unikt ID
 
-            const event = {
-                id: eventId,
-                title: `${fag}: ${beskrivelse}`,
-                start: deadline,
-                allDay: type === 'aflevering',
-                className: type === 'aflevering' ? 'assignment' : '',
-                backgroundColor: type === 'aflevering' ? 'var(--primary-orange)' : 'var(--dark-teal)', // Brug CSS variabler
-                borderColor: type === 'aflevering' ? 'var(--primary-orange)' : 'var(--dark-teal)', // Brug CSS variabler
-                extendedProps: {
-                    completed: false,
-                    type: type,
-                    subject: fag,
-                    description: beskrivelse
-                }
-            };
+             const eventData = {
+                 id: eventId,
+                 title: `${fag}: ${beskrivelse}`, // Titel bruges mindre nu
+                 start: deadline,
+                 allDay: type === 'aflevering', // Afleveringer er heldags
+                 // className fjernet, bruger extendedProps
+                 extendedProps: {
+                     completed: false,
+                     type: type,
+                     subject: fag,
+                     description: beskrivelse
+                 }
+             };
 
-            window.calendar.addEvent(event);
-            saveHomework(); // Gem efter tilføjelse
+             window.calendar.addEvent(eventData);
+             saveHomework(); // Gem efter tilføjelse
 
-            updateTomorrowsList(); // Opdater "Lektier til i morgen" listen
+             updateTomorrowsList(); // Opdater "Lektier til i morgen" listen
 
-            // Nulstil og skjul formen
-            document.getElementById('fag').value = '';
-            document.getElementById('beskrivelse').value = '';
-            document.getElementById('deadline').value = '';
-            document.getElementById('type').value = 'lektie';
-            toggleForm();
+             // Nulstil og skjul formen
+             toggleForm();
 
-            // Kalenderen gen-render automatisk efter addEvent
         } else {
             alert('Udfyld venligst alle felter (Type, Fag, Beskrivelse, Deadline).');
         }
@@ -862,21 +894,20 @@
     function isTomorrow(date) {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(0, 0, 0, 0);
+        tomorrow.setHours(0, 0, 0, 0); // Nulstil tid for sammenligning af dato
 
         const checkDate = new Date(date);
-        checkDate.setHours(0, 0, 0, 0);
+        checkDate.setHours(0, 0, 0, 0); // Nulstil tid for sammenligning af dato
 
         return checkDate.getTime() === tomorrow.getTime();
     }
 
     function updateTomorrowsList() {
         const tomorrowsList = document.getElementById('tomorrowsLektier');
-        tomorrowsList.innerHTML = '';
+        tomorrowsList.innerHTML = ''; // Ryd listen
 
-        // Hent events direkte fra kalenderen, som nu indeholder gemte data
+        // Hent events direkte fra kalenderen
         const allEvents = window.calendar.getEvents();
-
         const tomorrowsEvents = allEvents.filter(event => isTomorrow(event.start));
 
         if (tomorrowsEvents.length === 0) {
@@ -886,36 +917,36 @@
              return;
         }
 
-        // Sortér lektier til i morgen efter tidspunkt
-        tomorrowsEvents.sort((a, b) => a.start.getTime() - b.start.getTime());
+        // Sortér lektier til i morgen efter tidspunkt (hvis ikke allDay)
+         tomorrowsEvents.sort((a, b) => {
+            if (a.allDay && !b.allDay) return -1;
+            if (!a.allDay && b.allDay) return 1;
+            return a.start.getTime() - b.start.getTime();
+        });
 
 
         tomorrowsEvents.forEach(event => {
             const listItem = document.createElement('li');
             const isCompleted = event.extendedProps.completed;
+            const type = event.extendedProps.type || 'lektie'; // Standard til lektie
 
-            // Sæt kantfarve baseret på type og completed status
-             if (isCompleted) {
-                 listItem.style.borderLeft = `4px solid var(--completed-text)`;
-                 listItem.classList.add('completed');
-             } else if (event.extendedProps.type === 'aflevering') {
-                 listItem.style.borderLeft = `4px solid var(--primary-orange)`;
-                 listItem.classList.add('assignment');
-             } else {
-                 listItem.style.borderLeft = `4px solid var(--dark-teal)`;
-             }
+            // Sæt klasser for nemmere styling
+            listItem.classList.add(type); // 'lektie' eller 'aflevering'
+            if (isCompleted) {
+                listItem.classList.add('completed');
+            }
 
 
             listItem.innerHTML = `
-                <div class="homework-item" style="${isCompleted ? 'text-decoration: line-through; opacity: 0.7;' : ''}">
+                <div class="homework-item">
                     <div class="homework-title">
                         <strong>${event.extendedProps.subject || 'Intet fag'}</strong>: ${event.extendedProps.description || 'Ingen beskrivelse'}
                     </div>
                     <div class="deadline-info">
-                        Deadline: ${event.start.toLocaleTimeString('da-DK', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        })}
+                         ${type === 'aflevering' ? 'Afleveres' : 'Læses til'}: ${event.start.toLocaleTimeString('da-DK', {
+                             hour: !event.allDay ? '2-digit' : undefined, // Vis kun tid hvis ikke heldags
+                             minute: !event.allDay ? '2-digit' : undefined
+                         })}
                     </div>
                 </div>
                 <button onclick="toggleHomeworkComplete('${event.id}')"
@@ -930,6 +961,7 @@
 
     window.onclick = function(event) {
         const modal = document.getElementById('homeworkModal');
+        // Tjek om klikket er direkte på modal-baggrunden
         if (event.target === modal) {
             closeModal();
         }
