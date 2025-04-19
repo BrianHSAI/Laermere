@@ -88,6 +88,8 @@
             align-items: center;
             /* Juster negativ margin for at strække header inden for padding */
             margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+            border-top-left-radius: var(--radius-lg);
+            border-top-right-radius: var(--radius-lg);
         }
 
         .card-title {
@@ -101,6 +103,29 @@
 
         .card-title i {
             color: var(--header-text);
+        }
+
+        /* Styling for tilbage-knap */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.25); /* Semi-transparent hvid baggrund */
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Semi-transparent hvid kant */
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            gap: 0.4rem;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4); /* Lidt mindre gennemsigtig ved hover */
+            box-shadow: var(--shadow);
         }
 
 
@@ -310,6 +335,11 @@
                  margin-top: 1rem;
                  font-size: 0.8rem;
              }
+             
+             .back-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+             }
         }
     </style>
 </head>
@@ -320,6 +350,9 @@
             <div class="card-title">
                 <i class="fas fa-book-reader"></i> <span>Tekstoplæser</span>
             </div>
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Tilbage
+            </a>
         </div>
 
         <div class="form-group">
