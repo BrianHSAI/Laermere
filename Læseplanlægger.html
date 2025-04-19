@@ -10,6 +10,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+	/* Style for the back button linking to index.html */
+.home-button {
+    display: inline-flex; /* Use flexbox to align content */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    padding: 0.5rem 1rem; /* Add some padding */
+    background-color: var(--button-secondary-bg); /* Use a secondary background color (white) */
+    color: var(--button-secondary-border); /* Use the dark teal color for text */
+    border: 1px solid var(--button-secondary-border); /* Add a border with the dark teal color */
+    border-radius: var(--radius); /* Apply border radius */
+    font-weight: 700; /* Make the text bold */
+    cursor: pointer; /* Show a pointer cursor on hover */
+    transition: all 0.2s ease; /* Smooth transition for hover effects */
+    gap: 0.5rem; /* Add space between the icon and text */
+    text-decoration: none; /* Remove underline from the link */
+    box-shadow: var(--shadow-sm); /* Add a small shadow */
+}
+
+.home-button:hover {
+    background-color: var(--button-secondary-hover); /* Light green background on hover */
+    box-shadow: var(--shadow); /* Slightly larger shadow on hover */
+}
+
+.home-button svg {
+    width: 1em; /* Make the SVG icon size relative to the font size */
+    height: 1em;
+    fill: currentColor; /* Set SVG color to the current text color */
+}
         /* Generelle stilarter */
         * {
             box-sizing: border-box;
@@ -128,7 +156,7 @@
             justify-content: space-between;
             align-items: center; /* Centrer vertikalt */
             margin-bottom: 1rem;
-             padding-bottom: 0.5rem; /* Mellemrum under header */
+            padding-bottom: 0.5rem; /* Mellemrum under header */
              border-bottom: 2px solid var(--primary-orange); /* Orange streg under header */
         }
 
@@ -332,7 +360,7 @@
             border: 1px solid var(--activity-border); /* Anvend kantfarve */
             padding: 0.5rem;
             text-align: center;
-             box-shadow: var(--shadow-sm); /* Let skygge */
+            box-shadow: var(--shadow-sm); /* Let skygge */
         }
 
         .calendar-day-date {
@@ -529,6 +557,7 @@
              .tabs, .card:not(#list-tab .card), #add-tab, #empty-state,
              #taskList .card .flex.gap-2, #taskList .card .flex-col.flex-1,
              #taskList .card .btn:not(.btn-outline), #taskList .card .mb-4:has(input[type="number"]),
+
              #taskList .card h4 .btn-sm, #taskList .card .reading-calendar + div,
              #print-view .no-print
               {
@@ -579,7 +608,7 @@
               }
               #list-tab .card .calendar-day {
                   padding: 0.3rem;
-                   box-shadow: none;
+                  box-shadow: none;
                    border: 1px solid #eee;
                    background-color: white;
               }
@@ -613,26 +642,26 @@
               }
                .print-only .weekday {
                    color: #000;
-               }
+              }
               .print-only .day-cell {
                   border: 1px solid #ddd;
-                   background-color: white;
+                  background-color: white;
                    color: #000;
               }
               .print-only .day-cell.reading-day {
                   background-color: #e0e0e0;
-                   border-color: #bbb;
+                  border-color: #bbb;
                    box-shadow: none;
               }
                .print-only .day-number {
                    color: #000;
-               }
+              }
               .print-only .day-pages {
                    color: #000;
-               }
+              }
               .print-only .print-footer {
                   border-top: 1px solid #ddd;
-                   color: #000;
+                  color: #000;
                    padding-top: 0.8rem;
               }
               .print-only .print-options {
@@ -657,12 +686,21 @@
                 <div class="tab" data-tab="list">Mine læseopgaver</div>
             </div>
 
+
             <div class="tab-content active" id="add-tab">
                 <div class="card">
                     <div class="card-header">
                          <div class="card-title">
-                             <i class="fas fa-plus-circle"></i> <span>Tilføj ny læseopgave</span>
+
+                            <i class="fas fa-plus-circle"></i> <span>Tilføj ny læseopgave</span>
                          </div>
+                         <a href="index.html" class="home-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 19-7-7 7-7"></path>
+                                <path d="M19 12H5"></path>
+                            </svg>
+                            Tilbage
+                        </a>
                     </div>
 
                     <div class="form-group">
@@ -672,16 +710,19 @@
 
                     <div class="form-group">
                         <label for="pages">Antal sider</label>
+
                         <input type="number" id="pages" placeholder="Indtast antal sider">
                     </div>
 
                     <div class="form-group">
                         <label for="deadline">Deadline</label>
+
                         <input type="date" id="deadline">
                     </div>
 
                     <div class="form-group">
                         <label>Læseindstillinger</label>
+
 
                         <div class="checkbox-group">
                             <input type="checkbox" id="equalReading" checked>
@@ -691,16 +732,19 @@
                         <div class="checkbox-group">
                             <input type="checkbox" id="avoidWeekends">
                             <label for="avoidWeekends">Undgå læsning i weekender</label>
+
                         </div>
 
                         <div class="checkbox-group">
                             <input type="checkbox" id="moreOnWeekends">
                             <label for="moreOnWeekends">Læs mere i weekender</label>
+
                         </div>
                     </div>
 
                     <button class="btn btn-full" id="addTaskBtn">
                          <i class="fas fa-save"></i> Tilføj læseopgave
+
                     </button>
                 </div>
             </div>
@@ -708,6 +752,7 @@
             <div class="tab-content" id="list-tab">
                 <div id="taskList" class="task-list">
                     </div>
+
 
                 <div id="empty-state" class="card text-center py-2 text-muted">
                      <i class="fas fa-info-circle"></i> <p class="mt-2">Du har ingen læseopgaver endnu. Tilføj en ny opgave for at komme i gang.</p>
@@ -717,7 +762,8 @@
 
         <div id="print-view" class="print-container print-only"> <div class="no-print">
                 <button class="btn mb-4" id="backBtn">
-                    <i class="fas fa-arrow-left"></i> Tilbage til planlægger
+                    <i class="fas fa-arrow-left"></i> Tilbage
+ til planlægger
                 </button>
             </div>
 
@@ -728,13 +774,13 @@
 
     <script>
         // Hjælpefunktioner til datoformatering
-        const MONTHS = ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'];
+        const MONTHS = ['januar', 'februar', 'marts', 'april',
+ 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'];
         const WEEKDAYS = ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag', 'søndag'];
         const WEEKDAYS_SHORT = ['man', 'tir', 'ons', 'tor', 'fre', 'lør', 'søn'];
-
         function formatDate(dateString) {
             const date = new Date(dateString);
-             // Tjek for gyldig dato
+            // Tjek for gyldig dato
              if (isNaN(date.getTime())) {
                  return 'Ugyldig dato';
              }
@@ -743,7 +789,7 @@
 
         function formatShortDate(dateString) {
             const date = new Date(dateString);
-             // Tjek for gyldig dato
+            // Tjek for gyldig dato
              if (isNaN(date.getTime())) {
                  return 'Ugyldig dato';
              }
@@ -763,7 +809,6 @@
 
             const endDate = new Date(deadline);
             endDate.setHours(23, 59, 59, 999);
-
             // Sikrer at deadlinen er i fremtiden
             if (endDate < today) {
                 console.log('generateReadingPlan: Deadline is in the past.'); // Log
@@ -774,9 +819,10 @@
             if (totalDaysInPeriod <= 0) {
                  console.log('generateReadingPlan: Total days in period is 0 or less.'); // Log
                  return [];
-            }
+             }
 
-            const potentialReadingDays = []; // Alle dage i perioden
+            const potentialReadingDays = [];
+            // Alle dage i perioden
             const dayWeights = new Map(); // Vægt for hver potentiel læsedag
 
             for (let i = 0; i < totalDaysInPeriod; i++) {
@@ -786,7 +832,8 @@
                 potentialReadingDays.push(dateStr);
 
                 const dayOfWeek = getDayOfWeek(currentDate);
-                const isWeekend = dayOfWeek === 6 || dayOfWeek === 7;
+                const isWeekend = dayOfWeek === 6 ||
+ dayOfWeek === 7;
 
                 // Bestem vægt baseret på indstillinger
                 if (options.avoidWeekends && isWeekend) {
@@ -799,12 +846,11 @@
             }
 
             const totalWeight = Array.from(dayWeights.values()).reduce((sum, weight) => sum + weight, 0);
-
             // Hvis totalWeight er 0 (f.eks. avoidWeekends og perioden kun indeholder weekender)
             if (totalWeight === 0) {
                  console.log('generateReadingPlan: Total weight is 0.'); // Log
                  return [];
-            }
+             }
 
             const pagesPerWeightUnit = totalPages / totalWeight;
             let assignedPagesSum = 0;
@@ -816,28 +862,29 @@
                 let pagesForThisDay = 0;
 
                 if (weight > 0) { // Kun tildel sider til dage med vægt > 0
+
                      // Beregn sider og rund af
                      pagesForThisDay = Math.round(weight * pagesPerWeightUnit);
 
                      // Juster den sidste dag for at sikre at summen er korrekt
+
                      if (index === potentialReadingDays.length - 1) {
                          pagesForThisDay = totalPages - assignedPagesSum;
                      }
                 }
 
                 plan.push({
+
                     date: dateStr,
                     pages: pagesForThisDay
                 });
 
                 assignedPagesSum += pagesForThisDay;
             });
-
-             // Sikrer at sider ikke bliver negative pga afrunding på sidste dag
+            // Sikrer at sider ikke bliver negative pga afrunding på sidste dag
              plan.forEach(day => {
                  if (day.pages < 0) day.pages = 0;
              });
-
             console.log('generateReadingPlan: Plan generated successfully', plan); // Log
             return plan; // Returner den fulde plan inkl. dage med 0 sider
         }
@@ -848,14 +895,13 @@
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
+
                 tab.classList.add('active');
                 document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
             });
         });
-
         // Hent gemte opgaver fra localStorage
         let tasks = JSON.parse(localStorage.getItem('readingTasks')) || [];
-
         // Tilføj ny læseopgave
         document.getElementById('addTaskBtn').addEventListener('click', () => {
             console.log('Button clicked!'); // Log 1
@@ -864,6 +910,7 @@
             const pages = parseInt(document.getElementById('pages').value, 10); // Brug radix 10
             const deadline = document.getElementById('deadline').value;
             const equalReading = document.getElementById('equalReading').checked;
+
             const avoidWeekends = document.getElementById('avoidWeekends').checked;
             const moreOnWeekends = document.getElementById('moreOnWeekends').checked;
 
@@ -871,6 +918,7 @@
 
             if (!bookTitle || isNaN(pages) || pages <= 0 || !deadline) {
                 console.log('Validation failed'); // Log 3
+
                 alert('Udfyld venligst alle felter med gyldige værdier.');
                 return;
             }
@@ -880,7 +928,6 @@
                 avoidWeekends,
                 moreOnWeekends
             };
-
             const readingPlan = generateReadingPlan(pages, deadline, options);
             console.log('Generated reading plan:', readingPlan); // Log 4
 
@@ -896,12 +943,12 @@
                 bookTitle,
                 pages,
                 deadline,
+
                 completed: false,
                 pagesRead: 0,
                 options,
                 readingPlan
             };
-
             console.log('New task created:', newTask); // Log 6
 
             tasks.push(newTask);
@@ -917,7 +964,7 @@
             document.getElementById('deadline').value = '';
              document.getElementById('equalReading').checked = true; // Sæt standard tilbage
              document.getElementById('avoidWeekends').checked = false;
-             document.getElementById('moreOnWeekends').checked = false;
+            document.getElementById('moreOnWeekends').checked = false;
              console.log('Form reset'); // Log 10
 
 
@@ -925,18 +972,19 @@
             document.querySelectorAll('.tab')[1].click();
             console.log('Switched tab'); // Log 11
         });
-
-        // Lyt efter ændringer i checkboxes for at sikre kun én er valgt
+        // Lyt efter ændringer i checkboxes for at sikre kun én kan vælges
         document.getElementById('equalReading').addEventListener('change', function() {
              if (this.checked) {
                  document.getElementById('avoidWeekends').checked = false;
                  document.getElementById('moreOnWeekends').checked = false;
              } else {
-                  // Hvis equalReading fravælges, og ingen andre er valgt, vælg equalReading igen
+
+          // Hvis equalReading fravælges, og ingen andre er valgt, vælg equalReading igen
                   if (!document.getElementById('avoidWeekends').checked && !document.getElementById('moreOnWeekends').checked) {
                       this.checked = true;
                   }
              }
+
          });
 
         document.getElementById('avoidWeekends').addEventListener('change', function() {
@@ -945,25 +993,24 @@
                 document.getElementById('moreOnWeekends').checked = false;
             } else {
                  // Hvis avoidWeekends fravælges, og ingen andre er valgt, vælg equalReading
+
                  if (!document.getElementById('equalReading').checked && !document.getElementById('moreOnWeekends').checked) {
                      document.getElementById('equalReading').checked = true;
                  }
             }
         });
-
         document.getElementById('moreOnWeekends').addEventListener('change', function() {
             if (this.checked) {
                 document.getElementById('equalReading').checked = false;
                 document.getElementById('avoidWeekends').checked = false;
             } else {
                  // Hvis moreOnWeekends fravælges, og ingen andre er valgt, vælg equalReading
+
                  if (!document.getElementById('equalReading').checked && !document.getElementById('avoidWeekends').checked) {
                      document.getElementById('equalReading').checked = true;
                  }
             }
         });
-
-
         // Gem opgaver i localStorage
         function saveTasks() {
             localStorage.setItem('readingTasks', JSON.stringify(tasks));
@@ -982,16 +1029,14 @@
             }
 
             emptyState.style.display = 'none';
-
             // Sortér opgaver: ikke-færdige først, derefter efter deadline
             tasks.sort((a, b) => {
                 if (a.completed !== b.completed) {
                     return a.completed ? 1 : -1; // Ikke-færdige (false) kommer før færdige (true)
                 }
+
                 return new Date(a.deadline) - new Date(b.deadline); // Sortér efter deadline
             });
-
-
             tasks.forEach(task => {
                 const card = document.createElement('div');
                 card.className = `card ${task.completed ? 'completed' : ''}`;
@@ -999,49 +1044,61 @@
                 const remainingPages = task.pages - task.pagesRead;
 
                 card.innerHTML = `
-                    <div class="card-header">
+
+                   <div class="card-header">
                         <div class="card-title">
                              <i class="fas fa-book"></i> <span>${task.bookTitle}</span>
                         </div>
+
                         <div class="flex gap-2">
                             <button class="btn btn-outline btn-sm" onclick="printTask('${task.id}')">
                                 <i class="fas fa-print"></i>
+
                                 Udskriv
                             </button>
                             <button class="btn ${task.completed ? 'btn-outline' : 'btn-primary'} btn-sm" onclick="toggleComplete('${task.id}')">
+
                                 ${task.completed ? '<i class="fas fa-undo"></i> Fortryd' : `<i class="fas fa-check"></i> Færdig`}
                             </button>
                         </div>
                     </div>
 
+
                     <div class="grid grid-cols-2 mb-4 text-sm gap-4"> <div>
                             <span class="text-muted">Sider: </span>
                             <span class="font-medium">${task.pages}</span>
                         </div>
+
                         <div>
                             <span class="text-muted">Deadline: </span>
                             <span class="font-medium">${formatDate(task.deadline)}</span>
+
                         </div>
                         <div>
                             <span class="text-muted">Læst: </span>
                             <span class="font-medium">${task.pagesRead} af ${task.pages} sider</span>
+
                         </div>
                         <div>
                             <span class="text-muted">Status: </span>
-                            <span class="font-medium ${task.completed ? 'text-success' : ''}">${task.completed ? 'Færdig' : 'Igangværende'}</span>
+                            <span class="font-medium ${task.completed ?
+ 'text-success' : ''}">${task.completed ? 'Færdig' : 'Igangværende'}</span>
                         </div>
                     </div>
                 `;
 
                 // Vis opdater fremskridt sektion kun hvis opgaven ikke er færdig
+
                 if (!task.completed) {
                     const progressDiv = document.createElement('div');
                     progressDiv.className = 'flex gap-2 mb-4 items-end'; // Juster alignment
                     progressDiv.innerHTML = `
+
                         <div class="flex-col flex-1 form-group" style="margin-bottom: 0;"> <label for="progress-${task.id}" class="text-sm">Tilføj læste sider</label>
                             <input type="number" id="progress-${task.id}" placeholder="Antal sider" class="mt-1">
                         </div>
-                        <button class="btn btn-primary" onclick="updateProgress('${task.id}')">Opdater</button>
+                        <button class="btn
+ btn-primary" onclick="updateProgress('${task.id}')">Opdater</button>
                     `;
                     card.appendChild(progressDiv);
                 }
@@ -1052,19 +1109,21 @@
                     <div class="flex justify-between items-center mb-2">
                         <h4 class="font-medium flex items-center">
                             <i class="fas fa-calendar-alt"></i> Læseplan
+
                         </h4>
                         <button class="btn btn-outline btn-sm btn-danger" onclick="deleteTask('${task.id}')">
                             <i class="fas fa-trash-alt"></i> Slet opgave
                         </button>
+
                     </div>
                 `;
-
                 const activeDays = task.readingPlan.filter(day => day.pages > 0);
 
                 if (activeDays.length === 0) {
                     readingPlanDiv.innerHTML += `
                         <div class="text-center text-sm text-muted py-2">
                             <i class="fas fa-info-circle"></i> <p class="mt-1">Ingen læsedage planlagt i perioden.</p>
+
                         </div>
                     `;
                 } else {
@@ -1075,28 +1134,29 @@
                         calendarDiv.innerHTML += `
                             <div class="calendar-day">
                                 <div class="calendar-day-date">${formatShortDate(day.date)}</div>
+
                                 <div class="calendar-day-pages">${day.pages} sider</div>
                             </div>
                         `;
                     });
-
                     readingPlanDiv.appendChild(calendarDiv);
                 }
 
                 card.appendChild(readingPlanDiv);
                 taskList.appendChild(card);
             });
-
             // Tilføj event listeners til Enter-tast på input felter
             tasks.forEach(task => {
                 const input = document.getElementById(`progress-${task.id}`);
                 if (input) {
                     input.addEventListener('keydown', (e) => {
+
                         if (e.key === 'Enter') {
                             updateProgress(task.id);
                         }
                     });
                 }
+
             });
         }
 
@@ -1109,17 +1169,21 @@
                 tasks = tasks.map(task => {
                     if (task.id === taskId) {
                         const newPagesRead = task.pagesRead + pagesRead;
+
                         const isCompleted = newPagesRead >= task.pages;
 
                         // Regenerer læseplan med resterende sider kun hvis ikke færdig
                         const remainingPages = task.pages - newPagesRead;
+
                         const newReadingPlan = isCompleted
                             ? task.readingPlan // Behold den originale plan hvis færdig
                             : generateReadingPlan(remainingPages, task.deadline, task.options); // Generer ny plan for resterende
 
+
                         return {
                             ...task,
                             pagesRead: newPagesRead,
+
                             completed: isCompleted,
                             readingPlan: newReadingPlan
                         };
@@ -1140,21 +1204,26 @@
             tasks = tasks.map(task => {
                 if (task.id === taskId) {
                     // Når opgaven markeres som færdig, sæt sider læst til totalPages
+
                     // Når den fortrydes, sæt sider læst tilbage til 0 (eller behold den sidste værdi?)
                     // Lad os sætte sider læst til totalPages, når den markeres færdig
                     // og beholde den sidste værdi, når den fortrydes.
+
                     const newCompletedStatus = !task.completed;
                     const newPagesRead = newCompletedStatus ? task.pages : task.pagesRead; // Sæt til total hvis færdig
 
                     // Regenerer læseplan hvis opgaven fortrydes (ikke færdig)
                     const newReadingPlan = newCompletedStatus
+
                          ? task.readingPlan // Behold planen hvis markeres færdig
-                         : generateReadingPlan(task.pages - newPagesRead, task.deadline, task.options); // Regenerer for resterende sider
+                         : generateReadingPlan(task.pages - newPagesRead, task.deadline, task.options);
+ // Regenerer for resterende sider
 
                     return {
                         ...task,
                         completed: newCompletedStatus,
                         pagesRead: newPagesRead,
+
                         readingPlan: newReadingPlan
                     };
                 }
@@ -1173,7 +1242,6 @@
                 renderTasks();
             }
         };
-
         // Udskriv læseplan
         window.printTask = function(taskId) {
             const task = tasks.find(t => t.id === taskId);
@@ -1188,11 +1256,9 @@
 
             // Generer printbart indhold
             printableContent.innerHTML = generatePrintableCalendar(task);
-
             // Vis print-visning
             mainView.style.display = 'none';
             printView.style.display = 'block';
-
             // Udskriv automatisk
             setTimeout(() => {
                 window.print();
@@ -1206,7 +1272,6 @@
              // Ryd printbart indhold for at spare hukommelse
              document.getElementById('printable-content').innerHTML = '';
         });
-
         // Generer printbar kalender
         function generatePrintableCalendar(task) {
             // Opret et map af dato -> sider for hurtig opslag
@@ -1216,14 +1281,14 @@
                     dateToPages.set(day.date, day.pages);
                 }
             });
-
             // Få start- og slutdatoer fra læseplanen
              // Startdato er enten i dag eller den første planlagte læsedag, hvis den er senere
             const today = new Date();
             today.setHours(0,0,0,0);
             const firstReadingDay = task.readingPlan.find(day => day.pages > 0);
             const startDate = firstReadingDay ? new Date(firstReadingDay.date) : new Date(task.deadline);
-            startDate.setHours(0,0,0,0); // Nulstil tid
+            startDate.setHours(0,0,0,0);
+            // Nulstil tid
 
             const endDate = new Date(task.deadline);
             endDate.setHours(23, 59, 59, 999); // Sæt til slutningen af dagen
@@ -1232,7 +1297,8 @@
             // Få alle måneder mellem start- og slutdato
             const months = [];
             let currentDate = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-            const lastMonth = new Date(endDate.getFullYear(), endDate.getMonth() + 1, 0); // Sidste dag i slutdato måned
+            const lastMonth = new Date(endDate.getFullYear(), endDate.getMonth() + 1, 0);
+            // Sidste dag i slutdato måned
 
             while (currentDate <= lastMonth) {
                  // Inkluder kun måneder der overlapper med læseperioden
@@ -1247,10 +1313,12 @@
                  // Hvis ingen måneder, generer en simpel besked
                  return `
                      <div class="print-header">
-                         <h1>${task.bookTitle}</h1>
+
+                       <h1>${task.bookTitle}</h1>
                          <p class="text-muted">Læseplan: ${task.pages} sider inden ${formatDate(task.deadline)}</p>
                      </div>
                      <div class="text-center text-sm text-muted py-2">Ingen læsedage i den valgte periode.</div>
+
                  `;
              }
 
@@ -1260,8 +1328,8 @@
                     <h1>${task.bookTitle}</h1>
                     <p class="text-muted">Læseplan: ${task.pages} sider inden ${formatDate(task.deadline)}</p>
                 </div>
-            `;
 
+            `;
             // Generer kalender for hver måned
             months.forEach(month => {
                 const monthName = MONTHS[month.getMonth()];
@@ -1269,10 +1337,12 @@
 
                 html += `
                     <div class="month-grid">
+
                         <h2 class="month-title">${monthName} ${year}</h2>
 
                         <div class="weekdays">
                             ${WEEKDAYS_SHORT.map(day => `<div class="weekday">${day}</div>`).join('')}
+
                         </div>
 
                         <div class="days-grid">
@@ -1280,12 +1350,12 @@
 
                 // Få alle dage i måneden
                 const firstDayOfMonth = new Date(year, month.getMonth(), 1);
+
                 const lastDayOfMonth = new Date(year, month.getMonth() + 1, 0);
                 const daysInMonth = lastDayOfMonth.getDate();
 
                 // Beregn ugedag for første dag (1 = mandag, ..., 7 = søndag)
                 let firstDayOfWeek = getDayOfWeek(firstDayOfMonth);
-
                 // Tilføj tomme celler for dage før første dag i måneden
                 for (let i = 1; i < firstDayOfWeek; i++) {
                     html += `<div class="day-cell"></div>`;
@@ -1297,14 +1367,12 @@
                     const dateStr = date.toISOString().split('T')[0];
                     const pages = dateToPages.get(dateStr);
                     const isReadingDay = pages !== undefined && pages > 0;
-
-                     // Tjek om dagen er inden for læseperioden
+                    // Tjek om dagen er inden for læseperioden
                      const isWithinPeriod = date >= startDate && date <= endDate;
-
-
                     html += `
                         <div class="day-cell ${isReadingDay ? 'reading-day' : ''} ${!isWithinPeriod ? 'other-month' : ''}"> <div class="day-number">${day}</div>
-                            ${isReadingDay ? `<div class="day-pages">${pages} sider</div>` : ''}
+                            ${isReadingDay ?
+ `<div class="day-pages">${pages} sider</div>` : ''}
                         </div>
                     `;
                 }
@@ -1320,13 +1388,15 @@
                 <div class="print-footer">
                     <h3 class="font-medium">Læseindstillinger:</h3>
                     <ul class="print-options">
+
                         ${task.options.equalReading ? '<li class="print-option">• Læs lige meget hver dag</li>' : ''}
-                        ${task.options.avoidWeekends ? '<li class="print-option">• Undgå læsning i weekender</li>' : ''}
-                        ${task.options.moreOnWeekends ? '<li class="print-option">• Læs mere i weekender</li>' : ''}
+                        ${task.options.avoidWeekends ?
+ '<li class="print-option">• Undgå læsning i weekender</li>' : ''}
+                        ${task.options.moreOnWeekends ?
+ '<li class="print-option">• Læs mere i weekender</li>' : ''}
                     </ul>
                 </div>
             `;
-
             return html;
         }
 
@@ -1341,17 +1411,20 @@
             const moreOnWeekendsCheckbox = document.getElementById('moreOnWeekends');
 
             // Initial tjek ved load
-            if (avoidWeekendsCheckbox.checked) {
+
+             if (avoidWeekendsCheckbox.checked) {
                  equalReadingCheckbox.checked = false;
                  moreOnWeekendsCheckbox.checked = false;
             } else if (moreOnWeekendsCheckbox.checked) {
                  equalReadingCheckbox.checked = false;
                  avoidWeekendsCheckbox.checked = false;
+
             } else {
                  // Hvis ingen er valgt, sæt equalReading til true
                  if (!equalReadingCheckbox.checked) {
                      equalReadingCheckbox.checked = true;
                  }
+
             }
         });
 
