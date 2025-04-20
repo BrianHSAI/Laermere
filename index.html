@@ -446,13 +446,45 @@
     </div>
 
 <script>
+    // Simpel JavaScript for cookie banner
+    const cookieBanner = document.getElementById('cookieBanner');
+    const acceptButton = document.getElementById('acceptCookies');
+    const cookieAccepted = localStorage.getItem('cookieAccepted');
+
+    if (!cookieAccepted) {
+        cookieBanner.style.display = 'flex'; // Vis banneret hvis cookie ikke er accepteret
+    }
+
+    acceptButton.addEventListener('click', () => {
+        localStorage.setItem('cookieAccepted', 'true'); // Gem accept i localStorage
+        cookieBanner.style.display = 'none'; // Skjul banneret
+    });
+
+    // NY KODE: Vis dagens lektier og kalender
     document.addEventListener('DOMContentLoaded', function() {
-        // Funktion til at formatere dato til DD/MM/YYYY
+        // Formatter dato til DD/MM/YYYY
         function formatDate(date) {
-            const day = date.getDate().toString().padStart(2, '0');
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}/${month}/${year}`;
+            return date.getDate().toString().padStart(2, '0') + '/' +
+                (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                date.getFullYear();
+        }
+
+        // Funktion til at konvertere datoer mellem YYYY/MM/DD og DD/MM/YYYY
+        function convertToDdMmYyyy(dateStr) {
+            if (!dateStr) return null;
+            
+            // Hvis allerede i DD/MM/YYYY format
+            if (dateStr.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                return dateStr;
+            }
+            
+            // Hvis i YYYY/MM/DD format
+            if (dateStr.match(/^\d{4}\/\d{2}\/\d{2}$/)) {
+                const parts = dateStr.split('/');
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            
+            return null; // Ukendt format
         }
 
         const today = new Date();
@@ -462,34 +494,43 @@
         const todayFormatted = formatDate(today);
         const tomorrowFormatted = formatDate(tomorrow);
 
-        // Funktion til at hente data fra LocalStorage med fejlhåndtering
-        function getLocalStorageData(key) {
-            try {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : [];
-            } catch (e) {
-                console.error(`Fejl ved indlæsning af ${key}:`, e);
-                return [];
+        // Brug de rigtige nøgler til localStorage
+        let homeworkItems = [];
+        try {
+            const homeworkData = localStorage.getItem('lektiekalenderHomework');
+            if (homeworkData) {
+                homeworkItems = JSON.parse(homeworkData);
             }
+        } catch (e) {
+            console.error('Fejl ved indlæsning af lektier:', e);
         }
 
-        // Hent data - brug de samme nøgler som i dine andre filer
-        // Ændre disse til de faktiske nøgler du bruger i dine andre filer
-        const homeworkItems = getLocalStorageData('homeworkItems') || [];
-        const calendarItems = getLocalStorageData('calendarItems') || [];
+        let calendarItems = [];
+        try {
+            const calendarData = localStorage.getItem('elevkalenderActivities');
+            if (calendarData) {
+                calendarItems = JSON.parse(calendarData);
+            }
+        } catch (e) {
+            console.error('Fejl ved indlæsning af kalender:', e);
+        }
 
-        // Filtrer data
-        const todaysHomework = homeworkItems.filter(item => 
-            item.dueDate && item.dueDate === todayFormatted
-        );
-        const tomorrowsHomework = homeworkItems.filter(item => 
-            item.dueDate && item.dueDate === tomorrowFormatted
-        );
-        const todaysCalendarItems = calendarItems.filter(item => 
-            item.date && item.date === todayFormatted
-        );
+        // Filtrer data - håndter begge datoformater
+        const todaysHomework = homeworkItems.filter(item => {
+            const dueDate = convertToDdMmYyyy(item.dueDate);
+            return dueDate === todayFormatted;
+        });
 
-        // Funktion til at vise data
+        const tomorrowsHomework = homeworkItems.filter(item => {
+            const dueDate = convertToDdMmYyyy(item.dueDate);
+            return dueDate === tomorrowFormatted;
+        });
+
+        const todaysCalendarItems = calendarItems.filter(item => {
+            const eventDate = convertToDdMmYyyy(item.date);
+            return eventDate === todayFormatted;
+        });
+
         function displayItems(elementId, items, type) {
             const element = document.getElementById(elementId);
             if (!element) return;
@@ -497,7 +538,7 @@
             const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle';
             const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
 
-            if (items && items.length > 0) {
+            if (items.length > 0) {
                 element.innerHTML = '';
                 items.forEach(item => {
                     let detailsHtml = '';
@@ -535,24 +576,9 @@
             }
         }
 
-        // Vis data
         displayItems('todayCalendar', todaysCalendarItems, 'calendar');
         displayItems('todayHomework', todaysHomework, 'homework');
         displayItems('tomorrowHomework', tomorrowsHomework, 'homework');
-    });
-
-    // Cookie banner kode (uændret)
-    const cookieBanner = document.getElementById('cookieBanner');
-    const acceptButton = document.getElementById('acceptCookies');
-    const cookieAccepted = localStorage.getItem('cookieAccepted');
-
-    if (!cookieAccepted) {
-        cookieBanner.style.display = 'flex';
-    }
-
-    acceptButton.addEventListener('click', () => {
-        localStorage.setItem('cookieAccepted', 'true');
-        cookieBanner.style.display = 'none';
     });
 </script>
 </body>
