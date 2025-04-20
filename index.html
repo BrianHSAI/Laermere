@@ -437,7 +437,7 @@
             </main>
         </div>
         <footer>
-             <p>© 2023 Lærmere.nu - Lær mere, leg mere!</p> </footer>
+             <p>© 2025 Lærmere.nu - Lær mere, leg mere!</p> </footer>
     </div>
 
     <div class="cookie-banner" id="cookieBanner">
@@ -445,28 +445,14 @@
         <button id="acceptCookies">Det er okay!</button>
     </div>
 
- <script>
-    // Simpel JavaScript for cookie banner
-    const cookieBanner = document.getElementById('cookieBanner');
-    const acceptButton = document.getElementById('acceptCookies');
-    const cookieAccepted = localStorage.getItem('cookieAccepted');
-
-    if (!cookieAccepted) {
-        cookieBanner.style.display = 'flex'; // Vis banneret hvis cookie ikke er accepteret
-    }
-
-    acceptButton.addEventListener('click', () => {
-        localStorage.setItem('cookieAccepted', 'true'); // Gem accept i localStorage
-        cookieBanner.style.display = 'none'; // Skjul banneret
-    });
-
-    // NY KODE: Vis dagens lektier og kalender
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Formatter dato
+        // Funktion til at formatere dato til DD/MM/YYYY
         function formatDate(date) {
-            return date.getDate().toString().padStart(2, '0') + '/' +
-                (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
-                date.getFullYear();
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
         }
 
         const today = new Date();
@@ -476,31 +462,34 @@
         const todayFormatted = formatDate(today);
         const tomorrowFormatted = formatDate(tomorrow);
 
-        // Brug de rigtige nøgler til localStorage
-        let homeworkItems = [];
-        try {
-            const homeworkData = localStorage.getItem('lektiekalenderHomework');
-            if (homeworkData) {
-                homeworkItems = JSON.parse(homeworkData);
+        // Funktion til at hente data fra LocalStorage med fejlhåndtering
+        function getLocalStorageData(key) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error(`Fejl ved indlæsning af ${key}:`, e);
+                return [];
             }
-        } catch (e) {
-            console.error('Fejl ved indlæsning af lektier:', e);
         }
 
-        let calendarItems = [];
-        try {
-            const calendarData = localStorage.getItem('elevkalenderActivities');
-            if (calendarData) {
-                calendarItems = JSON.parse(calendarData);
-            }
-        } catch (e) {
-            console.error('Fejl ved indlæsning af kalender:', e);
-        }
+        // Hent data - brug de samme nøgler som i dine andre filer
+        // Ændre disse til de faktiske nøgler du bruger i dine andre filer
+        const homeworkItems = getLocalStorageData('homeworkItems') || [];
+        const calendarItems = getLocalStorageData('calendarItems') || [];
 
-        const todaysHomework = homeworkItems.filter(item => item.dueDate === todayFormatted);
-        const tomorrowsHomework = homeworkItems.filter(item => item.dueDate === tomorrowFormatted);
-        const todaysCalendarItems = calendarItems.filter(item => item.date === todayFormatted);
+        // Filtrer data
+        const todaysHomework = homeworkItems.filter(item => 
+            item.dueDate && item.dueDate === todayFormatted
+        );
+        const tomorrowsHomework = homeworkItems.filter(item => 
+            item.dueDate && item.dueDate === tomorrowFormatted
+        );
+        const todaysCalendarItems = calendarItems.filter(item => 
+            item.date && item.date === todayFormatted
+        );
 
+        // Funktion til at vise data
         function displayItems(elementId, items, type) {
             const element = document.getElementById(elementId);
             if (!element) return;
@@ -508,7 +497,7 @@
             const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle';
             const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
 
-            if (items.length > 0) {
+            if (items && items.length > 0) {
                 element.innerHTML = '';
                 items.forEach(item => {
                     let detailsHtml = '';
@@ -546,9 +535,24 @@
             }
         }
 
+        // Vis data
         displayItems('todayCalendar', todaysCalendarItems, 'calendar');
         displayItems('todayHomework', todaysHomework, 'homework');
         displayItems('tomorrowHomework', tomorrowsHomework, 'homework');
+    });
+
+    // Cookie banner kode (uændret)
+    const cookieBanner = document.getElementById('cookieBanner');
+    const acceptButton = document.getElementById('acceptCookies');
+    const cookieAccepted = localStorage.getItem('cookieAccepted');
+
+    if (!cookieAccepted) {
+        cookieBanner.style.display = 'flex';
+    }
+
+    acceptButton.addEventListener('click', () => {
+        localStorage.setItem('cookieAccepted', 'true');
+        cookieBanner.style.display = 'none';
     });
 </script>
 </body>
