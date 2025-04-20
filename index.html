@@ -143,50 +143,12 @@
             border-bottom: 2px solid var(--primary-orange); /* Streg under H2 */
             display: inline-block; /* Gør at stregen kun er under teksten */
             padding-bottom: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 20px; /* Justeret margin */
         }
 
         p {
             font-size: 1.1em;
             color: var(--text-color);
-        }
-
-        .video-section {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .video-placeholder {
-            width: 100%;
-            max-width: 700px;
-            margin: 20px auto;
-            background-color: var(--primary-green); /* Grøn baggrund for placeholder */
-            color: white; /* Hvid tekst i placeholder */
-            height: 400px;
-            display: flex;
-            flex-direction: column; /* Stak indhold vertikalt */
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5em; /* Større tekst */
-            border-radius: 10px; /* Afrundede hjørner */
-            box-shadow: 0 5px 15px var(--box-shadow-color); /* Blød skygge */
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .video-placeholder p {
-            color: white; /* Sørg for teksten forbliver hvid */
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        /* Styling til indsat video (iframe) */
-        .video-section iframe {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-            border-radius: 10px; /* Afrundede hjørner på video */
-            box-shadow: 0 5px 15px var(--box-shadow-color); /* Blød skygge på video */
         }
 
         footer {
@@ -245,6 +207,122 @@
             background-color: var(--cookie-button-hover);
         }
 
+        /* NYE STYLES TIL DAGENS INFO (nu kun til selve sektionen og boksene) */
+        .todays-info-section {
+            margin-bottom: 40px;
+        }
+
+        /* Fjernet .todays-info-container og .info-column styles, da de ikke bruges mere */
+
+        .info-box {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px var(--box-shadow-color);
+            padding: 15px;
+            margin-bottom: 20px; /* Afstand mellem boksene */
+            min-height: 120px;
+            border-left: 5px solid var(--primary-blue); /* Standard blå kant */
+        }
+
+        /* Specifikke kantfarver for hver boks (kan justeres hvis ønsket) */
+         #todayCalendar {
+            border-left-color: var(--primary-green); /* Grøn for kalender */
+        }
+
+        #todayHomework {
+            border-left-color: var(--primary-blue); /* Blå for dagens lektier */
+        }
+
+        #tomorrowHomework {
+            border-left-color: var(--primary-orange); /* Orange for morgendagens lektier */
+        }
+
+
+        .info-box h3 { /* Hvis du bruger h3 inde i boksen (pt. ikke i brug i den nye struktur) */
+            color: var(--dark-teal);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item i {
+            color: var(--primary-orange); /* Farve på ikoner inde i boksene */
+            margin-right: 10px;
+            margin-top: 3px;
+            width: 20px; /* Fast bredde for bedre alignment */
+            text-align: center;
+        }
+
+        /* Specifik ikonfarve per boks */
+        #todayCalendar .info-item i {
+             color: var(--primary-green);
+        }
+         #todayHomework .info-item i {
+             color: var(--primary-blue);
+        }
+         #tomorrowHomework .info-item i {
+             color: var(--primary-orange);
+        }
+
+
+        .info-item .homework-details, .info-item .calendar-details {
+            flex-grow: 1;
+        }
+
+        .info-item .subject {
+            font-weight: bold;
+            color: var(--dark-teal);
+        }
+
+        .info-item .description {
+            font-size: 0.9em;
+            margin-top: 3px;
+        }
+
+        .info-item .date {
+            font-size: 0.8em;
+            color: #777;
+        }
+
+        .no-data-message {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100px; /* Sikrer lidt højde selvom der ikke er data */
+            color: #999;
+            text-align: center;
+        }
+
+        .no-data-message i {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: var(--primary-blue); /* Standardfarve for ikon i tom besked */
+        }
+
+        /* Specifikke ikonfarver for 'no data' beskeder */
+         #todayCalendar .no-data-message i {
+             color: var(--primary-green);
+         }
+         #todayHomework .no-data-message i {
+             color: var(--primary-blue);
+         }
+          #tomorrowHomework .no-data-message i {
+             color: var(--primary-orange);
+         }
+
+
         /* Media Query for små skærme - stable knap og tekst */
         @media (max-width: 600px) {
             .cookie-banner {
@@ -291,15 +369,13 @@
                h2 {
                   font-size: 1.4em; /* Mindre underoverskrift på små skærme */
                }
-               .video-placeholder {
-                  height: 250px; /* Mindre video placeholder på små skærme */
-                  font-size: 1.2em;
-               }
                footer {
                   padding: 10px;
                }
         }
 
+        /* Media Query for mellemstore skærme - ikke relevant for den nye struktur */
+        /* @media (max-width: 768px) { ... } */ /* Kan fjernes eller beholdes hvis det bruges andre steder */
 
     </style>
 </head>
@@ -327,25 +403,44 @@
                     <p>Din platform for at forbedre dine læringsfærdigheder og organisere din studiehverdag.</p>
                 </header>
 
-                <section class="video-section">
-                    <h2>Se hvordan det virker!</h2>
-                    <div class="video-placeholder">
-                        <p>Glæd dig! Videoen indlæses snart her.</p>
-                        </div>
-                </section>
+                <section class="todays-info-section">
 
+                    <h2>Dagens kalender</h2>
+                    <div class="info-box" id="todayCalendar">
+                        <div class="no-data-message">
+                            <i class="fas fa-calendar-day"></i>
+                            <p>Ingen aktiviteter for i dag.</p>
+                        </div>
+                        </div>
+
+                    <h2>Dagens lektier</h2>
+                    <div class="info-box" id="todayHomework">
+                        <div class="no-data-message">
+                            <i class="fas fa-book"></i>
+                            <p>Ingen lektier for i dag.</p>
+                        </div>
+                        </div>
+
+                    <h2>Lektier til i morgen</h2> <div class="info-box" id="tomorrowHomework">
+                        <div class="no-data-message">
+                            <i class="fas fa-book"></i>
+                            <p>Ingen lektier til i morgen.</p>
+                        </div>
+                        </div>
+
+                </section>
                 <section class="intro-text">
                      <h2>Hvad finder du på Lærmere.nu?</h2>
                      <p>Vi har samlet en række smarte værktøjer, der kan gøre din hverdag som elev sjovere og mere overskuelig. Fra at få tekst læst højt til at planlægge dine lektier – vi hjælper dig godt på vej!</p>
                      <p>Udforsk menuen til venstre for at se alle mulighederne.</p>
                 </section>
-
-
             </main>
-        </div> <footer>
-            <p>© 2025 Lærmere.nu - Lær mere, leg mere!</p>
-        </footer>
-    </div> <div class="cookie-banner" id="cookieBanner">
+        </div>
+        <footer>
+             <p>© 2023 Lærmere.nu - Lær mere, leg mere!</p> </footer>
+    </div>
+
+    <div class="cookie-banner" id="cookieBanner">
         <p>Vi bruger cookies for at sikre, at du får den bedste oplevelse på vores side. Ved at fortsætte, accepterer du vores brug af cookies.</p>
         <button id="acceptCookies">Det er okay!</button>
     </div>
@@ -364,7 +459,112 @@
             localStorage.setItem('cookieAccepted', 'true'); // Gem accept i localStorage
             cookieBanner.style.display = 'none'; // Skjul banneret
         });
-    </script>
 
+        // NY KODE: Vis dagens lektier og kalender
+        document.addEventListener('DOMContentLoaded', function() {
+            // Formatter dato
+            function formatDate(date) {
+                return date.getDate().toString().padStart(2, '0') + '/' +
+                    (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                    date.getFullYear();
+            }
+
+            // Få dagens og morgendagens dato i det format de er gemt som i localStorage
+            const today = new Date();
+            const tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
+
+            const todayFormatted = formatDate(today);
+            const tomorrowFormatted = formatDate(tomorrow);
+
+            // Hent lektier fra localStorage
+            let homeworkItems = [];
+            try {
+                const homeworkData = localStorage.getItem('homeworkItems');
+                if (homeworkData) {
+                    homeworkItems = JSON.parse(homeworkData);
+                }
+            } catch (e) {
+                console.error('Fejl ved indlæsning af lektier:', e);
+            }
+
+            // Hent kalenderaktiviteter fra localStorage
+            let calendarItems = [];
+            try {
+                const calendarData = localStorage.getItem('calendarItems');
+                if (calendarData) {
+                    calendarItems = JSON.parse(calendarData);
+                }
+            } catch (e) {
+                console.error('Fejl ved indlæsning af kalender:', e);
+            }
+
+            // Filtrer lektier for i dag
+            const todaysHomework = homeworkItems.filter(item => item.dueDate === todayFormatted);
+            // Filtrer lektier til i morgen
+            const tomorrowsHomework = homeworkItems.filter(item => item.dueDate === tomorrowFormatted);
+            // Filtrer kalenderaktiviteter for i dag
+            const todaysCalendarItems = calendarItems.filter(item => item.date === todayFormatted);
+
+            // ----------- Funktion til at vise data i en boks -------------
+            function displayItems(elementId, items, type) {
+                const element = document.getElementById(elementId);
+                if (!element) return; // Sikkerhedstjek
+
+                // Standard 'no data' besked (taget fra HTML)
+                const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle'; // Fallback ikon
+                const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
+
+                if (items.length > 0) {
+                    element.innerHTML = ''; // Ryd eksisterende indhold (inkl. 'no data' besked)
+                    items.forEach(item => {
+                        let detailsHtml = '';
+                        let iconClass = 'fas fa-info-circle'; // Fallback
+
+                        if (type === 'calendar') {
+                            iconClass = 'fas fa-calendar-day';
+                            detailsHtml = `
+                                <div class="calendar-details">
+                                    <div class="subject">${item.title || 'Ukendt titel'}</div>
+                                    ${item.description ? `<div class="description">${item.description}</div>` : ''}
+                                    ${item.time ? `<div class="date">${item.time}</div>` : ''}
+                                </div>`;
+                        } else if (type === 'homework') {
+                            iconClass = 'fas fa-book';
+                             detailsHtml = `
+                                <div class="homework-details">
+                                    <div class="subject">${item.subject || 'Ukendt fag'}</div>
+                                    <div class="description">${item.description || 'Ingen beskrivelse'}</div>
+                                </div>`;
+                        }
+
+                        element.innerHTML += `
+                            <div class="info-item">
+                                <i class="${iconClass}"></i>
+                                ${detailsHtml}
+                            </div>
+                        `;
+                    });
+                } else {
+                    // Hvis der ingen items er, SIKRER vi at 'no data' beskeden vises
+                    element.innerHTML = `
+                        <div class="no-data-message">
+                           <i class="${noDataIcon}"></i>
+                           <p>${noDataText}</p>
+                        </div>`;
+                }
+            }
+
+             // Vis dagens kalenderaktiviteter
+            displayItems('todayCalendar', todaysCalendarItems, 'calendar');
+
+             // Vis dagens lektier
+            displayItems('todayHomework', todaysHomework, 'homework');
+
+            // Vis lektier til i morgen
+            displayItems('tomorrowHomework', tomorrowsHomework, 'homework');
+
+        });
+    </script>
 </body>
 </html>
