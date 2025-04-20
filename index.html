@@ -445,126 +445,111 @@
         <button id="acceptCookies">Det er okay!</button>
     </div>
 
-    <script>
-        // Simpel JavaScript for cookie banner
-        const cookieBanner = document.getElementById('cookieBanner');
-        const acceptButton = document.getElementById('acceptCookies');
-        const cookieAccepted = localStorage.getItem('cookieAccepted');
+ <script>
+    // Simpel JavaScript for cookie banner
+    const cookieBanner = document.getElementById('cookieBanner');
+    const acceptButton = document.getElementById('acceptCookies');
+    const cookieAccepted = localStorage.getItem('cookieAccepted');
 
-        if (!cookieAccepted) {
-            cookieBanner.style.display = 'flex'; // Vis banneret hvis cookie ikke er accepteret
+    if (!cookieAccepted) {
+        cookieBanner.style.display = 'flex'; // Vis banneret hvis cookie ikke er accepteret
+    }
+
+    acceptButton.addEventListener('click', () => {
+        localStorage.setItem('cookieAccepted', 'true'); // Gem accept i localStorage
+        cookieBanner.style.display = 'none'; // Skjul banneret
+    });
+
+    // NY KODE: Vis dagens lektier og kalender
+    document.addEventListener('DOMContentLoaded', function() {
+        // Formatter dato
+        function formatDate(date) {
+            return date.getDate().toString().padStart(2, '0') + '/' +
+                (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                date.getFullYear();
         }
 
-        acceptButton.addEventListener('click', () => {
-            localStorage.setItem('cookieAccepted', 'true'); // Gem accept i localStorage
-            cookieBanner.style.display = 'none'; // Skjul banneret
-        });
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
 
-        // NY KODE: Vis dagens lektier og kalender
-        document.addEventListener('DOMContentLoaded', function() {
-            // Formatter dato
-            function formatDate(date) {
-                return date.getDate().toString().padStart(2, '0') + '/' +
-                    (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
-                    date.getFullYear();
+        const todayFormatted = formatDate(today);
+        const tomorrowFormatted = formatDate(tomorrow);
+
+        // Brug de rigtige nøgler til localStorage
+        let homeworkItems = [];
+        try {
+            const homeworkData = localStorage.getItem('lektiekalenderHomework');
+            if (homeworkData) {
+                homeworkItems = JSON.parse(homeworkData);
             }
+        } catch (e) {
+            console.error('Fejl ved indlæsning af lektier:', e);
+        }
 
-            // Få dagens og morgendagens dato i det format de er gemt som i localStorage
-            const today = new Date();
-            const tomorrow = new Date();
-            tomorrow.setDate(today.getDate() + 1);
-
-            const todayFormatted = formatDate(today);
-            const tomorrowFormatted = formatDate(tomorrow);
-
-            // Hent lektier fra localStorage
-            let homeworkItems = [];
-            try {
-                const homeworkData = localStorage.getItem('homeworkItems');
-                if (homeworkData) {
-                    homeworkItems = JSON.parse(homeworkData);
-                }
-            } catch (e) {
-                console.error('Fejl ved indlæsning af lektier:', e);
+        let calendarItems = [];
+        try {
+            const calendarData = localStorage.getItem('elevkalenderActivities');
+            if (calendarData) {
+                calendarItems = JSON.parse(calendarData);
             }
+        } catch (e) {
+            console.error('Fejl ved indlæsning af kalender:', e);
+        }
 
-            // Hent kalenderaktiviteter fra localStorage
-            let calendarItems = [];
-            try {
-                const calendarData = localStorage.getItem('calendarItems');
-                if (calendarData) {
-                    calendarItems = JSON.parse(calendarData);
-                }
-            } catch (e) {
-                console.error('Fejl ved indlæsning af kalender:', e);
-            }
+        const todaysHomework = homeworkItems.filter(item => item.dueDate === todayFormatted);
+        const tomorrowsHomework = homeworkItems.filter(item => item.dueDate === tomorrowFormatted);
+        const todaysCalendarItems = calendarItems.filter(item => item.date === todayFormatted);
 
-            // Filtrer lektier for i dag
-            const todaysHomework = homeworkItems.filter(item => item.dueDate === todayFormatted);
-            // Filtrer lektier til i morgen
-            const tomorrowsHomework = homeworkItems.filter(item => item.dueDate === tomorrowFormatted);
-            // Filtrer kalenderaktiviteter for i dag
-            const todaysCalendarItems = calendarItems.filter(item => item.date === todayFormatted);
+        function displayItems(elementId, items, type) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
 
-            // ----------- Funktion til at vise data i en boks -------------
-            function displayItems(elementId, items, type) {
-                const element = document.getElementById(elementId);
-                if (!element) return; // Sikkerhedstjek
+            const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle';
+            const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
 
-                // Standard 'no data' besked (taget fra HTML)
-                const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle'; // Fallback ikon
-                const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
+            if (items.length > 0) {
+                element.innerHTML = '';
+                items.forEach(item => {
+                    let detailsHtml = '';
+                    let iconClass = 'fas fa-info-circle';
 
-                if (items.length > 0) {
-                    element.innerHTML = ''; // Ryd eksisterende indhold (inkl. 'no data' besked)
-                    items.forEach(item => {
-                        let detailsHtml = '';
-                        let iconClass = 'fas fa-info-circle'; // Fallback
+                    if (type === 'calendar') {
+                        iconClass = 'fas fa-calendar-day';
+                        detailsHtml = `
+                            <div class="calendar-details">
+                                <div class="subject">${item.title || 'Ukendt titel'}</div>
+                                ${item.description ? `<div class="description">${item.description}</div>` : ''}
+                                ${item.time ? `<div class="date">${item.time}</div>` : ''}
+                            </div>`;
+                    } else if (type === 'homework') {
+                        iconClass = 'fas fa-book';
+                        detailsHtml = `
+                            <div class="homework-details">
+                                <div class="subject">${item.subject || 'Ukendt fag'}</div>
+                                <div class="description">${item.description || 'Ingen beskrivelse'}</div>
+                            </div>`;
+                    }
 
-                        if (type === 'calendar') {
-                            iconClass = 'fas fa-calendar-day';
-                            detailsHtml = `
-                                <div class="calendar-details">
-                                    <div class="subject">${item.title || 'Ukendt titel'}</div>
-                                    ${item.description ? `<div class="description">${item.description}</div>` : ''}
-                                    ${item.time ? `<div class="date">${item.time}</div>` : ''}
-                                </div>`;
-                        } else if (type === 'homework') {
-                            iconClass = 'fas fa-book';
-                             detailsHtml = `
-                                <div class="homework-details">
-                                    <div class="subject">${item.subject || 'Ukendt fag'}</div>
-                                    <div class="description">${item.description || 'Ingen beskrivelse'}</div>
-                                </div>`;
-                        }
-
-                        element.innerHTML += `
-                            <div class="info-item">
-                                <i class="${iconClass}"></i>
-                                ${detailsHtml}
-                            </div>
-                        `;
-                    });
-                } else {
-                    // Hvis der ingen items er, SIKRER vi at 'no data' beskeden vises
-                    element.innerHTML = `
-                        <div class="no-data-message">
-                           <i class="${noDataIcon}"></i>
-                           <p>${noDataText}</p>
+                    element.innerHTML += `
+                        <div class="info-item">
+                            <i class="${iconClass}"></i>
+                            ${detailsHtml}
                         </div>`;
-                }
+                });
+            } else {
+                element.innerHTML = `
+                    <div class="no-data-message">
+                        <i class="${noDataIcon}"></i>
+                        <p>${noDataText}</p>
+                    </div>`;
             }
+        }
 
-             // Vis dagens kalenderaktiviteter
-            displayItems('todayCalendar', todaysCalendarItems, 'calendar');
-
-             // Vis dagens lektier
-            displayItems('todayHomework', todaysHomework, 'homework');
-
-            // Vis lektier til i morgen
-            displayItems('tomorrowHomework', tomorrowsHomework, 'homework');
-
-        });
-    </script>
+        displayItems('todayCalendar', todaysCalendarItems, 'calendar');
+        displayItems('todayHomework', todaysHomework, 'homework');
+        displayItems('tomorrowHomework', tomorrowsHomework, 'homework');
+    });
+</script>
 </body>
 </html>
