@@ -9,51 +9,50 @@
     <style>
         /* Legende farver baseret på logoet og suppleret med venlige nuancer */
         :root {
-            --primary-blue: #5DADE2; /* Lysere blå */
-            --primary-green: #82E0AA; /* Lysere grøn */
-            --primary-orange: #F5B041; /* Lysere orange */
-            --dark-teal: #1ABC9C; /* Mindre dyster teal */
-            --text-color: #2C3E50; /* Mørkere, men blød tekstfarve */
-            --background-color: #EBF5FB; /* Meget lys og venlig baggrundsblå */
-            --sidebar-bg: #D6EAF8; /* Lysere baggrund til menu */
-            --menu-link-hover: #A9CCE3; /* Lyseblå ved hover */
-            --box-shadow-color: rgba(44, 62, 80, 0.2); /* Blødere skygge */
-            --cookie-banner-bg: #2C3E50; /* Mørk baggrund til cookie banner */
-            --cookie-banner-text: #ECF0F1; /* Lys tekst til cookie banner */
-            --cookie-button-bg: #1ABC9C; /* Knap farve til cookie banner */
-            --cookie-button-hover: #16A085; /* Knap farve ved hover */
+            --primary-blue: #5DADE2;
+            --primary-green: #82E0AA;
+            --primary-orange: #F5B041;
+            --dark-teal: #1ABC9C;
+            --text-color: #2C3E50;
+            --background-color: #EBF5FB;
+            --sidebar-bg: #D6EAF8;
+            --menu-link-hover: #A9CCE3;
+            --box-shadow-color: rgba(44, 62, 80, 0.2);
+            --cookie-banner-bg: #2C3E50;
+            --cookie-banner-text: #ECF0F1;
+            --cookie-button-bg: #1ABC9C;
+            --cookie-button-hover: #16A085;
         }
 
         body {
-            font-family: 'Nunito', sans-serif; /* Brug den venlige Nunito skrifttype */
+            font-family: 'Nunito', sans-serif;
             margin: 0;
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
-            padding-bottom: 60px; /* Plads til sticky footer + cookie banner */
+            padding-bottom: 60px;
         }
 
         .container {
             display: flex;
-            flex-direction: column; /* Stak elementerne vertikalt */
+            flex-direction: column;
             min-height: 100vh;
         }
 
         .content-area {
             display: flex;
-            flex-grow: 1; /* Hovedindholdet fylder den resterende plads */
+            flex-grow: 1;
         }
 
         .sidebar {
-            width: 280px; /* Gør sidebar en smule bredere for ikoner */
+            width: 280px;
             background-color: var(--sidebar-bg);
             padding: 20px;
-            box-shadow: 2px 0 10px var(--box-shadow-color); /* Blødere skygge */
-            flex-shrink: 0; /* Forhindrer sidebar i at skrumpe */
-            position: relative; /* For at positionere evt. sidebar dekoration */
+            box-shadow: 2px 0 10px var(--box-shadow-color);
+            flex-shrink: 0;
+            position: relative;
         }
 
-         /* Lidt dekoration i bunden af sidebar (valgfrit) */
         .sidebar::after {
             content: '';
             display: block;
@@ -64,7 +63,6 @@
             border-radius: 3px;
         }
 
-
         .sidebar nav ul {
             list-style: none;
             padding: 0;
@@ -72,59 +70,58 @@
         }
 
         .sidebar nav ul li {
-            margin-bottom: 12px; /* Lidt mere plads mellem menupunkter */
+            margin-bottom: 12px;
         }
 
         .sidebar nav ul li a {
             text-decoration: none;
-            color: var(--dark-teal); /* Farve fra logoet */
-            font-weight: 700; /* Gør teksten fed */
-            display: flex; /* Brug flexbox til at justere ikon og tekst */
-            align-items: center; /* Centrer vertikalt */
-            padding: 12px 15px; /* Lidt mere padding */
-            border-radius: 8px; /* Afrundede hjørner */
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Tilføj transform til transition */
-            box-shadow: 0 2px 5px var(--box-shadow-color); /* Let skygge på links */
+            color: var(--dark-teal);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px var(--box-shadow-color);
         }
 
         .sidebar nav ul li a i {
-            margin-right: 10px; /* Mellemrum mellem ikon og tekst */
-            color: var(--primary-orange); /* Farve på ikoner */
-            font-size: 1.3em; /* Gør ikoner lidt større */
-            transition: transform 0.3s ease; /* Animation på ikon ved hover */
+            margin-right: 10px;
+            color: var(--primary-orange);
+            font-size: 1.3em;
+            transition: transform 0.3s ease;
         }
 
-         .sidebar nav ul li a:hover i {
-             transform: scale(1.2) rotate(5deg); /* Ikon roterer og bliver større ved hover */
-             color: var(--primary-blue); /* Skift ikon farve ved hover */
-         }
-
+        .sidebar nav ul li a:hover i {
+            transform: scale(1.2) rotate(5deg);
+            color: var(--primary-blue);
+        }
 
         .sidebar nav ul li a:hover {
-            background-color: var(--menu-link-hover); /* Lysere nuance ved hover */
-            color: var(--primary-blue); /* Skift farve ved hover */
-            transform: translateX(5px); /* Flyt linket lidt til højre ved hover */
-            box-shadow: 0 4px 8px var(--box-shadow-color); /* Mere synlig skygge ved hover */
+            background-color: var(--menu-link-hover);
+            color: var(--primary-blue);
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px var(--box-shadow-color);
         }
 
         .main-content {
             flex-grow: 1;
             padding: 20px;
-            background-color: #fff; /* Hvid baggrund for hovedindhold */
-            margin: 20px; /* Margin rundt om hovedindhold */
-            border-radius: 10px; /* Afrundede hjørner på hovedindhold */
-            box-shadow: 0 0 15px var(--box-shadow-color); /* Blød skygge */
+            background-color: #fff;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px var(--box-shadow-color);
         }
 
         header {
             text-align: center;
             margin-bottom: 40px;
             padding-bottom: 20px;
-            border-bottom: 2px dashed var(--primary-green); /* Stiblet streg under header */
+            border-bottom: 2px dashed var(--primary-green);
         }
 
         .logo {
-            max-width: 350px; /* Gør logoet lidt større */
+            max-width: 350px;
             height: auto;
             display: block;
             margin: 0 auto 20px auto;
@@ -132,18 +129,18 @@
 
         h1 {
             color: var(--primary-blue);
-            font-size: 2.5em; /* Større overskrift */
+            font-size: 2.5em;
             margin-bottom: 10px;
-            text-shadow: 1px 1px 2px var(--primary-orange); /* Let skygge på overskrift */
+            text-shadow: 1px 1px 2px var(--primary-orange);
         }
 
         h2 {
             color: var(--dark-teal);
-            font-size: 1.8em; /* Større underoverskrift */
-            border-bottom: 2px solid var(--primary-orange); /* Streg under H2 */
-            display: inline-block; /* Gør at stregen kun er under teksten */
+            font-size: 1.8em;
+            border-bottom: 2px solid var(--primary-orange);
+            display: inline-block;
             padding-bottom: 5px;
-            margin-bottom: 20px; /* Justeret margin */
+            margin-bottom: 20px;
         }
 
         p {
@@ -156,20 +153,18 @@
             padding: 20px;
             background-color: var(--dark-teal);
             color: white;
-            /* margin-top: auto; Fjernes da cookie banner fylder */
             width: 100%;
             box-sizing: border-box;
-            flex-shrink: 0; /* Forhindrer footer i at skrumpe */
+            flex-shrink: 0;
         }
 
         footer p {
-            color: white; /* Sørg for tekst i footer er hvid */
+            color: white;
             margin: 0;
         }
 
-        /* COOKIE BANNER STYLING */
         .cookie-banner {
-            position: fixed; /* Fastsæt position i bunden */
+            position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
@@ -179,19 +174,19 @@
             text-align: center;
             font-size: 0.9em;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000; /* Sørg for den ligger øverst */
-            display: none; /* Skjules som standard, vises med JS */
-            justify-content: center; /* Centrer indhold ved brug af flexbox */
+            z-index: 1000;
+            display: none;
+            justify-content: center;
             align-items: center;
-            flex-wrap: wrap; /* Tillad indhold at bryde linje på små skærme */
+            flex-wrap: wrap;
         }
 
         .cookie-banner p {
-            margin: 0 20px 0 0; /* Mellemrum mellem tekst og knap */
-            color: var(--cookie-banner-text); /* Sørg for tekstfarve */
+            margin: 0 20px 0 0;
+            color: var(--cookie-banner-text);
         }
 
-         .cookie-banner button {
+        .cookie-banner button {
             background-color: var(--cookie-button-bg);
             color: white;
             border: none;
@@ -200,45 +195,32 @@
             cursor: pointer;
             font-size: 0.9em;
             transition: background-color 0.3s ease;
-            margin-top: 5px; /* Lidt plads over knappen på små skærme */
-         }
+            margin-top: 5px;
+        }
 
         .cookie-banner button:hover {
             background-color: var(--cookie-button-hover);
         }
 
-        /* NYE STYLES TIL DAGENS INFO (nu kun til selve sektionen og boksene) */
         .todays-info-section {
             margin-bottom: 40px;
         }
-
-        /* Fjernet .todays-info-container og .info-column styles, da de ikke bruges mere */
 
         .info-box {
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 3px 10px var(--box-shadow-color);
             padding: 15px;
-            margin-bottom: 20px; /* Afstand mellem boksene */
+            margin-bottom: 20px;
             min-height: 120px;
-            border-left: 5px solid var(--primary-blue); /* Standard blå kant */
+            border-left: 5px solid var(--primary-blue);
         }
 
-        /* Specifikke kantfarver for hver boks (kan justeres hvis ønsket) */
-         #todayCalendar {
-            border-left-color: var(--primary-green); /* Grøn for kalender */
+        #todayCalendar {
+            border-left-color: var(--primary-green);
         }
 
-        #todayHomework {
-            border-left-color: var(--primary-blue); /* Blå for dagens lektier */
-        }
-
-        #tomorrowHomework {
-            border-left-color: var(--primary-orange); /* Orange for morgendagens lektier */
-        }
-
-
-        .info-box h3 { /* Hvis du bruger h3 inde i boksen (pt. ikke i brug i den nye struktur) */
+        .info-box h3 {
             color: var(--dark-teal);
             margin-top: 0;
             margin-bottom: 10px;
@@ -257,26 +239,18 @@
         }
 
         .info-item i {
-            color: var(--primary-orange); /* Farve på ikoner inde i boksene */
+            color: var(--primary-orange);
             margin-right: 10px;
             margin-top: 3px;
-            width: 20px; /* Fast bredde for bedre alignment */
+            width: 20px;
             text-align: center;
         }
 
-        /* Specifik ikonfarve per boks */
         #todayCalendar .info-item i {
-             color: var(--primary-green);
-        }
-         #todayHomework .info-item i {
-             color: var(--primary-blue);
-        }
-         #tomorrowHomework .info-item i {
-             color: var(--primary-orange);
+            color: var(--primary-green);
         }
 
-
-        .info-item .homework-details, .info-item .calendar-details {
+        .info-item .calendar-details {
             flex-grow: 1;
         }
 
@@ -300,7 +274,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100px; /* Sikrer lidt højde selvom der ikke er data */
+            height: 100px;
             color: #999;
             text-align: center;
         }
@@ -308,75 +282,86 @@
         .no-data-message i {
             font-size: 2em;
             margin-bottom: 10px;
-            color: var(--primary-blue); /* Standardfarve for ikon i tom besked */
+            color: var(--primary-blue);
         }
 
-        /* Specifikke ikonfarver for 'no data' beskeder */
-         #todayCalendar .no-data-message i {
-             color: var(--primary-green);
-         }
-         #todayHomework .no-data-message i {
-             color: var(--primary-blue);
-         }
-          #tomorrowHomework .no-data-message i {
-             color: var(--primary-orange);
-         }
+        #todayCalendar .no-data-message i {
+            color: var(--primary-green);
+        }
 
+        /* Nye styles til ugeoversigt */
+        .day-header {
+            color: var(--dark-teal);
+            font-size: 1.1em;
+            margin: 15px 0 5px 0;
+            padding-bottom: 3px;
+            border-bottom: 1px dashed var(--primary-green);
+        }
 
-        /* Media Query for små skærme - stable knap og tekst */
+        .week-header {
+            color: var(--primary-blue);
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
         @media (max-width: 600px) {
             .cookie-banner {
-                flex-direction: column; /* Stak indhold vertikalt */
+                flex-direction: column;
             }
 
-             .cookie-banner p {
-                margin: 0 0 10px 0; /* Mere plads under tekst */
-             }
-             .sidebar {
-                 width: 100%; /* Sidebar fylder hele bredden på små skærme */
-                 height: auto;
-                 padding: 10px;
-                 box-shadow: 0 2px 10px var(--box-shadow-color);
-             }
-              .sidebar nav ul {
-                 display: flex; /* Vis menupunkter ved siden af hinanden */
-                 flex-wrap: wrap; /* Bryd linje hvis pladsen er trang */
-                 justify-content: center;
-              }
-              .sidebar nav ul li {
-                 margin: 5px 10px; /* Mindre margin */
-              }
-              .sidebar nav ul li a {
-                 padding: 8px 10px; /* Mindre padding */
-                 font-size: 0.9em;
-                 flex-direction: column; /* Stak ikon og tekst vertikalt */
-                 align-items: center;
-              }
-              .sidebar nav ul li a i {
-                  margin: 0 0 5px 0; /* Mellemrum mellem ikon og tekst */
-              }
+            .cookie-banner p {
+                margin: 0 0 10px 0;
+            }
 
-              .main-content {
-                  margin: 10px; /* Mindre margin på små skærme */
-              }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 10px;
+                box-shadow: 0 2px 10px var(--box-shadow-color);
+            }
 
-              .logo {
-                  max-width: 250px; /* Mindre logo på små skærme */
-              }
-               h1 {
-                 font-size: 1.8em; /* Mindre overskrift på små skærme */
-               }
-               h2 {
-                  font-size: 1.4em; /* Mindre underoverskrift på små skærme */
-               }
-               footer {
-                  padding: 10px;
-               }
+            .sidebar nav ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .sidebar nav ul li {
+                margin: 5px 10px;
+            }
+
+            .sidebar nav ul li a {
+                padding: 8px 10px;
+                font-size: 0.9em;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .sidebar nav ul li a i {
+                margin: 0 0 5px 0;
+            }
+
+            .main-content {
+                margin: 10px;
+            }
+
+            .logo {
+                max-width: 250px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            footer {
+                padding: 10px;
+            }
         }
-
-        /* Media Query for mellemstore skærme - ikke relevant for den nye struktur */
-        /* @media (max-width: 768px) { ... } */ /* Kan fjernes eller beholdes hvis det bruges andre steder */
-
     </style>
 </head>
 <body>
@@ -404,40 +389,25 @@
                 </header>
 
                 <section class="todays-info-section">
-
-                    <h2>Dagens kalender</h2>
-                    <div class="info-box" id="todayCalendar">
+                    <h2>Denne uges aktiviteter</h2>
+                    <div class="info-box" id="weeklyCalendar">
                         <div class="no-data-message">
-                            <i class="fas fa-calendar-day"></i>
-                            <p>Ingen aktiviteter for i dag.</p>
+                            <i class="fas fa-calendar-week"></i>
+                            <p>Ingen aktiviteter for denne uge.</p>
                         </div>
-                        </div>
-
-                    <h2>Dagens lektier</h2>
-                    <div class="info-box" id="todayHomework">
-                        <div class="no-data-message">
-                            <i class="fas fa-book"></i>
-                            <p>Ingen lektier for i dag.</p>
-                        </div>
-                        </div>
-
-                    <h2>Lektier til i morgen</h2> <div class="info-box" id="tomorrowHomework">
-                        <div class="no-data-message">
-                            <i class="fas fa-book"></i>
-                            <p>Ingen lektier til i morgen.</p>
-                        </div>
-                        </div>
-
+                    </div>
                 </section>
+
                 <section class="intro-text">
-                     <h2>Hvad finder du på Lærmere.nu?</h2>
-                     <p>Vi har samlet en række smarte værktøjer, der kan gøre din hverdag som elev sjovere og mere overskuelig. Fra at få tekst læst højt til at planlægge dine lektier – vi hjælper dig godt på vej!</p>
-                     <p>Udforsk menuen til venstre for at se alle mulighederne.</p>
+                    <h2>Hvad finder du på Lærmere.nu?</h2>
+                    <p>Vi har samlet en række smarte værktøjer, der kan gøre din hverdag som elev sjovere og mere overskuelig. Fra at få tekst læst højt til at planlægge dine lektier – vi hjælper dig godt på vej!</p>
+                    <p>Udforsk menuen til venstre for at se alle mulighederne.</p>
                 </section>
             </main>
         </div>
         <footer>
-             <p>© 2025 Lærmere.nu - Lær mere, leg mere!</p> </footer>
+            <p>© 2023 Lærmere.nu - Lær mere, leg mere!</p>
+        </footer>
     </div>
 
     <div class="cookie-banner" id="cookieBanner">
@@ -445,92 +415,25 @@
         <button id="acceptCookies">Det er okay!</button>
     </div>
 
-<script>
-    // Simpel JavaScript for cookie banner
-    const cookieBanner = document.getElementById('cookieBanner');
-    const acceptButton = document.getElementById('acceptCookies');
-    const cookieAccepted = localStorage.getItem('cookieAccepted');
+    <script>
+        // Funktion til at hente ugenummer (ISO-uge)
+        function getWeekNumber(date) {
+            const d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
+            const week1 = new Date(d.getFullYear(), 0, 4);
+            return 1 + Math.round(((d - week1) / 86400000 + (week1.getDay() + 6) % 7 - 3) / 7);
+        }
 
-    if (!cookieAccepted) {
-        cookieBanner.style.display = 'flex'; // Vis banneret hvis cookie ikke er accepteret
-    }
-
-    acceptButton.addEventListener('click', () => {
-        localStorage.setItem('cookieAccepted', 'true'); // Gem accept i localStorage
-        cookieBanner.style.display = 'none'; // Skjul banneret
-    });
-
-    // NY KODE: Vis dagens lektier og kalender
-    document.addEventListener('DOMContentLoaded', function() {
-        // Formatter dato til DD/MM/YYYY
+        // Funktion til at formatere dato til DD/MM/YYYY
         function formatDate(date) {
-            return date.getDate().toString().padStart(2, '0') + '/' +
-                (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
-                date.getFullYear();
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
         }
 
-        // Funktion til at konvertere datoer mellem YYYY/MM/DD og DD/MM/YYYY
-        function convertToDdMmYyyy(dateStr) {
-            if (!dateStr) return null;
-            
-            // Hvis allerede i DD/MM/YYYY format
-            if (dateStr.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-                return dateStr;
-            }
-            
-            // Hvis i YYYY/MM/DD format
-            if (dateStr.match(/^\d{4}\/\d{2}\/\d{2}$/)) {
-                const parts = dateStr.split('/');
-                return `${parts[2]}/${parts[1]}/${parts[0]}`;
-            }
-            
-            return null; // Ukendt format
-        }
-
-        const today = new Date();
-        const tomorrow = new Date();
-        tomorrow.setDate(today.getDate() + 1);
-
-        const todayFormatted = formatDate(today);
-        const tomorrowFormatted = formatDate(tomorrow);
-
-        // Brug de rigtige nøgler til localStorage
-        let homeworkItems = [];
-        try {
-            const homeworkData = localStorage.getItem('lektiekalenderHomework');
-            if (homeworkData) {
-                homeworkItems = JSON.parse(homeworkData);
-            }
-        } catch (e) {
-            console.error('Fejl ved indlæsning af lektier:', e);
-        }
-
-        let calendarItems = [];
-        try {
-            const calendarData = localStorage.getItem('elevkalenderActivities');
-            if (calendarData) {
-                calendarItems = JSON.parse(calendarData);
-            }
-        } catch (e) {
-            console.error('Fejl ved indlæsning af kalender:', e);
-        }
-
-        // Filtrer data - håndter begge datoformater
-        const todaysHomework = homeworkItems.filter(item => {
-            const dueDate = convertToDdMmYyyy(item.dueDate);
-            return dueDate === todayFormatted;
-        });
-
-        const tomorrowsHomework = homeworkItems.filter(item => {
-            const dueDate = convertToDdMmYyyy(item.dueDate);
-            return dueDate === tomorrowFormatted;
-        });
-
-        const todaysCalendarItems = calendarItems.filter(item => {
-            const eventDate = convertToDdMmYyyy(item.date);
-            return eventDate === todayFormatted;
-        });
-
+        // Funktion til at vise data
         function displayItems(elementId, items, type) {
             const element = document.getElementById(elementId);
             if (!element) return;
@@ -538,7 +441,7 @@
             const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle';
             const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
 
-            if (items.length > 0) {
+            if (items && items.length > 0) {
                 element.innerHTML = '';
                 items.forEach(item => {
                     let detailsHtml = '';
@@ -551,13 +454,6 @@
                                 <div class="subject">${item.title || 'Ukendt titel'}</div>
                                 ${item.description ? `<div class="description">${item.description}</div>` : ''}
                                 ${item.time ? `<div class="date">${item.time}</div>` : ''}
-                            </div>`;
-                    } else if (type === 'homework') {
-                        iconClass = 'fas fa-book';
-                        detailsHtml = `
-                            <div class="homework-details">
-                                <div class="subject">${item.subject || 'Ukendt fag'}</div>
-                                <div class="description">${item.description || 'Ingen beskrivelse'}</div>
                             </div>`;
                     }
 
@@ -576,10 +472,148 @@
             }
         }
 
-        displayItems('todayCalendar', todaysCalendarItems, 'calendar');
-        displayItems('todayHomework', todaysHomework, 'homework');
-        displayItems('tomorrowHomework', tomorrowsHomework, 'homework');
-    });
-</script>
+        // Hovedfunktion når DOM er indlæst
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hent kalenderdata
+            let calendarItems = [];
+            try {
+                const calendarData = localStorage.getItem('elevkalenderActivities');
+                if (calendarData) {
+                    calendarItems = JSON.parse(calendarData);
+                }
+            } catch (e) {
+                console.error('Fejl ved indlæsning af kalender:', e);
+            }
+
+            // Find aktuel uge og år
+            const today = new Date();
+            const currentWeek = getWeekNumber(today);
+            const currentYear = today.getFullYear();
+
+            // Filtrer aktiviteter for denne uge
+            const weeklyActivities = calendarItems.filter(item => {
+                if (!item.date) return false;
+
+                try {
+                    // Prøv at parse datoen i forskellige formater
+                    let dateObj;
+                    if (item.date.includes('/')) {
+                        const parts = item.date.split('/');
+                        if (parts[0].length === 4) { // YYYY/MM/DD format
+                            dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+                        } else { // DD/MM/YYYY format
+                            dateObj = new Date(parts[2], parts[1] - 1, parts[0]);
+                        }
+                    } else {
+                        // Prøv at parse som ISO-dato
+                        dateObj = new Date(item.date);
+                    }
+
+                    if (isNaN(dateObj.getTime())) return false;
+
+                    return getWeekNumber(dateObj) === currentWeek &&
+                           dateObj.getFullYear() === currentYear;
+                } catch (e) {
+                    console.error('Fejl ved parsing af dato:', item.date, e);
+                    return false;
+                }
+            });
+
+            // Sorter aktiviteter efter dato
+            weeklyActivities.sort((a, b) => {
+                try {
+                    const dateA = a.date.includes('/') ?
+                        (a.date.split('/')[0].length === 4 ?
+                            new Date(a.date) :
+                            new Date(a.date.split('/').reverse().join('/'))) :
+                        new Date(a.date);
+
+                    const dateB = b.date.includes('/') ?
+                        (b.date.split('/')[0].length === 4 ?
+                            new Date(b.date) :
+                            new Date(b.date.split('/').reverse().join('/'))) :
+                        new Date(b.date);
+
+                    return dateA - dateB;
+                } catch (e) {
+                    return 0;
+                }
+            });
+
+            // Gruppér aktiviteter efter dag
+            const activitiesByDay = {};
+            weeklyActivities.forEach(activity => {
+                let dateKey;
+                try {
+                    if (activity.date.includes('/')) {
+                        if (activity.date.split('/')[0].length === 4) { // YYYY/MM/DD
+                            const [year, month, day] = activity.date.split('/');
+                            dateKey = `${day}/${month}/${year}`;
+                        } else { // DD/MM/YYYY
+                            dateKey = activity.date;
+                        }
+                    } else {
+                        const dateObj = new Date(activity.date);
+                        dateKey = formatDate(dateObj);
+                    }
+
+                    if (!activitiesByDay[dateKey]) {
+                        activitiesByDay[dateKey] = [];
+                    }
+                    activitiesByDay[dateKey].push(activity);
+                } catch (e) {
+                    console.error('Fejl ved gruppering af aktivitet:', activity, e);
+                }
+            });
+
+            // Vis ugeoversigt
+            const weeklyElement = document.getElementById('weeklyCalendar');
+            if (weeklyActivities.length > 0) {
+                weeklyElement.innerHTML = '';
+
+                // Tilføj ugeoverskrift
+                const weekHeader = document.createElement('h3');
+                weekHeader.className = 'week-header';
+                weekHeader.textContent = `Uge ${currentWeek}, ${currentYear}`;
+                weeklyElement.appendChild(weekHeader);
+
+                // Tilføj aktiviteter grupperet efter dag
+                Object.keys(activitiesByDay).sort().forEach(date => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'day-header';
+                    dayHeader.innerHTML = `<strong>${date}</strong>`;
+                    weeklyElement.appendChild(dayHeader);
+
+                    activitiesByDay[date].forEach(activity => {
+                        const activityElement = document.createElement('div');
+                        activityElement.className = 'info-item';
+                        activityElement.innerHTML = `
+                            <i class="fas fa-calendar-day"></i>
+                            <div class="calendar-details">
+                                <div class="subject">${activity.title || 'Ukendt titel'}</div>
+                                ${activity.description ? `<div class="description">${activity.description}</div>` : ''}
+                                ${activity.time ? `<div class="date">${activity.time}</div>` : ''}
+                            </div>
+                        `;
+                        weeklyElement.appendChild(activityElement);
+                    });
+                });
+            }
+        });
+
+        // Cookie banner funktionalitet
+        const cookieBanner = document.getElementById('cookieBanner');
+        const acceptButton = document.getElementById('acceptCookies');
+        const cookieAccepted = localStorage.getItem('cookieAccepted');
+
+        if (!cookieAccepted) {
+            cookieBanner.style.display = 'flex';
+        }
+
+        acceptButton.addEventListener('click', () => {
+            localStorage.setItem('cookieAccepted', 'true');
+            cookieBanner.style.display = 'none';
+        });
+    </script>
 </body>
 </html>
