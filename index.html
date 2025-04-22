@@ -389,11 +389,11 @@
                 </header>
 
                 <section class="todays-info-section">
-                    <h2>Denne uges aktiviteter</h2>
-                    <div class="info-box" id="weeklyCalendar">
+                    <h2>Dagens aktiviteter</h2>
+                    <div class="info-box" id="todayCalendar">
                         <div class="no-data-message">
-                            <i class="fas fa-calendar-week"></i>
-                            <p>Ingen aktiviteter for denne uge.</p>
+                            <i class="fas fa-calendar-day"></i>
+                            <p>Ingen aktiviteter for i dag.</p>
                         </div>
                     </div>
                 </section>
@@ -406,7 +406,7 @@
             </main>
         </div>
         <footer>
-            <p>© 2025 Lærmere.nu - Lær mere, leg mere!</p>
+            <p>© 2023 Lærmere.nu - Lær mere, leg mere!</p>
         </footer>
     </div>
 
@@ -416,13 +416,13 @@
     </div>
 
     <script>
-        // Funktion til at hente ugenummer (ISO-uge)
-        function getWeekNumber(date) {
-            const d = new Date(date);
-            d.setHours(0, 0, 0, 0);
-            d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
-            const week1 = new Date(d.getFullYear(), 0, 4);
-            return 1 + Math.round(((d - week1) / 86400000 + (week1.getDay() + 6) % 7 - 3) / 7);
+        // Funktion til at hente den aktuelle dato
+        function getCurrentDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
         // Funktion til at formatere dato til DD/MM/YYYY
@@ -485,13 +485,12 @@
                 console.error('Fejl ved indlæsning af kalender:', e);
             }
 
-            // Find aktuel uge og år
+            // Find aktuel dato
             const today = new Date();
-            const currentWeek = getWeekNumber(today);
-            const currentYear = today.getFullYear();
+            const currentDate = getCurrentDate();
 
-            // Filtrer aktiviteter for denne uge
-            const weeklyActivities = calendarItems.filter(item => {
+            // Filtrer aktiviteter for i dag
+            const todaysActivities = calendarItems.filter(item => {
                 if (!item.date) return false;
 
                 try {
@@ -511,92 +510,45 @@
 
                     if (isNaN(dateObj.getTime())) return false;
 
-                    return getWeekNumber(dateObj) === currentWeek &&
-                           dateObj.getFullYear() === currentYear;
+                    return formatDate(dateObj) === formatDate(today);
                 } catch (e) {
                     console.error('Fejl ved parsing af dato:', item.date, e);
                     return false;
                 }
             });
 
-            // Sorter aktiviteter efter dato
-            weeklyActivities.sort((a, b) => {
-                try {
-                    const dateA = a.date.includes('/') ?
-                        (a.date.split('/')[0].length === 4 ?
-                            new Date(a.date) :
-                            new Date(a.date.split('/').reverse().join('/'))) :
-                        new Date(a.date);
-
-                    const dateB = b.date.includes('/') ?
-                        (b.date.split('/')[0].length === 4 ?
-                            new Date(b.date) :
-                            new Date(b.date.split('/').reverse().join('/'))) :
-                        new Date(b.date);
-
-                    return dateA - dateB;
-                } catch (e) {
-                    return 0;
+            // Sorter aktiviteter efter tid
+            todaysActivities.sort((a, b) => {
+                if (a.time && b.time) {
+                    return a.time.localeCompare(b.time);
                 }
+                return 0;
             });
 
-            // Gruppér aktiviteter efter dag
-            const activitiesByDay = {};
-            weeklyActivities.forEach(activity => {
-                let dateKey;
-                try {
-                    if (activity.date.includes('/')) {
-                        if (activity.date.split('/')[0].length === 4) { // YYYY/MM/DD
-                            const [year, month, day] = activity.date.split('/');
-                            dateKey = `${day}/${month}/${year}`;
-                        } else { // DD/MM/YYYY
-                            dateKey = activity.date;
-                        }
-                    } else {
-                        const dateObj = new Date(activity.date);
-                        dateKey = formatDate(dateObj);
-                    }
+            // Vis dagens aktiviteter
+            const todayElement = document.getElementById('todayCalendar');
+            if (todaysActivities.length > 0) {
+                todayElement.innerHTML = '';
 
-                    if (!activitiesByDay[dateKey]) {
-                        activitiesByDay[dateKey] = [];
-                    }
-                    activitiesByDay[dateKey].push(activity);
-                } catch (e) {
-                    console.error('Fejl ved gruppering af aktivitet:', activity, e);
-                }
-            });
+                // Tilføj dagsoverskrift
+                const dayHeader = document.createElement('h3');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = `Aktiviteter for ${formatDate(today)}`;
+                todayElement.appendChild(dayHeader);
 
-            // Vis ugeoversigt
-            const weeklyElement = document.getElementById('weeklyCalendar');
-            if (weeklyActivities.length > 0) {
-                weeklyElement.innerHTML = '';
-
-                // Tilføj ugeoverskrift
-                const weekHeader = document.createElement('h3');
-                weekHeader.className = 'week-header';
-                weekHeader.textContent = `Uge ${currentWeek}, ${currentYear}`;
-                weeklyElement.appendChild(weekHeader);
-
-                // Tilføj aktiviteter grupperet efter dag
-                Object.keys(activitiesByDay).sort().forEach(date => {
-                    const dayHeader = document.createElement('div');
-                    dayHeader.className = 'day-header';
-                    dayHeader.innerHTML = `<strong>${date}</strong>`;
-                    weeklyElement.appendChild(dayHeader);
-
-                    activitiesByDay[date].forEach(activity => {
-                        const activityElement = document.createElement('div');
-                        activityElement.className = 'info-item';
-                        activityElement.innerHTML = `
-                            <i class="fas fa-calendar-day"></i>
-                            <div class="calendar-details">
-                                <div class="subject">${activity.title || 'Ukendt titel'}</div>
-                                ${activity.description ? `<div class="description">${activity.description}</div>` : ''}
-                                ${activity.time ? `<div class="date">${activity.time}</div>` : ''}
-                            </div>
-                        `;
-                        weeklyElement.appendChild(activityElement);
-                    });
+                // Tilføj aktiviteter
+                todaysActivities.forEach(activity => {
+                    const activityElement = document.createElement('div');
+                    activityElement.className = 'info-item';
+                    activityElement.innerHTML = `
+                        <i class="fas fa-calendar-day"></i>
+                        <div class="calendar-details">
+                            <div class="subject">${activity.title || 'Ukendt titel'}</div>
+                            ${activity.description ? `<div class="description">${activity.description}</div>` : ''}
+                            ${activity.time ? `<div class="date">${activity.time}</div>` : ''}
+                        </div>
+                    `;
+                    todayElement.appendChild(activityElement);
                 });
             }
         });
