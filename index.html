@@ -9,357 +9,357 @@
     <style>
         /* Legende farver baseret på logoet og suppleret med venlige nuancer */
         :root {
-            --primary-blue: #5DADE2;
-            --primary-green: #82E0AA;
-            --primary-orange: #F5B041;
-            --dark-teal: #1ABC9C;
-            --text-color: #2C3E50;
-            --background-color: #EBF5FB;
-            --sidebar-bg: #D6EAF8;
-            --menu-link-hover: #A9CCE3;
-            --box-shadow-color: rgba(44, 62, 80, 0.2);
-            --cookie-banner-bg: #2C3E50;
-            --cookie-banner-text: #ECF0F1;
-            --cookie-button-bg: #1ABC9C;
-            --cookie-button-hover: #16A085;
+            --primary-blue: #5DADE2; /* [cite: 1] */
+            --primary-green: #82E0AA; /* [cite: 2] */
+            --primary-orange: #F5B041; /* [cite: 2] */
+            --dark-teal: #1ABC9C; /* [cite: 2] */
+            --text-color: #2C3E50; /* [cite: 2] */
+            --background-color: #EBF5FB; /* [cite: 2] */
+            --sidebar-bg: #D6EAF8; /* [cite: 2] */
+            --menu-link-hover: #A9CCE3; /* [cite: 2] */
+            --box-shadow-color: rgba(44, 62, 80, 0.2); /* [cite: 2] */
+            --cookie-banner-bg: #2C3E50; /* [cite: 3] */
+            --cookie-banner-text: #ECF0F1; /* [cite: 3] */
+            --cookie-button-bg: #1ABC9C; /* [cite: 3] */
+            --cookie-button-hover: #16A085; /* [cite: 3] */
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            margin: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            padding-bottom: 60px;
+            font-family: 'Nunito', sans-serif; /* [cite: 3] */
+            margin: 0; /* [cite: 4] */
+            background-color: var(--background-color); /* [cite: 4] */
+            color: var(--text-color); /* [cite: 4] */
+            line-height: 1.6; /* [cite: 4] */
+            padding-bottom: 60px; /* [cite: 4] */
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            display: flex; /* [cite: 5] */
+            flex-direction: column; /* [cite: 6] */
+            min-height: 100vh; /* [cite: 6] */
         }
 
         .content-area {
-            display: flex;
-            flex-grow: 1;
+            display: flex; /* [cite: 6] */
+            flex-grow: 1; /* [cite: 7] */
         }
 
         .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            padding: 20px;
-            box-shadow: 2px 0 10px var(--box-shadow-color);
-            flex-shrink: 0;
-            position: relative;
+            width: 280px; /* [cite: 7] */
+            background-color: var(--sidebar-bg); /* [cite: 8] */
+            padding: 20px; /* [cite: 8] */
+            box-shadow: 2px 0 10px var(--box-shadow-color); /* [cite: 8] */
+            flex-shrink: 0; /* [cite: 8] */
+            position: relative; /* [cite: 8] */
         }
 
         .sidebar::after {
-            content: '';
-            display: block;
-            width: 80%;
-            height: 6px;
-            background: linear-gradient(to right, var(--primary-orange), var(--primary-green), var(--primary-blue));
-            margin: 20px auto 0 auto;
-            border-radius: 3px;
+            content: ''; /* [cite: 9] */
+            display: block; /* [cite: 9] */
+            width: 80%; /* [cite: 10] */
+            height: 6px; /* [cite: 10] */
+            background: linear-gradient(to right, var(--primary-orange), var(--primary-green), var(--primary-blue)); /* [cite: 10] */
+            margin: 20px auto 0 auto; /* [cite: 10] */
+            border-radius: 3px; /* [cite: 10] */
         }
 
         .sidebar nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+            list-style: none; /* [cite: 11] */
+            padding: 0; /* [cite: 12] */
+            margin: 0; /* [cite: 12] */
         }
 
         .sidebar nav ul li {
-            margin-bottom: 12px;
+            margin-bottom: 12px; /* [cite: 12] */
         }
 
         .sidebar nav ul li a {
-            text-decoration: none;
-            color: var(--dark-teal);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 2px 5px var(--box-shadow-color);
+            text-decoration: none; /* [cite: 13] */
+            color: var(--dark-teal); /* [cite: 14] */
+            font-weight: 700; /* [cite: 14] */
+            display: flex; /* [cite: 14] */
+            align-items: center; /* [cite: 14] */
+            padding: 12px 15px; /* [cite: 14] */
+            border-radius: 8px; /* [cite: 14] */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* [cite: 15] */
+            box-shadow: 0 2px 5px var(--box-shadow-color); /* [cite: 15] */
         }
 
         .sidebar nav ul li a i {
-            margin-right: 10px;
-            color: var(--primary-orange);
-            font-size: 1.3em;
-            transition: transform 0.3s ease;
+            margin-right: 10px; /* [cite: 16] */
+            color: var(--primary-orange); /* [cite: 17] */
+            font-size: 1.3em; /* [cite: 17] */
+            transition: transform 0.3s ease; /* [cite: 17] */
         }
 
         .sidebar nav ul li a:hover i {
-            transform: scale(1.2) rotate(5deg);
-            color: var(--primary-blue);
+            transform: scale(1.2) rotate(5deg); /* [cite: 17] */
+            color: var(--primary-blue); /* [cite: 18] */
         }
 
         .sidebar nav ul li a:hover {
-            background-color: var(--menu-link-hover);
-            color: var(--primary-blue);
-            transform: translateX(5px);
-            box-shadow: 0 4px 8px var(--box-shadow-color);
+            background-color: var(--menu-link-hover); /* [cite: 18] */
+            color: var(--primary-blue); /* [cite: 19] */
+            transform: translateX(5px); /* [cite: 19] */
+            box-shadow: 0 4px 8px var(--box-shadow-color); /* [cite: 19] */
         }
 
         .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #fff;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px var(--box-shadow-color);
+            flex-grow: 1; /* [cite: 19] */
+            padding: 20px; /* [cite: 20] */
+            background-color: #fff; /* [cite: 20] */
+            margin: 20px; /* [cite: 20] */
+            border-radius: 10px; /* [cite: 20] */
+            box-shadow: 0 0 15px var(--box-shadow-color); /* [cite: 20] */
         }
 
         header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px dashed var(--primary-green);
+            text-align: center; /* [cite: 21] */
+            margin-bottom: 40px; /* [cite: 22] */
+            padding-bottom: 20px; /* [cite: 22] */
+            border-bottom: 2px dashed var(--primary-green); /* [cite: 22] */
         }
 
         .logo {
-            max-width: 350px;
-            height: auto;
-            display: block;
-            margin: 0 auto 20px auto;
+            max-width: 350px; /* [cite: 22] */
+            height: auto; /* [cite: 23] */
+            display: block; /* [cite: 23] */
+            margin: 0 auto 20px auto; /* [cite: 23] */
         }
 
         h1 {
-            color: var(--primary-blue);
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px var(--primary-orange);
+            color: var(--primary-blue); /* [cite: 23] */
+            font-size: 2.5em; /* [cite: 24] */
+            margin-bottom: 10px; /* [cite: 24] */
+            text-shadow: 1px 1px 2px var(--primary-orange); /* [cite: 24] */
         }
 
         h2 {
-            color: var(--dark-teal);
-            font-size: 1.8em;
-            border-bottom: 2px solid var(--primary-orange);
-            display: inline-block;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
+            color: var(--dark-teal); /* [cite: 24] */
+            font-size: 1.8em; /* [cite: 25] */
+            border-bottom: 2px solid var(--primary-orange); /* [cite: 25] */
+            display: inline-block; /* [cite: 25] */
+            padding-bottom: 5px; /* [cite: 25] */
+            margin-bottom: 20px; /* [cite: 25] */
         }
 
         p {
-            font-size: 1.1em;
-            color: var(--text-color);
+            font-size: 1.1em; /* [cite: 26] */
+            color: var(--text-color); /* [cite: 27] */
         }
 
         footer {
-            text-align: center;
-            padding: 20px;
-            background-color: var(--dark-teal);
-            color: white;
-            width: 100%;
-            box-sizing: border-box;
-            flex-shrink: 0;
+            text-align: center; /* [cite: 27] */
+            padding: 20px; /* [cite: 28] */
+            background-color: var(--dark-teal); /* [cite: 28] */
+            color: white; /* [cite: 28] */
+            width: 100%; /* [cite: 28] */
+            box-sizing: border-box; /* [cite: 28] */
+            flex-shrink: 0; /* [cite: 28] */
         }
 
         footer p {
-            color: white;
-            margin: 0;
+            color: white; /* [cite: 29] */
+            margin: 0; /* [cite: 30] */
         }
 
         .cookie-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--cookie-banner-bg);
-            color: var(--cookie-banner-text);
-            padding: 15px 20px;
-            text-align: center;
-            font-size: 0.9em;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
+            position: fixed; /* [cite: 30] */
+            bottom: 0; /* [cite: 31] */
+            left: 0; /* [cite: 31] */
+            width: 100%; /* [cite: 31] */
+            background-color: var(--cookie-banner-bg); /* [cite: 31] */
+            color: var(--cookie-banner-text); /* [cite: 31] */
+            padding: 15px 20px; /* [cite: 31] */
+            text-align: center; /* [cite: 31] */
+            font-size: 0.9em; /* [cite: 31] */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2); /* [cite: 32] */
+            z-index: 1000; /* [cite: 32] */
+            display: none; /* [cite: 32] */
+            justify-content: center; /* [cite: 32] */
+            align-items: center; /* [cite: 32] */
+            flex-wrap: wrap; /* [cite: 32] */
         }
 
         .cookie-banner p {
-            margin: 0 20px 0 0;
-            color: var(--cookie-banner-text);
+            margin: 0 20px 0 0; /* [cite: 33] */
+            color: var(--cookie-banner-text); /* [cite: 34] */
         }
 
         .cookie-banner button {
-            background-color: var(--cookie-button-bg);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: background-color 0.3s ease;
-            margin-top: 5px;
+            background-color: var(--cookie-button-bg); /* [cite: 34] */
+            color: white; /* [cite: 35] */
+            border: none; /* [cite: 35] */
+            padding: 8px 15px; /* [cite: 35] */
+            border-radius: 5px; /* [cite: 35] */
+            cursor: pointer; /* [cite: 35] */
+            font-size: 0.9em; /* [cite: 35] */
+            transition: background-color 0.3s ease; /* [cite: 35] */
+            margin-top: 5px; /* [cite: 35] */
         }
 
         .cookie-banner button:hover {
-            background-color: var(--cookie-button-hover);
+            background-color: var(--cookie-button-hover); /* [cite: 36] */
         }
 
         .todays-info-section {
-            margin-bottom: 40px;
+            margin-bottom: 40px; /* [cite: 37] */
         }
 
         .info-box {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px var(--box-shadow-color);
-            padding: 15px;
-            margin-bottom: 20px;
-            min-height: 120px;
-            border-left: 5px solid var(--primary-blue);
+            background-color: #fff; /* [cite: 38] */
+            border-radius: 8px; /* [cite: 39] */
+            box-shadow: 0 3px 10px var(--box-shadow-color); /* [cite: 39] */
+            padding: 15px; /* [cite: 39] */
+            margin-bottom: 20px; /* [cite: 39] */
+            min-height: 120px; /* [cite: 39] */
+            border-left: 5px solid var(--primary-blue); /* [cite: 39] */
         }
 
         #todayCalendar {
-            border-left-color: var(--primary-green);
+            border-left-color: var(--primary-green); /* [cite: 40] */
         }
 
         .info-box h3 {
-            color: var(--dark-teal);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+            color: var(--dark-teal); /* [cite: 41] */
+            margin-top: 0; /* [cite: 42] */
+            margin-bottom: 10px; /* [cite: 42] */
+            font-size: 1.1em; /* [cite: 42] */
         }
 
         .info-item {
-            display: flex;
-            align-items: flex-start;
-            padding: 8px 0;
-            border-bottom: 1px solid #e0e0e0;
+            display: flex; /* [cite: 42] */
+            align-items: flex-start; /* [cite: 43] */
+            padding: 8px 0; /* [cite: 43] */
+            border-bottom: 1px solid #e0e0e0; /* [cite: 43] */
         }
 
         .info-item:last-child {
-            border-bottom: none;
+            border-bottom: none; /* [cite: 43] */
         }
 
         .info-item i {
-            color: var(--primary-orange);
-            margin-right: 10px;
-            margin-top: 3px;
-            width: 20px;
-            text-align: center;
+            color: var(--primary-orange); /* [cite: 44] */
+            margin-right: 10px; /* [cite: 45] */
+            margin-top: 3px; /* [cite: 45] */
+            width: 20px; /* [cite: 45] */
+            text-align: center; /* [cite: 45] */
         }
 
         #todayCalendar .info-item i {
-            color: var(--primary-green);
+            color: var(--primary-green); /* [cite: 45] */
         }
 
         .info-item .calendar-details {
-            flex-grow: 1;
+            flex-grow: 1; /* [cite: 46] */
         }
 
         .info-item .subject {
-            font-weight: bold;
-            color: var(--dark-teal);
+            font-weight: bold; /* [cite: 47] */
+            color: var(--dark-teal); /* [cite: 48] */
         }
 
         .info-item .description {
-            font-size: 0.9em;
-            margin-top: 3px;
+            font-size: 0.9em; /* [cite: 48] */
+            margin-top: 3px; /* [cite: 49] */
         }
 
         .info-item .date {
-            font-size: 0.8em;
-            color: #777;
+            font-size: 0.8em; /* [cite: 49] */
+            color: #777; /* [cite: 50] */
         }
 
         .no-data-message {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-            color: #999;
-            text-align: center;
+            display: flex; /* [cite: 50] */
+            flex-direction: column; /* [cite: 51] */
+            justify-content: center; /* [cite: 51] */
+            align-items: center; /* [cite: 51] */
+            height: 100px; /* [cite: 51] */
+            color: #999; /* [cite: 51] */
+            text-align: center; /* [cite: 51] */
         }
 
         .no-data-message i {
-            font-size: 2em;
-            margin-bottom: 10px;
-            color: var(--primary-blue);
+            font-size: 2em; /* [cite: 52] */
+            margin-bottom: 10px; /* [cite: 53] */
+            color: var(--primary-blue); /* [cite: 53] */
         }
 
         #todayCalendar .no-data-message i {
-            color: var(--primary-green);
+            color: var(--primary-green); /* [cite: 53] */
         }
 
         /* Nye styles til ugeoversigt */
         .day-header {
-            color: var(--dark-teal);
-            font-size: 1.1em;
-            margin: 15px 0 5px 0;
-            padding-bottom: 3px;
-            border-bottom: 1px dashed var(--primary-green);
+            color: var(--dark-teal); /* [cite: 54] */
+            font-size: 1.1em; /* [cite: 55] */
+            margin: 15px 0 5px 0; /* [cite: 55] */
+            padding-bottom: 3px; /* [cite: 55] */
+            border-bottom: 1px dashed var(--primary-green); /* [cite: 55] */
         }
 
         .week-header {
-            color: var(--primary-blue);
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            text-align: center;
+            color: var(--primary-blue); /* [cite: 56] */
+            font-size: 1.3em; /* [cite: 57] */
+            margin-bottom: 15px; /* [cite: 57] */
+            text-align: center; /* [cite: 57] */
         }
 
         @media (max-width: 600px) {
             .cookie-banner {
-                flex-direction: column;
+                flex-direction: column; /* [cite: 57] */
             }
 
             .cookie-banner p {
-                margin: 0 0 10px 0;
+                margin: 0 0 10px 0; /* [cite: 58] */
             }
 
             .sidebar {
-                width: 100%;
-                height: auto;
-                padding: 10px;
-                box-shadow: 0 2px 10px var(--box-shadow-color);
+                width: 100%; /* [cite: 59] */
+                height: auto; /* [cite: 60] */
+                padding: 10px; /* [cite: 60] */
+                box-shadow: 0 2px 10px var(--box-shadow-color); /* [cite: 60] */
             }
 
             .sidebar nav ul {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
+                display: flex; /* [cite: 60] */
+                flex-wrap: wrap; /* [cite: 61] */
+                justify-content: center; /* [cite: 61] */
             }
 
             .sidebar nav ul li {
-                margin: 5px 10px;
+                margin: 5px 10px; /* [cite: 61] */
             }
 
             .sidebar nav ul li a {
-                padding: 8px 10px;
-                font-size: 0.9em;
-                flex-direction: column;
-                align-items: center;
+                padding: 8px 10px; /* [cite: 62] */
+                font-size: 0.9em; /* [cite: 63] */
+                flex-direction: column; /* [cite: 63] */
+                align-items: center; /* [cite: 63] */
             }
 
             .sidebar nav ul li a i {
-                margin: 0 0 5px 0;
+                margin: 0 0 5px 0; /* [cite: 63] */
             }
 
             .main-content {
-                margin: 10px;
+                margin: 10px; /* [cite: 64] */
             }
 
             .logo {
-                max-width: 250px;
+                max-width: 250px; /* [cite: 65] */
             }
 
             h1 {
-                font-size: 1.8em;
+                font-size: 1.8em; /* [cite: 66] */
             }
 
             h2 {
-                font-size: 1.4em;
+                font-size: 1.4em; /* [cite: 67] */
             }
 
             footer {
-                padding: 10px;
+                padding: 10px; /* [cite: 68] */
             }
         }
     </style>
@@ -370,201 +370,166 @@
             <aside class="sidebar">
                 <nav>
                     <ul>
-                        <li><a href="Oplæser.html"><i class="fas fa-volume-up"></i> Tekst til tale</a></li>
-                        <li><a href="Tale-til-tekst.html"><i class="fas fa-microphone"></i> Tale til tekst</a></li>
-                        <li><a href="Læsetræner.html"><i class="fas fa-book-reader"></i> Læsetræning</a></li>
-                        <li><a href="Læseplanlægger.html"><i class="fas fa-calendar-alt"></i> Læseplanlægning</a></li>
-                        <li><a href="Elevkalender.html"><i class="fas fa-calendar-check"></i> Elevkalender</a></li>
-                        <li><a href="Lektiekalender.html"><i class="fas fa-clipboard-list"></i> Lektiekalender</a></li>
-                        <li><a href="Opgaveplanlægger.html"><i class="fas fa-tasks"></i> Opgaveplanlægger</a></li>
-                        <li><a href="Pomodoro.html"><i class="fas fa-clock"></i> Fokushjælper</a></li>
-                    </ul>
+                        <li><a href="Oplæser.html"><i class="fas fa-volume-up"></i> Tekst til tale</a></li> <li><a href="Tale-til-tekst.html"><i class="fas fa-microphone"></i> Tale til tekst</a></li> <li><a href="#"><i class="fas fa-calculator"></i> Matematiske formler - på vej</a></li>  <li><a href="#"><i class="fas fa-spell-check"></i> Grammatiske regler - på vej</a></li> <li><a href="Læsetræner.html"><i class="fas fa-book-reader"></i> Læsetræning</a></li> <li><a href="Læseplanlægger.html"><i class="fas fa-calendar-alt"></i> Læseplanlægning</a></li> <li><a href="Elevkalender.html"><i class="fas fa-calendar-check"></i> Elevkalender</a></li> <li><a href="Lektiekalender.html"><i class="fas fa-clipboard-list"></i> Lektiekalender</a></li> <li><a href="Opgaveplanlægger.html"><i class="fas fa-tasks"></i> Opgaveplanlægger</a></li> <li><a href="Pomodoro.html"><i class="fas fa-clock"></i> Fokushjælper</a></li> </ul>
                 </nav>
             </aside>
             <main class="main-content">
                 <header>
-                    <img src="LærMere.Nu-logo.png" alt="Lærmere.nu Logo" class="logo">
-                    <h1>Velkommen til Lærmere.nu</h1>
-                    <p>Din platform for at forbedre dine læringsfærdigheder og organisere din studiehverdag.</p>
-                </header>
+                    <img src="LærMere.Nu-logo.png" alt="Lærmere.nu Logo" class="logo"> <h1>Velkommen til Lærmere.nu</h1> <p>Din platform for at forbedre dine læringsfærdigheder og organisere din studiehverdag.</p> </header>
 
                 <section class="todays-info-section">
-                    <h2>Dagens aktiviteter</h2>
-                    <div class="info-box" id="todayCalendar">
+                    <h2>Dagens aktiviteter</h2> <div class="info-box" id="todayCalendar">
                         <div class="no-data-message">
-                            <i class="fas fa-calendar-day"></i>
-                            <p>Ingen aktiviteter for i dag.</p>
-                        </div>
+                            <i class="fas fa-calendar-day"></i> <p>Ingen aktiviteter for i dag.</p> </div>
                     </div>
                 </section>
 
                 <section class="intro-text">
-                    <h2>Hvad finder du på Lærmere.nu?</h2>
-                    <p>Vi har samlet en række smarte værktøjer, der kan gøre din hverdag som elev sjovere og mere overskuelig. Fra at få tekst læst højt til at planlægge dine lektier – vi hjælper dig godt på vej!</p>
-                    <p>Udforsk menuen til venstre for at se alle mulighederne.</p>
-                </section>
+                    <h2>Hvad finder du på Lærmere.nu?</h2> <p>Vi har samlet en række smarte værktøjer, der kan gøre din hverdag som elev sjovere og mere overskuelig. Fra at få tekst læst højt til at planlægge dine lektier – vi hjælper dig godt på vej!</p> <p>Udforsk menuen til venstre for at se alle mulighederne.</p> </section>
             </main>
         </div>
         <footer>
-            <p>© 2023 Lærmere.nu - Lær mere, leg mere!</p>
-        </footer>
+            <p>© 2023 Lærmere.nu - Lær mere, leg mere!</p> </footer>
     </div>
 
     <div class="cookie-banner" id="cookieBanner">
-        <p>Vi bruger cookies for at sikre, at du får den bedste oplevelse på vores side. Ved at fortsætte, accepterer du vores brug af cookies.</p>
-        <button id="acceptCookies">Det er okay!</button>
-    </div>
+        <p>Vi bruger cookies for at sikre, at du får den bedste oplevelse på vores side. Ved at fortsætte, accepterer du vores brug af cookies.</p> <button id="acceptCookies">Det er okay!</button> </div>
 
     <script>
         // Funktion til at hente den aktuelle dato
         function getCurrentDate() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            const today = new Date(); /* [cite: 79] */
+            const year = today.getFullYear(); /* [cite: 80] */
+            const month = String(today.getMonth() + 1).padStart(2, '0'); /* [cite: 80] */
+            const day = String(today.getDate()).padStart(2, '0'); /* [cite: 80] */
+            return `${year}-${month}-${day}`; /* [cite: 80] */
         }
 
         // Funktion til at formatere dato til DD/MM/YYYY
         function formatDate(date) {
-            const day = date.getDate().toString().padStart(2, '0');
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}/${month}/${year}`;
+            const day = date.getDate().toString().padStart(2, '0'); /* [cite: 81] */
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); /* [cite: 82] */
+            const year = date.getFullYear(); /* [cite: 82] */
+            return `${day}/${month}/${year}`; /* [cite: 82] */
         }
 
         // Funktion til at vise data
         function displayItems(elementId, items, type) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
+            const element = document.getElementById(elementId); /* [cite: 83] */
+            if (!element) return; /* [cite: 84] */
 
-            const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle';
-            const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
-
-            if (items && items.length > 0) {
-                element.innerHTML = '';
-                items.forEach(item => {
-                    let detailsHtml = '';
-                    let iconClass = 'fas fa-info-circle';
+            const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle'; /* [cite: 84] */
+            const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.'; /* [cite: 84] */
+            if (items && items.length > 0) { /* [cite: 85] */
+                element.innerHTML = ''; /* [cite: 85] */
+                items.forEach(item => { /* [cite: 86] */
+                    let detailsHtml = ''; /* [cite: 86] */
+                    let iconClass = 'fas fa-info-circle'; /* [cite: 86] */
 
                     if (type === 'calendar') {
-                        iconClass = 'fas fa-calendar-day';
+                        iconClass = 'fas fa-calendar-day'; /* [cite: 86] */
                         detailsHtml = `
                             <div class="calendar-details">
-                                <div class="subject">${item.title || 'Ukendt titel'}</div>
-                                ${item.description ? `<div class="description">${item.description}</div>` : ''}
-                                ${item.time ? `<div class="date">${item.time}</div>` : ''}
-                            </div>`;
+                                <div class="subject">${item.title || 'Ukendt titel'}</div> ${item.description ? `<div class="description">${item.description}</div>` : ''} ${item.time ? `<div class="date">${item.time}</div>` : ''} </div>`;
                     }
 
                     element.innerHTML += `
                         <div class="info-item">
-                            <i class="${iconClass}"></i>
-                            ${detailsHtml}
-                        </div>`;
+                            <i class="${iconClass}"></i> ${detailsHtml} </div>`;
                 });
-            } else {
+            } else { /* [cite: 91] */
                 element.innerHTML = `
                     <div class="no-data-message">
-                        <i class="${noDataIcon}"></i>
-                        <p>${noDataText}</p>
-                    </div>`;
+                        <i class="${noDataIcon}"></i> <p>${noDataText}</p> </div>`; /* [cite: 92] */
             }
         }
 
         // Hovedfunktion når DOM er indlæst
         document.addEventListener('DOMContentLoaded', function() {
             // Hent kalenderdata
-            let calendarItems = [];
+            let calendarItems = []; /* [cite: 93] */
             try {
-                const calendarData = localStorage.getItem('elevkalenderActivities');
-                if (calendarData) {
-                    calendarItems = JSON.parse(calendarData);
+                const calendarData = localStorage.getItem('elevkalenderActivities'); /* [cite: 93] */
+                if (calendarData) { /* [cite: 94] */
+                    calendarItems = JSON.parse(calendarData); /* [cite: 94] */
                 }
             } catch (e) {
-                console.error('Fejl ved indlæsning af kalender:', e);
+                console.error('Fejl ved indlæsning af kalender:', e); /* [cite: 94] */
             }
 
             // Find aktuel dato
-            const today = new Date();
-            const currentDate = getCurrentDate();
+            const today = new Date(); /* [cite: 95] */
+            const currentDate = getCurrentDate(); /* [cite: 95] */
 
             // Filtrer aktiviteter for i dag
-            const todaysActivities = calendarItems.filter(item => {
-                if (!item.date) return false;
+            const todaysActivities = calendarItems.filter(item => { /* [cite: 95] */
+                if (!item.date) return false; /* [cite: 95] */
 
-                try {
+                try { /* [cite: 96] */
                     // Prøv at parse datoen i forskellige formater
-                    let dateObj;
-                    if (item.date.includes('/')) {
-                        const parts = item.date.split('/');
-                        if (parts[0].length === 4) { // YYYY/MM/DD format
-                            dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
-                        } else { // DD/MM/YYYY format
-                            dateObj = new Date(parts[2], parts[1] - 1, parts[0]);
+                    let dateObj; /* [cite: 96] */
+                    if (item.date.includes('/')) { /* [cite: 96] */
+                        const parts = item.date.split('/'); /* [cite: 97] */
+                        if (parts[0].length === 4) { // YYYY/MM/DD format /* [cite: 98] */
+                            dateObj = new Date(parts[0], parts[1] - 1, parts[2]); /* [cite: 98] */
+                        } else { // DD/MM/YYYY format /* [cite: 99] */
+                            dateObj = new Date(parts[2], parts[1] - 1, parts[0]); /* [cite: 99] */
                         }
                     } else {
                         // Prøv at parse som ISO-dato
-                        dateObj = new Date(item.date);
+                        dateObj = new Date(item.date); /* [cite: 100] */
                     }
 
-                    if (isNaN(dateObj.getTime())) return false;
-
-                    return formatDate(dateObj) === formatDate(today);
+                    if (isNaN(dateObj.getTime())) return false; /* [cite: 101] */
+                    return formatDate(dateObj) === formatDate(today); /* [cite: 102] */
                 } catch (e) {
-                    console.error('Fejl ved parsing af dato:', item.date, e);
-                    return false;
+                    console.error('Fejl ved parsing af dato:', item.date, e); /* [cite: 102] */
+                    return false; /* [cite: 103] */
                 }
             });
-
             // Sorter aktiviteter efter tid
-            todaysActivities.sort((a, b) => {
-                if (a.time && b.time) {
-                    return a.time.localeCompare(b.time);
+            todaysActivities.sort((a, b) => { /* [cite: 104] */
+                if (a.time && b.time) { /* [cite: 104] */
+                    return a.time.localeCompare(b.time); /* [cite: 104] */
                 }
-                return 0;
+                return 0; /* [cite: 104] */
             });
 
             // Vis dagens aktiviteter
-            const todayElement = document.getElementById('todayCalendar');
-            if (todaysActivities.length > 0) {
-                todayElement.innerHTML = '';
-
+            const todayElement = document.getElementById('todayCalendar'); /* [cite: 105] */
+            if (todaysActivities.length > 0) { /* [cite: 106] */
+                todayElement.innerHTML = ''; /* [cite: 106] */
                 // Tilføj dagsoverskrift
-                const dayHeader = document.createElement('h3');
-                dayHeader.className = 'day-header';
-                dayHeader.textContent = `Aktiviteter for ${formatDate(today)}`;
-                todayElement.appendChild(dayHeader);
+                const dayHeader = document.createElement('h3'); /* [cite: 107] */
+                dayHeader.className = 'day-header'; /* [cite: 108] */
+                dayHeader.textContent = `Aktiviteter for ${formatDate(today)}`; /* [cite: 108] */
+                todayElement.appendChild(dayHeader); /* [cite: 108] */
 
                 // Tilføj aktiviteter
-                todaysActivities.forEach(activity => {
-                    const activityElement = document.createElement('div');
-                    activityElement.className = 'info-item';
+                todaysActivities.forEach(activity => { /* [cite: 108] */
+                    const activityElement = document.createElement('div'); /* [cite: 108] */
+                    activityElement.className = 'info-item'; /* [cite: 108] */
                     activityElement.innerHTML = `
-                        <i class="fas fa-calendar-day"></i>
-                        <div class="calendar-details">
-                            <div class="subject">${activity.title || 'Ukendt titel'}</div>
-                            ${activity.description ? `<div class="description">${activity.description}</div>` : ''}
-                            ${activity.time ? `<div class="date">${activity.time}</div>` : ''}
-                        </div>
+                        <i class="fas fa-calendar-day"></i> <div class="calendar-details">
+                            <div class="subject">${activity.title || 'Ukendt titel'}</div> ${activity.description ? `<div class="description">${activity.description}</div>` : ''} ${activity.time ? `<div class="date">${activity.time}</div>` : ''} </div>
                     `;
-                    todayElement.appendChild(activityElement);
+                    todayElement.appendChild(activityElement); /* [cite: 111] */
                 });
-            }
+            } /* [cite: 112] */
         });
 
         // Cookie banner funktionalitet
-        const cookieBanner = document.getElementById('cookieBanner');
-        const acceptButton = document.getElementById('acceptCookies');
-        const cookieAccepted = localStorage.getItem('cookieAccepted');
+        const cookieBanner = document.getElementById('cookieBanner'); /* [cite: 112] */
+        const acceptButton = document.getElementById('acceptCookies'); /* [cite: 113] */
+        const cookieAccepted = localStorage.getItem('cookieAccepted'); /* [cite: 113] */
 
         if (!cookieAccepted) {
-            cookieBanner.style.display = 'flex';
+            cookieBanner.style.display = 'flex'; /* [cite: 113] */
         }
 
-        acceptButton.addEventListener('click', () => {
-            localStorage.setItem('cookieAccepted', 'true');
-            cookieBanner.style.display = 'none';
+        acceptButton.addEventListener('click', () => { /* [cite: 114] */
+            localStorage.setItem('cookieAccepted', 'true'); /* [cite: 114] */
+            cookieBanner.style.display = 'none'; /* [cite: 114] */
         });
     </script>
 </body>
