@@ -3,83 +3,157 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Formelsamling</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <title>Formelsamling - Sjov Udgave!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f9fdfc;
+      /* Udskiftet font til Poppins */
+      font-family: 'Poppins', sans-serif;
+      /* Lysere, mere glad baggrundsfarve */
+      background-color: #f0faff; /* Let lyseblå */
       margin: 0;
       padding: 0;
       color: #333;
+      line-height: 1.6; /* Lidt mere luft mellem linjerne */
     }
+
     header {
-      background-color: #e0f7ea;
+      /* Flot gradient baggrund */
+      background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
       text-align: center;
-      padding: 2rem 1rem;
-      border-bottom: 2px dashed #45c29f;
+      padding: 3rem 1rem; /* Mere padding for større effekt */
+      /* Fjernet den stiplede linje, tilføjet bløde hjørner i bunden */
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Blød skygge */
     }
+
     header h1 {
-      color: #45c29f;
-      font-size: 2rem;
+      /* Ændret farve til hvid for kontrast på gradienten */
+      color: #ffffff;
+      font-size: 2.5rem; /* Større titel */
       margin-bottom: 0.5rem;
+      /* Tilføjet tekstskygge for at få det til at poppe */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
+
     header p {
-      font-size: 1rem;
+      /* Ændret farve til lys for kontrast */
+      color: #f0faff;
+      font-size: 1.1rem; /* Lidt større */
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
+
     .container {
       max-width: 800px;
-      margin: 2rem auto;
+      margin: 2.5rem auto; /* Lidt mere plads øverst */
       padding: 1rem;
     }
+
     .search-box {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.9rem 1rem; /* Lidt mere padding */
       font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 1.5rem;
+      /* Mere afrundede hjørner og en sjov kantfarve */
+      border: 2px solid #66a6ff;
+      border-radius: 25px; /* Meget afrundet */
+      margin-bottom: 2rem; /* Mere plads under søgefeltet */
+      box-sizing: border-box; /* Sikrer padding ikke øger bredden */
+      transition: all 0.3s ease; /* Blød overgang ved fokus */
     }
+
+    .search-box:focus {
+      /* Fremhævning ved fokus */
+      outline: none;
+      border-color: #ffab73; /* Varm orange */
+      box-shadow: 0 0 8px rgba(102, 166, 255, 0.5);
+    }
+
     .formula-card {
       background-color: white;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-left: 5px solid #45c29f;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      padding: 1.5rem; /* Mere luft indeni kortet */
+      margin-bottom: 1.5rem; /* Lidt mere afstand mellem kortene */
+      /* Fjernet venstre kant, tilføjet en sjov topkant */
+      border-top: 6px solid #ffab73; /* Varm orange topkant */
+      border-radius: 12px; /* Mere afrundede hjørner */
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Lidt tydeligere skygge */
+      /* Tilføjet transition for hover-effekt */
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
+
+    .formula-card:hover {
+      /* Lille løft og større skygge ved hover for interaktion */
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
     .formula-title {
       font-weight: bold;
-      color: #2b947b;
+      /* Mørkere blå for god læsbarhed */
+      color: #0b4f6c;
+      font-size: 1.2rem; /* Lidt større */
+      margin-bottom: 0.5rem; /* Lidt plads under titlen */
     }
+
+    .formula {
+      /* Gør selve formlen lidt mere fremtrædende */
+      font-size: 1.15rem;
+      color: #333;
+      margin: 0.8rem 0;
+      padding: 0.5rem;
+      background-color: #f8f9fa; /* Meget let grå baggrund for formlen */
+      border-radius: 5px;
+      display: inline-block; /* Sørger for baggrunden passer til indholdet */
+    }
+
     .formula-tags {
-      font-size: 0.8rem;
-      color: #888;
-      margin-top: 0.5rem;
+      font-size: 0.85rem; /* Lidt større for læsbarhed */
+      color: #777; /* Lidt mørkere grå */
+      margin-top: 0.75rem;
     }
+
     .back-button {
       display: inline-block;
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      background-color: #45c29f;
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.5rem; /* Større knap */
+      /* Brug den varme orange farve */
+      background-color: #ff8a5b; /* Lidt kraftigere orange */
       color: white;
       text-decoration: none;
-      border-radius: 5px;
+      border-radius: 25px; /* Matchende afrundede hjørner */
       font-weight: bold;
+      transition: background-color 0.2s ease, transform 0.2s ease; /* Tilføjet transform transition */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+
+    .back-button:hover {
+      /* Lidt mørkere ved hover og lille "hop" */
+      background-color: #ff6f61; /* Lidt mørkere orange */
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Lille animation for kortene når de vises (kræver lidt mere for at virke perfekt med JS filter) */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .formula-card {
+        /* Anvend animationen (bemærk: dette virker bedst ved indlæsning, ikke ved filtrering uden mere JS) */
+        /* animation: fadeIn 0.5s ease-out; */ /* Kommentarer ud indtil videre */
+    }
+
   </style>
 </head>
 <body>
   <header>
-    <h1>Formelsamling</h1>
-    <p>Find hurtigt de vigtigste matematiske formler</p>
+    <h1>Formelsamling! ✨</h1> <p>Find hurtigt de vigtigste (og sjoveste?) matematiske formler</p>
   </header>
   <div class="container">
-    <input class="search-box" type="text" placeholder="Søg efter formler eller emner..." onkeyup="filterFormulas()">
+    <input class="search-box" type="text" placeholder="Søg efter formler eller emner... 🔍" onkeyup="filterFormulas()">
 
-    <!-- FORMELKORT START -->
-
-<div class="formula-card" data-tags="geometri rektangel areal">
+    <div class="formula-card" data-tags="geometri rektangel areal">
   <div class="formula-title">Areal af et rektangel</div>
   <div class="formula">A = l · b</div>
   <div class="formula-tags">Tags: geometri, rektangel, areal</div>
@@ -330,19 +404,25 @@
   <div class="formula-tags">Tags: kalkulus, middelvejrdsætning</div>
 </div>
 
-<!-- FORMELKORT SLUT -->
-
-    <a class="back-button" href="index.html">← Tilbage</a>
-  </div>
+    <a class="back-button" href="index.html">🚀 Tilbage!</a> </div>
 
   <script>
+    // JavaScript-funktionen er uændret
     function filterFormulas() {
       const input = document.querySelector('.search-box').value.toLowerCase();
       const formulas = document.querySelectorAll('.formula-card');
 
       formulas.forEach(formula => {
-        const tags = formula.dataset.tags;
-        formula.style.display = tags.includes(input) ? 'block' : 'none';
+        const tags = formula.dataset.tags.toLowerCase(); // Sikrer tags også er lowercase
+        const title = formula.querySelector('.formula-title').textContent.toLowerCase(); // Søg også i titel
+        const formulaText = formula.querySelector('.formula').textContent.toLowerCase(); // Søg også i selve formlen
+
+        // Tjek om input findes i tags, titel eller formeltekst
+        if (tags.includes(input) || title.includes(input) || formulaText.includes(input)) {
+          formula.style.display = 'block';
+        } else {
+          formula.style.display = 'none';
+        }
       });
     }
   </script>
