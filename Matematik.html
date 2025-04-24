@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formelsamling</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f9fdfc;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #e0f7ea;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-bottom: 2px dashed #45c29f;
+    }
+    header h1 {
+      color: #45c29f;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    .search-box {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 1.5rem;
+    }
+    .formula-card {
+      background-color: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 5px solid #45c29f;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .formula-title {
+      font-weight: bold;
+      color: #2b947b;
+    }
+    .formula-tags {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 0.5rem;
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #45c29f;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Formelsamling</h1>
+    <p>Find hurtigt de vigtigste matematiske formler</p>
+  </header>
+  <div class="container">
+    <input class="search-box" type="text" placeholder="Søg efter formler eller emner..." onkeyup="filterFormulas()">
+
+    <!-- FORMELKORT START -->
+
+<div class="formula-card" data-tags="geometri rektangel areal">
+  <div class="formula-title">Areal af et rektangel</div>
+  <div class="formula">A = l · b</div>
+  <div class="formula-tags">Tags: geometri, rektangel, areal</div>
+</div>
+<div class="formula-card" data-tags="geometri kvadrat areal">
+  <div class="formula-title">Areal af et kvadrat</div>
+  <div class="formula">A = s²</div>
+  <div class="formula-tags">Tags: geometri, kvadrat, areal</div>
+</div>
+<div class="formula-card" data-tags="geometri trekant areal">
+  <div class="formula-title">Areal af en trekant</div>
+  <div class="formula">A = ½ · b · h</div>
+  <div class="formula-tags">Tags: geometri, trekant, areal</div>
+</div>
+<div class="formula-card" data-tags="geometri parallelogram areal">
+  <div class="formula-title">Areal af en parallelogram</div>
+  <div class="formula">A = b · h</div>
+  <div class="formula-tags">Tags: geometri, parallelogram, areal</div>
+</div>
+<div class="formula-card" data-tags="geometri trapez areal">
+  <div class="formula-title">Areal af en trapez</div>
+  <div class="formula">A = ½ (a + b) · h</div>
+  <div class="formula-tags">Tags: geometri, trapez, areal</div>
+</div>
+<div class="formula-card" data-tags="geometri cirkel areal">
+  <div class="formula-title">Areal af en cirkel</div>
+  <div class="formula">A = πr²</div>
+  <div class="formula-tags">Tags: geometri, cirkel, areal</div>
+</div>
+<div class="formula-card" data-tags="geometri cirkel omkreds">
+  <div class="formula-title">Omkreds af en cirkel</div>
+  <div class="formula">C = 2πr</div>
+  <div class="formula-tags">Tags: geometri, cirkel, omkreds</div>
+</div>
+<div class="formula-card" data-tags="geometri pythagoras trekant">
+  <div class="formula-title">Pythagoras’ sætning</div>
+  <div class="formula">a² + b² = c²</div>
+  <div class="formula-tags">Tags: geometri, trekant, pythagoras</div>
+</div>
+<div class="formula-card" data-tags="rumfang kube">
+  <div class="formula-title">Volumen af en kube</div>
+  <div class="formula">V = s³</div>
+  <div class="formula-tags">Tags: rumfang, kube</div>
+</div>
+<div class="formula-card" data-tags="rumfang kasse">
+  <div class="formula-title">Volumen af en kasse</div>
+  <div class="formula">V = l · b · h</div>
+  <div class="formula-tags">Tags: rumfang, kasse</div>
+</div>
+<div class="formula-card" data-tags="rumfang kugle">
+  <div class="formula-title">Volumen af en kugle</div>
+  <div class="formula">V = ⁴⁄₃πr³</div>
+  <div class="formula-tags">Tags: rumfang, kugle</div>
+</div>
+<div class="formula-card" data-tags="rumfang cylinder">
+  <div class="formula-title">Volumen af en cylinder</div>
+  <div class="formula">V = πr²h</div>
+  <div class="formula-tags">Tags: rumfang, cylinder</div>
+</div>
+<div class="formula-card" data-tags="rumfang kegle">
+  <div class="formula-title">Volumen af en kegle</div>
+  <div class="formula">V = ⅓πr²h</div>
+  <div class="formula-tags">Tags: rumfang, kegle</div>
+</div>
+<div class="formula-card" data-tags="rumfang pyramide">
+  <div class="formula-title">Volumen af en pyramide</div>
+  <div class="formula">V = ⅓Bh</div>
+  <div class="formula-tags">Tags: rumfang, pyramide</div>
+</div>
+<div class="formula-card" data-tags="algebra kvadratsætning">
+  <div class="formula-title">Kvadratsætning 1</div>
+  <div class="formula">(a + b)² = a² + 2ab + b²</div>
+  <div class="formula-tags">Tags: algebra, kvadratsætning</div>
+</div>
+<div class="formula-card" data-tags="algebra kvadratsætning">
+  <div class="formula-title">Kvadratsætning 2</div>
+  <div class="formula">(a - b)² = a² - 2ab + b²</div>
+  <div class="formula-tags">Tags: algebra, kvadratsætning</div>
+</div>
+<div class="formula-card" data-tags="algebra kvadratsætning">
+  <div class="formula-title">Kvadratsætning 3</div>
+  <div class="formula">(a + b)(a - b) = a² - b²</div>
+  <div class="formula-tags">Tags: algebra, kvadratsætning</div>
+</div>
+<div class="formula-card" data-tags="algebra andengradsligning">
+  <div class="formula-title">Andengradsløsning</div>
+  <div class="formula">x = (-b ± √(b² - 4ac)) / 2a</div>
+  <div class="formula-tags">Tags: algebra, andengradsligning</div>
+</div>
+<div class="formula-card" data-tags="algebra lineær funktion">
+  <div class="formula-title">Lineær funktion</div>
+  <div class="formula">y = ax + b</div>
+  <div class="formula-tags">Tags: algebra, lineær funktion</div>
+</div>
+<div class="formula-card" data-tags="algebra potens">
+  <div class="formula-title">Potensregel</div>
+  <div class="formula">a^m · a^n = a^(m+n)</div>
+  <div class="formula-tags">Tags: algebra, potens</div>
+</div>
+<div class="formula-card" data-tags="trigonometri sinus">
+  <div class="formula-title">Sinus</div>
+  <div class="formula">sin(θ) = modstående / hypotenuse</div>
+  <div class="formula-tags">Tags: trigonometri, trekant</div>
+</div>
+<div class="formula-card" data-tags="trigonometri cosinus">
+  <div class="formula-title">Cosinus</div>
+  <div class="formula">cos(θ) = hosliggende / hypotenuse</div>
+  <div class="formula-tags">Tags: trigonometri, trekant</div>
+</div>
+<div class="formula-card" data-tags="trigonometri tangens">
+  <div class="formula-title">Tangens</div>
+  <div class="formula">tan(θ) = modstående / hosliggende</div>
+  <div class="formula-tags">Tags: trigonometri, trekant</div>
+</div>
+<div class="formula-card" data-tags="trigonometri identitet">
+  <div class="formula-title">Trigonometrisk identitet</div>
+  <div class="formula">sin²(x) + cos²(x) = 1</div>
+  <div class="formula-tags">Tags: trigonometri, identitet</div>
+</div>
+<div class="formula-card" data-tags="trigonometri areal">
+  <div class="formula-title">Arealsætning</div>
+  <div class="formula">A = ½ab sin(C)</div>
+  <div class="formula-tags">Tags: trigonometri, areal</div>
+</div>
+<div class="formula-card" data-tags="trigonometri relation">
+  <div class="formula-title">Sinusrelationen</div>
+  <div class="formula">a/sin(A) = b/sin(B) = c/sin(C)</div>
+  <div class="formula-tags">Tags: trigonometri, relation</div>
+</div>
+<div class="formula-card" data-tags="trigonometri relation">
+  <div class="formula-title">Cosinusrelationen</div>
+  <div class="formula">c² = a² + b² - 2ab cos(C)</div>
+  <div class="formula-tags">Tags: trigonometri, relation</div>
+</div>
+<div class="formula-card" data-tags="trigonometri bue radianer">
+  <div class="formula-title">Buelængde</div>
+  <div class="formula">s = rθ</div>
+  <div class="formula-tags">Tags: trigonometri, bue, radianer</div>
+</div>
+<div class="formula-card" data-tags="statistik gennemsnit middelværdi">
+  <div class="formula-title">Gennemsnit</div>
+  <div class="formula">x̄ = Σxᵢ / n</div>
+  <div class="formula-tags">Tags: statistik, gennemsnit, middelværdi</div>
+</div>
+<div class="formula-card" data-tags="statistik median">
+  <div class="formula-title">Median</div>
+  <div class="formula">Midterste tal i sorteret liste</div>
+  <div class="formula-tags">Tags: statistik, median</div>
+</div>
+<div class="formula-card" data-tags="statistik varians">
+  <div class="formula-title">Varians</div>
+  <div class="formula">σ² = Σ(xᵢ - x̄)² / n</div>
+  <div class="formula-tags">Tags: statistik, varians</div>
+</div>
+<div class="formula-card" data-tags="statistik standardafvigelse">
+  <div class="formula-title">Standardafvigelse</div>
+  <div class="formula">σ = √σ²</div>
+  <div class="formula-tags">Tags: statistik, standardafvigelse</div>
+</div>
+<div class="formula-card" data-tags="kombinatorik sandsynlighed kombinatorik">
+  <div class="formula-title">Kombinationer</div>
+  <div class="formula">C(n, r) = n! / [r!(n - r)!]</div>
+  <div class="formula-tags">Tags: sandsynlighed, kombinatorik</div>
+</div>
+<div class="formula-card" data-tags="kombinatorik sandsynlighed permutationer">
+  <div class="formula-title">Permutationer</div>
+  <div class="formula">P(n, r) = n! / (n - r)!</div>
+  <div class="formula-tags">Tags: sandsynlighed, permutationer</div>
+</div>
+<div class="formula-card" data-tags="sandsynlighed binomialfordeling">
+  <div class="formula-title">Binomialfordeling</div>
+  <div class="formula">P(X = k) = C(n, k)pᵏ(1 - p)ⁿ⁻ᵏ</div>
+  <div class="formula-tags">Tags: sandsynlighed, binomialfordeling</div>
+</div>
+<div class="formula-card" data-tags="sandsynlighed grundlæggende">
+  <div class="formula-title">Sandsynlighed</div>
+  <div class="formula">P(A) = favorable / mulige</div>
+  <div class="formula-tags">Tags: sandsynlighed, grundlæggende</div>
+</div>
+<div class="formula-card" data-tags="kalkulus differentialregning afledet">
+  <div class="formula-title">Afledet definition</div>
+  <div class="formula">f'(x) = lim(h→0)[f(x+h) - f(x)] / h</div>
+  <div class="formula-tags">Tags: kalkulus, differentialregning</div>
+</div>
+<div class="formula-card" data-tags="kalkulus differentialregning potens">
+  <div class="formula-title">d/dx(xⁿ)</div>
+  <div class="formula">nxⁿ⁻¹</div>
+  <div class="formula-tags">Tags: kalkulus, afledet, potens</div>
+</div>
+<div class="formula-card" data-tags="kalkulus differentialregning trigonometriske">
+  <div class="formula-title">d/dx(sin x)</div>
+  <div class="formula">cos x</div>
+  <div class="formula-tags">Tags: kalkulus, afledet, sinus</div>
+</div>
+<div class="formula-card" data-tags="kalkulus differentialregning trigonometriske">
+  <div class="formula-title">d/dx(cos x)</div>
+  <div class="formula">-sin x</div>
+  <div class="formula-tags">Tags: kalkulus, afledet, cosinus</div>
+</div>
+<div class="formula-card" data-tags="kalkulus differentialregning eksponentiel">
+  <div class="formula-title">d/dx(eˣ)</div>
+  <div class="formula">eˣ</div>
+  <div class="formula-tags">Tags: kalkulus, afledet, eksponentiel</div>
+</div>
+<div class="formula-card" data-tags="kalkulus differentialregning logaritmisk">
+  <div class="formula-title">d/dx(ln x)</div>
+  <div class="formula">1/x</div>
+  <div class="formula-tags">Tags: kalkulus, afledet, logaritmisk</div>
+</div>
+<div class="formula-card" data-tags="kalkulus integral potens">
+  <div class="formula-title">∫xⁿ dx</div>
+  <div class="formula">xⁿ⁺¹ / (n+1) + C</div>
+  <div class="formula-tags">Tags: kalkulus, integral, potens</div>
+</div>
+<div class="formula-card" data-tags="kalkulus integral eksponentiel">
+  <div class="formula-title">∫eˣ dx</div>
+  <div class="formula">eˣ + C</div>
+  <div class="formula-tags">Tags: kalkulus, integral, eksponentiel</div>
+</div>
+<div class="formula-card" data-tags="kalkulus integral logaritmisk">
+  <div class="formula-title">∫1/x dx</div>
+  <div class="formula">ln|x| + C</div>
+  <div class="formula-tags">Tags: kalkulus, integral, logaritmisk</div>
+</div>
+<div class="formula-card" data-tags="kalkulus kædereglen">
+  <div class="formula-title">Kædereglen</div>
+  <div class="formula">f(g(x))' = f'(g(x))·g'(x)</div>
+  <div class="formula-tags">Tags: kalkulus, kædereglen</div>
+</div>
+<div class="formula-card" data-tags="kalkulus produktregel">
+  <div class="formula-title">Produktreglen</div>
+  <div class="formula">(uv)' = u'v + uv'</div>
+  <div class="formula-tags">Tags: kalkulus, produktregel</div>
+</div>
+<div class="formula-card" data-tags="kalkulus kvotientregel">
+  <div class="formula-title">Kvotientreglen</div>
+  <div class="formula">(u/v)' = (u'v - uv') / v²</div>
+  <div class="formula-tags">Tags: kalkulus, kvotientregel</div>
+</div>
+<div class="formula-card" data-tags="kalkulus integral bestemt">
+  <div class="formula-title">Bestemt integral</div>
+  <div class="formula">∫ₐᵇ f(x)dx = F(b) - F(a)</div>
+  <div class="formula-tags">Tags: kalkulus, integral, bestemt</div>
+</div>
+<div class="formula-card" data-tags="kalkulus middelvejrdsætning">
+  <div class="formula-title">Middelvejrdsætningen</div>
+  <div class="formula">∃c ∈ [a,b]: f(c) = (1/(b-a))∫ₐᵇ f(x)dx</div>
+  <div class="formula-tags">Tags: kalkulus, middelvejrdsætning</div>
+</div>
+
+<!-- FORMELKORT SLUT -->
+
+    <a class="back-button" href="index.html">← Tilbage</a>
+  </div>
+
+  <script>
+    function filterFormulas() {
+      const input = document.querySelector('.search-box').value.toLowerCase();
+      const formulas = document.querySelectorAll('.formula-card');
+
+      formulas.forEach(formula => {
+        const tags = formula.dataset.tags;
+        formula.style.display = tags.includes(input) ? 'block' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>
