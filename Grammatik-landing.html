@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vælg Sprog Grammatik</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(to bottom right, #a8dadc, #f1faee); /* Light blue/green to light yellow/white gradient */
+            color: #333;
+            min-height: 100vh;
+            display: flex; /* Use flexbox to center content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .container {
+            text-align: center; /* Center content inside the container */
+            background-color: #fff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1d3557;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        .language-buttons {
+            display: flex; /* Arrange buttons in a row */
+            flex-direction: column; /* Stack buttons vertically on smaller screens */
+            gap: 15px; /* Space between buttons */
+            align-items: center; /* Center buttons if they don't fill the width */
+        }
+         .language-buttons a {
+            display: block; /* Make links behave like blocks */
+            width: 200px; /* Set a fixed width for buttons */
+            padding: 15px 25px;
+            background-color: #457b9d; /* Muted blue button color */
+            color: white;
+            text-decoration: none; /* Remove underline */
+            border-radius: 8px; /* Rounded corners */
+            font-size: 1.2em;
+            transition: background-color 0.2s ease; /* Smooth hover effect */
+            text-align: center;
+         }
+        .language-buttons a:hover {
+            background-color: #1d3557; /* Darker blue on hover */
+        }
+         /* Style for placeholder buttons */
+         .language-buttons a:not([href]):hover {
+             background-color: #e0f2f7; /* Lighter hover */
+             color: #333;
+             cursor: default; /* Indicate not clickable */
+         }
+         .language-buttons a:not([href]) {
+             background-color: #a8dadc; /* Different color for non-linked buttons */
+             cursor: default; /* Indicate not clickable */
+         }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Vælg sprog for grammatik-oversigt</h1>
+
+        <div class="language-buttons">
+            <a href="Grammatik-Engelsk.html">Engelsk</a>
+            <a href="Grammatik-tysk.html">Tysk</a>
+            <a href="#">Fransk</a> <a href="#">Spansk</a> </div>
+         <p style="margin-top: 30px; color: #777;">Flere sprog kommer snart! 😊</p>
+    </div>
+
+</body>
+</html>

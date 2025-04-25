@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simpel Engelsk Grammatik ✨</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0; /* Reset padding */
+            background: linear-gradient(to bottom right, #a8dadc, #f1faee); /* Light blue/green to light yellow/white gradient inspired by image */
+            color: #333;
+            min-height: 100vh; /* Ensure gradient covers full viewport height */
+            padding-bottom: 40px; /* Add padding at bottom */
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto; /* Add margin top/bottom and auto for center */
+            background-color: #fff; /* White content area */
+            padding: 30px; /* More padding inside */
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Softer, larger shadow */
+        }
+        h1 {
+            text-align: center;
+            color: #1d3557; /* Dark blue from image */
+            margin-bottom: 30px;
+            font-size: 2.5em; /* Larger title */
+        }
+         h1 span {
+            color: #fca311; /* Orange star/highlight */
+         }
+        h2 {
+            color: #1d3557; /* Dark blue */
+            margin-top: 25px;
+            margin-bottom: 0; /* Adjust margin for fold-out */
+            padding: 15px 20px; /* Padding inside header */
+            background-color: #f1faee; /* Light background for header */
+            border-radius: 10px; /* Rounded corners for header */
+            cursor: pointer; /* Indicate it's clickable */
+            transition: background-color 0.2s ease; /* Smooth hover effect */
+            display: flex; /* Use flexbox to align icon */
+            justify-content: space-between; /* Space between text and icon */
+            align-items: center;
+            border: 1px solid #a8dadc; /* Light border */
+        }
+         h2:hover {
+            background-color: #e0f2f7; /* Lighter hover state */
+         }
+        h3 {
+             color: #457b9d; /* Muted blue */
+             margin-top: 20px;
+             margin-bottom: 10px;
+         }
+        .commandments {
+            background-color: #a8dadc; /* Light blue background */
+            padding: 25px; /* More padding */
+            border-radius: 15px; /* Rounded corners */
+            margin-bottom: 30px;
+            border: 1px solid #457b9d; /* Muted blue border */
+            color: #1d3557; /* Dark blue text */
+        }
+        .commandments h2 {
+            text-align: center;
+            color: #1d3557; /* Dark blue */
+            background-color: transparent; /* No background for inner header */
+            padding: 0;
+            margin-bottom: 20px;
+            cursor: default;
+            border: none;
+        }
+        .commandments ol {
+            list-style-type: decimal;
+            padding-left: 25px;
+        }
+        .commandments li {
+            margin-bottom: 12px; /* More space between list items */
+            padding-left: 5px;
+            line-height: 1.8;
+        }
+        .grammar-section .content {
+            padding: 20px;
+            background-color: #fff; /* White background for content */
+            border: 1px solid #a8dadc; /* Light border */
+            border-top: none; /* No top border, connects to header visually */
+            border-bottom-left-radius: 10px; /* Rounded bottom corners */
+            border-bottom-right-radius: 10px;
+            margin-top: 0; /* Connects to header */
+            display: none; /* Hide content by default */
+        }
+
+        .grammar-section .content.show {
+            display: block; /* Show content when 'show' class is added */
+        }
+
+        .example {
+            font-style: italic;
+            margin: 15px 20px; /* More margin */
+            color: #457b9d; /* Muted blue */
+            background-color: #f1faee; /* Light background */
+            padding: 10px;
+            border-left: 4px solid #a8dadc; /* Blue border on left */
+            border-radius: 5px;
+        }
+        code {
+            background-color: #e9ecef; /* Lighter grey for code */
+            padding: 3px 6px; /* More padding */
+            border-radius: 5px;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+             color: #e63946; /* Reddish color */
+        }
+         .highlight {
+            color: #e63946; /* Reddish color from image */
+            font-weight: bold;
+         }
+
+         table {
+             border-collapse: collapse;
+             width: 100%;
+             margin-top: 15px;
+             margin-bottom: 15px;
+         }
+         th, td {
+             border: 1px solid #a8dadc; /* Light blue border */
+             padding: 10px;
+             text-align: left;
+         }
+         th {
+             background-color: #457b9d; /* Muted blue background */
+             color: white;
+             font-weight: bold;
+         }
+         tr:nth-child(even) {
+             background-color: #f1faee; /* Lightest background for rows */
+         }
+         tr:hover {
+             background-color: #a8dadc; /* Light blue hover */
+         }
+        .verb-table-small th, .verb-table-small td {
+            padding: 8px; /* Less padding for smaller table */
+        }
+
+         .arrow {
+             width: 0;
+             height: 0;
+             border-left: 6px solid transparent;
+             border-right: 6px solid transparent;
+             border-top: 8px solid #1d3557; /* Dark blue arrow */
+             transition: transform 0.3s ease;
+         }
+
+         h2.active .arrow {
+             transform: rotate(180deg); /* Rotate arrow when active */
+         }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Den simple oversigt over engelsk grammatik <span>✨</span></h1>
+
+        <div class="commandments">
+            <h2>De 10 Grammatiske Bud </h2>
+            <p>Disse bud er super vigtige, når du lærer engelsk. Læs dem og prøv at huske dem!</p>
+            <ol>
+                <li>Navneord (Nouns) er ord for <span class="highlight">personer, steder eller ting</span> (f.eks. dog, city, book).</li>
+                <li>Når der er <span class="highlight">flere</span> af et navneord, sætter du ofte et <span class="highlight">-s</span> på (f.eks. dogs, books).</li>
+                <li>Brug <span class="highlight">a</span> eller <span class="highlight">an</span> foran <span class="highlight">én</span> ting. Brug <span class="highlight">an</span> foran en vokal (a, e, i, o, u) (f.eks. <span class="highlight">a</span> cat, <span class="highlight">an</span> apple).</li>
+                <li>Brug <span class="highlight">the</span> når du taler om en <span class="highlight">bestemt</span> ting, som du og den du taler med, kender (f.eks. <span class="highlight">the</span> sun, <span class="highlight">the</span> book on the table).</li>
+                <li>Udsagnsord (Verbs) er <span class="highlight">handlingeord</span> (f.eks. run, eat, sleep, talk).</li>
+                <li>Når du bruger He, She eller It (eller ét navn), skal der ofte et <span class="highlight">-s</span> på udsagnsordet i nutid (f.eks. He eat<span class="highlight">s</span>, She talk<span class="highlight">s</span>, The dog sleep<span class="highlight">s</span>).</li>
+                <li>Tillægsord (Adjectives) <span class="highlight">beskriver</span> navneord (f.eks. a <span class="highlight">big</span> house, a <span class="highlight">happy</span> child).</li>
+                <li>Biord (Adverbs) <span class="highlight">beskriver</span> udsagnsord eller tillægsord (f.eks. run <span class="highlight">quickly</span>, very <span class="highlight">happy</span>).</li>
+                <li>Brug <span class="highlight">not</span> (ofte med do/does/is/are) for at sige at du <span class="highlight">ikke</span> gør noget (f.eks. I do <span class="highlight">not</span> like...).</li>
+                <li>Stil spørgsmål ved at bruge spørgeord (Who? What? Where? When? Why? How?) eller ved at <span class="highlight">bytte rundt</span> på ord (f.eks. <span class="highlight">Are you...?</span> <span class="highlight">Do you...?</span>).</li>
+            </ol>
+        </div>
+
+        <h1>Mere om Grammatikken </h1>
+
+        <div class="grammar-section">
+            <h2>Navneord (Nouns) <span class="arrow"></span></h2>
+            <div class="content">
+                <p>Navneord er ord, der navngiver personer, steder, ting eller ideer.</p>
+                <p><h3>Ental og Flertal:</h3></p>
+                <p>Det meste af tiden laver du flertal ved at sætte <code>-s</code> på navneordet. Tænk på det som at tælle flere af noget!</p>
+                <div class="example">Eksempel: en kat &rarr; mange kat<span class="highlight">te</span> (cat &rarr; cat<span class="highlight">s</span>), én bil &rarr; mange bil<span class="highlight">er</span> (car &rarr; car<span class="highlight">s</span>)</div>
+                
+                <p>Men nogle gange er der små snyde-regler for, hvordan du laver flertal:</p>
+
+                <p>1. Hvis et navneord slutter på <code>-s</code>, <code>-ch</code>, <code>-sh</code>, <code>-ss</code>, <code>-x</code> eller <code>-z</code>, skal du sætte <code>-es</code> på for at lave flertal. Tænk på, at det er nemmere at sige "bus-ses" end "buss-s".</p>
+                <div class="example">Eksempel: én bus &rarr; mange bus<span class="highlight">ser</span> (bus &rarr; bus<span class="highlight">es</span>), én kasse &rarr; mange kasse<span class="highlight">r</span> (box &rarr; box<span class="highlight">es</span>), én kamp &rarr; mange kampe (match &rarr; match<span class="highlight">es</span>)</div>
+
+                <p>2. Nogle navneord, der slutter på <code>-o</code>, får <code>-es</code> i flertal. Der er ikke en nem regel for hvorfor, dem må man næsten bare lære!</p>
+                <div class="example">Eksempel: én tomat &rarr; mange tomat<span class="highlight">er</span> (tomato &rarr; tomato<span class="highlight">es</span>), én kartoffel &rarr; mange kartofle<span class="highlight">r</span> (potato &rarr; potato<span class="highlight">es</span>)</div>
+
+                <p>3. Hvis et navneord slutter på en <span class="highlight">konsonant</span> (ikke a, e, i, o, u) efterfulgt af <code>-y</code>, så skifter <code>-y</code> til <code>-ies</code> i flertal. Hvis der er en <span class="highlight">vokal</span> foran <code>-y</code>, sætter du bare <code>-s</code> på som normalt.</p>
+                <div class="example">Eksempel: én baby &rarr; mange bab<span class="highlight">ier</span> (baby &rarr; bab<span class="highlight">ies</span>), én by &rarr; mange b<span class="highlight">yer</span> (city &rarr; cit<span class="highlight">ies</span>). Men: én dreng &rarr; mange drenge (boy &rarr; boy<span class="highlight">s</span> - her er 'o' en vokal før 'y').</div>
+
+                <p>4. En række navneord, der slutter på <code>-f</code> eller <code>-fe</code> i ental, skifter <code>-f</code>/<code>-fe</code> ud med <code>-ves</code> i flertal. Tænk på, at "many knifes" lyder lidt mærkeligt.</p>
+                <div class="example">Eksempel: én kniv &rarr; mange kni<span class="highlight">ve</span> (knife &rarr; kni<span class="highlight">ves</span>), ét blad (på træ) &rarr; mange bla<span class="highlight">de</span> (leaf &rarr; lea<span class="highlight">ves</span>)</div>
+
+                <p>Nogle navneord har andre regler, der slet ikke følger mønstrene (f.eks. child &rarr; children, man &rarr; men), men start med at lære disse regler og <code>-s</code>-reglen!</p>
+
+                <p><h3>Tællelige og Ikke-tællelige navneord:</h3></p>
+                <p>Tællelige navneord kan du tælle (one apple, two apples). Ikke-tællelige kan du ikke tælle som enkelte ting (water, information, money). Du kan ikke sige "one water".</p>
+            </div>
+        </div>
+
+        <div class="grammar-section">
+             <h2>Artikler (a, an, the) <span class="arrow"></span></h2>
+             <div class="content">
+                 <p>Små ord du bruger foran navneord.</p>
+                 <p>Brug <code>a</code> foran navneord i ental, der starter med en konsonant-lyd.</p>
+                 <div class="example">Eksempel: <span class="highlight">a</span> cat, <span class="highlight">a</span> house</div>
+                 <p>Brug <code>an</code> foran navneord i ental, der starter med en vokal-lyd (a, e, i, o, u).</p>
+                 <div class="example">Eksempel: <span class="highlight">an</span> apple, <span class="highlight">an</span> orange</div>
+                 <p>Brug <code>the</code> når du taler om noget specifikt, som I begge kender.</p>
+                 <div class="example">Eksempel: <span class="highlight">The</span> sun is hot. (Der er kun én sol). <span class="highlight">The</span> book on the table is red. (Vi ved hvilken bog).</div>
+             </div>
+        </div>
+
+         <div class="grammar-section">
+            <h2>Tillægsord (Adjectives) <span class="arrow"></span></h2>
+            <div class="content">
+                <p>Tillægsord beskriver navneord. De fortæller mere om, hvordan noget er.</p>
+                <p>De står ofte <span class="highlight">før</span> navneordet.</p>
+                <div class="example">Eksempel: a <span class="highlight">big</span> house, a <span class="highlight">happy</span> student, <span class="highlight">red</span> shoes</div>
+            </div>
+         </div>
+
+         <div class="grammar-section">
+             <h2>Biord (Adverbs) <span class="arrow"></span></h2>
+             <div class="content">
+                 <p>Biord beskriver udsagnsord, tillægsord eller andre biord. De fortæller hvordan, hvornår eller hvor noget sker.</p>
+                 <p>Mange biord ender på <code>-ly</code>.</p>
+                 <div class="example">Eksempel: run <span class="highlight">quickly</span>, speak <span class="highlight">slowly</span>, very <span class="highlight">happy</span></div>
+             </div>
+         </div>
+
+         <div class="grammar-section">
+             <h2>Udsagnsord (Verbs) <span class="arrow"></span></h2>
+             <div class="content">
+                 <p>Udsagnsord er handlinger.</p>
+                 <p><h3>Vigtige former af udsagnsord:</h3></p>
+                 <p>Hvert udsagnsord har forskellige former. Her er de vigtigste:</p>
+                 <table>
+                     <thead>
+                         <tr>
+                             <th>Base Form</th>
+                             <th>He/She/It (Nutid)</th>
+                             <th>Datid (Past Simple)</th>
+                             <th>Førnutid/Førdatid (Past Participle)</th>
+                             <th>Nutid (med -ing)</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr>
+                             <td>play</td>
+                             <td>plays</td>
+                             <td>played</td>
+                             <td>played</td>
+                             <td>playing</td>
+                         </tr>
+                         <tr>
+                             <td>talk</td>
+                             <td>talks</td>
+                             <td>talked</td>
+                             <td>talked</td>
+                             <td>talking</td>
+                         </tr>
+                         <tr>
+                             <td>live</td>
+                             <td>lives</td>
+                             <td>lived</td>
+                             <td>lived</td>
+                             <td>living</td>
+                         </tr>
+                         <tr>
+                             <td>go (uregelmæssig!)</td>
+                             <td>goes</td>
+                             <td>went</td>
+                             <td>gone</td>
+                             <td>going</td>
+                         </tr>
+                         <tr>
+                             <td>eat (uregelmæssig!)</td>
+                              <td>eats</td>
+                              <td>ate</td>
+                              <td>eaten</td>
+                              <td>eating</td>
+                          </tr>
+                           <tr>
+                             <td>be (uregelmæssig!)</td>
+                               <td>is</td>
+                               <td>was/were</td>
+                               <td>been</td>
+                               <td>being</td>
+                           </tr>
+                     </tbody>
+                 </table>
+
+                 <p><h3>Nutid (Present Simple):</h3> Brug det om vaner, fakta eller ting der sker regelmæssigt.</p>
+                 <div class="example">Eksempel: I play football. She eat<span class="highlight">s</span> apples. They live in Denmark.</div>
+                 <p>(Husk <code>-s</code> ved he/she/it! Se bud nr. 6). For "be" er det: I am, You are, He/She/It is, We are, They are.</p>
+
+                 <p><h3>Nutid (Present Continuous):</h3> Brug det om noget, der sker lige <span class="highlight">nu</span>.</p>
+                 <p>Lavet med 'to be' (am, is, are) + udsagnsord + <code>-ing</code>.</p>
+                 <div class="example">Eksempel: I <span class="highlight">am playing</span> now. She <span class="highlight">is eating</span> an apple. They <span class="highlight">are talking</span>.</div>
+
+                 <p><h3>Datid (Past Simple):</h3> Brug det om noget, der skete <span class="highlight">i fortiden</span> og er slut.</p>
+                 <p>Ofte med <code>-ed</code> på udsagnsordet (played, talked). Men mange er <span class="highlight">uregelmæssige</span> og skal læres (go &rarr; went, eat &rarr; ate, see &rarr; saw). For "be" er datid 'was' (I, he, she, it) og 'were' (you, we, they).</p>
+                 <div class="example">Eksempel: I <span class="highlight">played</span> yesterday. She <span class="highlight">ate</span> an apple. They <span class="highlight">went</span> home. I <span class="highlight">was</span> happy. You <span class="highlight">were</span> here.</div>
+
+                 <p><h3>Førnutid (Present Perfect):</h3> Brug det om noget, der startede i fortiden, men stadig er vigtigt <span class="highlight">nu</span>. Det bruges ofte, når tidspunktet ikke er vigtigt, eller når handlingen lige er sket.</p>
+                 <p>Lavet med <span class="highlight">have / has</span> + <span class="highlight">Past Participle</span> (den form du lige lærte!).</p>
+                 <table class="verb-table-small">
+                     <thead>
+                         <tr>
+                             <th>Subjekt</th>
+                             <th>have / has</th>
+                             <th>Past Participle</th>
+                             <th>Eksempel</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr>
+                             <td>I, You, We, They</td>
+                             <td>have</td>
+                             <td rowspan="2">played / eaten / gone / been osv.</td>
+                             <td>I <span class="highlight">have played</span>.</td>
+                         </tr>
+                         <tr>
+                             <td>He, She, It</td>
+                             <td>has</td>
+                             <td>She <span class="highlight">has eaten</span>.</td>
+                         </tr>
+                     </tbody>
+                 </table>
+                 <div class="example">Eksempel: I <span class="highlight">have lost</span> my keys. (Jeg har dem ikke nu). She <span class="highlight">has been</span> to London. (Hun kender London). We <span class="highlight">have just finished</span>. (Lige sket).</div>
+
+                 <p><h3>Førdatid (Past Perfect):</h3> Brug det, når du taler om fortiden og vil sige, at noget skete <span class="highlight">før</span> noget andet i fortiden.</p>
+                 <p>Lavet med <span class="highlight">had</span> + <span class="highlight">Past Participle</span>.</p>
+                  <table class="verb-table-small">
+                  <thead>
+                         <tr>
+                             <th>Subjekt</th>
+                             <th>had</th>
+                             <th>Past Participle</th>
+                             <th>Eksempel</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr>
+                             <td>I, You, He, She, It, We, They</td>
+                             <td>had</td>
+                             <td>played / eaten / gone / been osv.</td>
+                             <td>I <span class="highlight">had eaten</span> before he arrived.</td>
+                         </tr>
+                     </tbody>
+                 </table>
+                 <div class="example">Eksempel: I <span class="highlight">had finished</span> my homework before I watched TV. (Først lektier, så TV - begge i fortiden). She <span class="highlight">had never seen</span> snow before she visited Canada.</div>
+
+                 <p><h3>Fremtid (Future):</h3></p>
+                 <p>Brug <code>will</code> for ting du beslutter nu, eller som du tror vil ske.</p>
+                 <div class="example">Eksempel: I <span class="highlight">will</span> help you. It <span class="highlight">will</span> rain tomorrow (måske).</div>
+                 <p>Brug <code>going to</code> for planer eller noget du kan se vil ske.</p>
+                 <div class="example">Eksempel: I <span class="highlight">am going to</span> visit my grandma next week. Look! It <span class="highlight">is going to</span> rain (mørke skyer).</div>
+                 <p><h3>Modalverber (can, must):</h3></p>
+                 <p><code>can</code> betyder at kunne.</p>
+                 <div class="example">Eksempel: I <span class="highlight">can</span> swim. She <span class="highlight">can</span> speak English.</div>
+                  <p><code>must</code> betyder at skulle (noget der er vigtigt eller nødvendigt).</p>
+                 <div class="example">Eksempel: You <span class="highlight">must</span> listen. I <span class="highlight">must</span> go now.</div>
+             </div>
+         </div>
+
+        <div class="grammar-section">
+            <h2>Forholdsord (Prepositions - at, on, in) <span class="arrow"></span></h2>
+            <div class="content">
+                <p>Disse små ord fortæller ofte om <span class="highlight">sted</span> eller <span class="highlight">tid</span>.</p>
+                <p><h3>In:</h3> Brug om <span class="highlight">store</span> områder (lande, byer), <span class="highlight">måneder</span>, <span class="highlight">årstider</span>, <span class="highlight">år</span>, dele af dagen (in the morning).</p>
+                <div class="example">Eksempel: in Denmark, in London, in July, in summer, in 2024, in the morning</div>
+                <p><h3>On:</h3> Brug om <span class="highlight">dage</span> (dage i ugen, datoer), på en <span class="highlight">flade</span> (på bordet, på væggen).</p>
+                <div class="example">Eksempel: on Monday, on 10th May, on the table, on the wall</div>
+                <p><h3>At:</h3> Brug om <span class="highlight">præcise tidspunkter</span> (at 3 o'clock, at midnight), ved <span class="highlight">bestemte steder</span> (at home, at school, at the bus stop).</p>
+                <div class="example">Eksempel: at 7 o'clock, at noon, at home, at the station</div>
+                <p><em>(Der er mange forholdsord, men start med disse!)</em></p>
+            </div>
+        </div>
+
+        <div class="grammar-section">
+             <h2>Stedord (Pronouns) <span class="arrow"></span></h2>
+             <div class="content">
+                 <p>Stedord erstatter navneord, så vi ikke gentager os selv hele tiden.</p>
+                 <p><h3>Subjektsform (hvem/hvad gør noget?):</h3></p>
+                 <div class="example">Eksempel: <span class="highlight">I</span> run. <span class="highlight">You</span> talk. <span class="highlight">He</span> eats. <span class="highlight">She</span> sleeps. <span class="highlight">It</span> is a dog. <span class="highlight">We</span> learn. <span class="highlight">They</span> play.</div>
+                 <p><h3>Objektsform (hvem/hvad sker der noget ved?):</h3></p>
+                  <div class="example">Eksempel: Help <span class="highlight">me</span>. I see <span class="highlight">you</span>. I talk to <span class="highlight">him</span>. He calls <span class="highlight">her</span>. I see <span class="highlight">it</span>. He helps <span class="highlight">us</span>. She sees <span class="highlight">them</span>.</div>
+                  <p><h3>Ejestedord (hvem ejer noget?):</h3></p>
+                   <div class="example">Eksempel: <span class="highlight">my</span> book, <span class="highlight">your</span> house, <span class="highlight">his</span> car, <span class="highlight">her</span> bag, <span class="highlight">its</span> bone, <span class="highlight">our</span> school, <span class="highlight">their</span> teacher</div>
+            </div>
+        </div>
+
+        <div class="grammar-section">
+             <h2>Spørgsmål (Questions) <span class="arrow"></span></h2>
+             <div class="content">
+                 <p>Hvordan spørger du på engelsk?</p>
+                 <p><h3>Ja/Nej spørgsmål:</h3> Start ofte med en form af 'do', 'be' eller et modalverbum.</p>
+                 <div class="example">Eksempel: <span class="highlight">Do</span> you like pizza? <span class="highlight">Are</span> you happy? <span class="highlight">Can</span> you swim?</div>
+                 <p><h3>Spørgsmål med spørgeord (Wh-words):</h3> Brug ord som Who, What, Where, When, Why, How.</p>
+                  <div class="example">Eksempel: <span class="highlight">What</span> is your name? <span class="highlight">Where</span> do you live? <span class="highlight">When</span> does it start?</div>
+             </div>
+        </div>
+
+         <div class="grammar-section">
+             <h2>Nægtelser (Negation) <span class="arrow"></span></h2>
+             <div class="content">
+                 <p>Hvordan siger du at du <span class="highlight">ikke</span> gør noget?</p>
+                 <p>Brug <code>not</code>, ofte sammen med 'do'/'does' eller en form af 'be'.</p>
+                 <div class="example">Eksempel: I <span class="highlight">do not</span> like coffee. She <span class="highlight">does not</span> live here. We <span class="highlight">are not</span> sad. It <span class="highlight">is not</span> raining. I <span class="highlight">cannot</span> help you.</div>
+                 <p>Korte former er meget almindelige: don't (do not), doesn't (does not), isn't (is not), aren't (are not), cannot (can't).</p>
+                  <div class="example">Eksempel: I <span class="highlight">don't</span> like coffee. She <span class="highlight">doesn't</span> live here.</div>
+             </div>
+         </div>
+
+        <div class="grammar-section">
+             <h2>Ordstilling (Word Order) <span class="arrow"></span></h2>
+             <div class="content">
+                 <p>Den mest almindelige ordstilling i en simpel sætning er:</p>
+                 <p><span class="highlight">Subjekt (hvem/hvad) + Udsagnsord (hvad sker der) + Objekt (hvem/hvad sker det ved) + Resten</span></p>
+                  <div class="example">Eksempel: <span class="highlight">I</span> (<ins>Subjekt</ins>) <span class="highlight">eat</span> (<ins>Udsagnsord</ins>) <span class="highlight">an apple</span> (<ins>Objekt</ins>) <span class="highlight">every day</span> (<ins>Resten</ins>).</div>
+                   <div class="example">Eksempel: <span class="highlight">She</span> (<ins>Subjekt</ins>) <span class="highlight">reads</span> (<ins>Udsagnsord</ins>) <span class="highlight">a book</span> (<ins>Objekt</ins>) <span class="highlight">in the evening</span> (<ins>Resten</ins>).</div>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 40px; color: #457b9d;">Husk at øve dig! Jo mere du bruger engelsk, jo nemmere bliver det! 😊 For en dybere forklaring på de forskellige ting, kig eksempelvis på denne side: <a href="https://gf.dk/Engelsk/IT-engelsk/Grammar/Index.htm">Engelsk Grammatik</a> eller denne <a href="https://www.sproglinks.dk/engelsk">Sproglinks Engelsk</a></p>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const headers = document.querySelectorAll('.grammar-section h2');
+
+            headers.forEach(header => {
+                header.addEventListener('click', function() {
+                    // Find the next sibling element which is the content div
+                    const content = this.nextElementSibling;
+
+                    // Toggle the 'show' class
+                    content.classList.toggle('show');
+                    this.classList.toggle('active'); // Toggle 'active' class on header for arrow rotation
+
+                    // Optional: Close other open sections
+                    headers.forEach(otherHeader => {
+                        if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                             otherHeader.classList.remove('active');
+                             otherHeader.nextElementSibling.classList.remove('show');
+                        }
+                    });
+
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
