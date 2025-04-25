@@ -13,7 +13,7 @@
             background: linear-gradient(to bottom right, #a8dadc, #f1faee); /* Light blue/green to light yellow/white gradient inspired by image */
             color: #333;
             min-height: 100vh; /* Ensure gradient covers full viewport height */
-            padding-bottom: 40px; /* Add padding at bottom */
+            padding-bottom: 80px; /* Increased padding at bottom for buttons */
         }
         .container {
             max-width: 800px;
@@ -53,7 +53,7 @@
              color: #457b9d; /* Muted blue */
              margin-top: 20px;
              margin-bottom: 10px;
-        }
+         }
         .commandments {
             background-color: #a8dadc; /* Light blue background */
             padding: 25px; /* More padding */
@@ -160,6 +160,26 @@
              color: #555;
              margin-top: 5px;
          }
+         .button-container {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #a8dadc;
+         }
+         .button-container a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #457b9d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+         }
+         .button-container a:hover {
+            background-color: #1d3557;
+         }
+
     </style>
 </head>
 <body>
@@ -209,7 +229,7 @@
                     </tbody>
                 </table>
 
-                 <h4>HABEN (at have)</h4>
+                <h4>HABEN (at have)</h4>
                 <table class="table-small">
                     <thead>
                         <tr><th></th><th>Nutid (har)</th><th>Datid (havde)</th><th>Førnutid (har haft)</th><th>Førdatid (havde haft)</th></tr>
@@ -250,7 +270,7 @@
                              <th>Nutid (køber)</th>
                              <th>Datid (købte)</th>
                              <th>Førnutid (har købt)</th>
-                              <th>Førdatid (havde købt)</th>
+                             <th>Førdatid (havde købt)</th>
                          </tr>
                      </thead>
                      <tbody>
@@ -289,7 +309,7 @@
 
                 <h3>Modalverber</h3>
                  <p>Disse verber bruges sammen med et andet udsagnsord (hovedverbet), som står til sidst i sætningen i navneform.</p>
-                 <table class="table-small">
+                <table class="table-small">
                      <thead>
                          <tr><th></th><th>dürfen (at måtte/have lov til)</th><th>können (at kunne)</th><th>mögen (at gide/kunne lide)</th><th>müssen (at skulle/være nødt til)</th><th>sollen (at skulle/have pligt til)</th><th>wollen (at ville)</th></tr>
                      </thead>
@@ -301,7 +321,7 @@
                          <tr><td>ihr</td><td>dürft</td><td>könnt</td><td>mögt</td><td>müsst</td><td>sollt</td><td>wollt</td></tr>
                          <tr><td>sie/Sie</td><td>dürfen</td><td>können</td><td>mögen</td><td>müssen</td><td>sollen</td><td>wollen</td></tr>
                      </tbody>
-                 </table>
+                </table>
                  <div class="example">Eksempel: Ich <span class="highlight">kann</span> Deutsch <span class="highlight">sprechen</span>. Sie <span class="highlight">muss</span> jetzt <span class="highlight">gehen</span>.</div>
 
             </div>
@@ -312,7 +332,7 @@
              <div class="content">
                  <p>Artikler står foran navneord og viser køn, tal og kasus.</p>
 
-                 <h3>Det bestemte kendeord: der, die, das</h3>
+                <h3>Det bestemte kendeord: der, die, das</h3>
                  <table>
                      <thead>
                          <tr><th>Kasus</th><th>Hankøn (m)</th><th>Hunkøn (f)</th><th>Intetkøn (n)</th><th>Flertal (pl)</th></tr>
@@ -326,7 +346,7 @@
                  </table>
                   <p class="umlaut-note">Ord som aller, dieser, jeder, jener, solcher, welcher bøjes som det bestemte kendeord.</p>
 
-                 <h3>Det ubestemte kendeord: ein, eine, ein</h3>
+                  <h3>Det ubestemte kendeord: ein, eine, ein</h3>
                  <table>
                      <thead>
                          <tr><th>Kasus</th><th>Hankøn (m)</th><th>Hunkøn (f)</th><th>Intetkøn (n)</th><th>Flertal (pl)</th></tr>
@@ -347,8 +367,7 @@
              <div class="content">
                  <p>Kasus viser, hvilken rolle et navneord (eller stedord) har i sætningen. Artiklen foran navneordet (og evt. tillægsord) viser kasus.</p>
                  <ul>
-                     <li><strong>Nominativ (Grundleddet):</strong> Hvem eller hvad gør noget?
-                         <div class="example">Eksempel: <span class="highlight">Der Schlüssel</span> liegt da. (Schlüssel gør noget - ligger der).</div>
+                     <li><strong>Nominativ (Grundleddet):</strong> Hvem eller hvad gør noget? <div class="example">Eksempel: <span class="highlight">Der Schlüssel</span> liegt da. (Schlüssel gør noget - ligger der).</div>
                      </li>
                      <li><strong>Akkusativ (Genstandsleddet):</strong> Hvem eller hvad gøres der noget ved? Svarer ofte på "Wen?" eller "Was?".
                           <div class="example">Eksempel: Hast du <span class="highlight">den Schlüssel</span> gefunden? (Schlüssel findes - der gøres noget ved den). Sie sah <span class="highlight">einen Film</span>.</div>
@@ -356,22 +375,21 @@
                      <li><strong>Dativ (Hensynsleddet):</strong> Hvem eller hvad gives/fortælles/vises noget til/for? Svarer ofte på "Wem?".
                          <div class="example">Eksempel: Er gab <span class="highlight">dem Chef</span> den Rapport. (Rapport gives TIL chefen). Ich erzähle <span class="highlight">meiner Freundin</span> alles.</div>
                      </li>
-                     <li><strong>Genitiv (Ejefald):</strong> Hvem eller hvad ejer noget?
-                          <div class="example">Eksempel: Hier liegt das Schloss <span class="highlight">des Königs</span>. (Slottet tilhører kongen). Das ist das Haus <span class="highlight">meines Vaters</span>.</div>
+                     <li><strong>Genitiv (Ejefald):</strong> Hvem eller hvad ejer noget? <div class="example">Eksempel: Hier liegt das Schloss <span class="highlight">des Königs</span>. (Slottet tilhører kongen). Das ist das Haus <span class="highlight">meines Vaters</span>.</div>
                      </li>
                  </ul>
                  <p class="umlaut-note">Nogle verber og forholdsord styrer bestemt kasus (se Forholdsord).</p>
              </div>
         </div>
 
-         <div class="grammar-section">
+        <div class="grammar-section">
             <h2>Stedord <span class="arrow"></span></h2>
             <div class="content">
                 <p>Stedord erstatter navneord.</p>
 
                 <h3>Personlige stedord: ich, du, er, osv.</h3>
                 <p>De ændrer form efter kasus:</p>
-                 <table>
+                <table>
                      <thead>
                          <tr><th></th><th>Nominativ</th><th>Akkusativ</th><th>Dativ</th></tr>
                      </thead>
@@ -384,7 +402,7 @@
                          <tr><td>wir (vi)</td><td>wir</td><td>uns</td><td>uns</td></tr>
                          <tr><td>ihr (jer)</td><td>ihr</td><td>euch</td><td>euch</td></tr>
                          <tr><td>sie (de)</td><td>sie</td><td>sie</td><td>ihnen</td></tr>
-                          <tr><td>Sie (De)</td><td>Sie</td><td>Sie</td><td>Ihnen</td></tr>
+                         <tr><td>Sie (De)</td><td>Sie</td><td>Sie</td><td>Ihnen</td></tr>
                      </tbody>
                  </table>
                  <div class="example">Eksempel: <span class="highlight">Ich</span> sehe <span class="highlight">dich</span>. Er gab <span class="highlight">mir</span> ein Buch.</div>
@@ -437,11 +455,10 @@
                 <h3>Styrer Akkusativ eller Dativ (Vekselspræpositioner):</h3>
                  <p>an, auf, hinter, in, neben, über, unter, vor, zwischen</p>
                  <ul>
-                     <li>Brug <span class="highlight">Akkusativ</span> ved <span class="highlight">bevægelse</span> (hvorhen?).
+                   <li>Brug <span class="highlight">Akkusativ</span> ved <span class="highlight">bevægelse</span> (hvorhen?).
                          <div class="example">Eksempel: Er ging <span class="highlight">in den Park</span>. (Parken bevægelse ind i). Sie legt das Buch <span class="highlight">auf den Tisch</span>. (Bordet bevægelse hen på).</div>
                      </li>
-                     <li>Brug <span class="highlight">Dativ</span> ved <span class="highlight">ophold</span> (hvor?).
-                          <div class="example">Eksempel: Er ging <span class="highlight">in dem Park</span> spazieren. (Ophold inde i parken). Das Buch liegt <span class="highlight">auf dem Tisch</span>. (Ophold henne på bordet).</div>
+                     <li>Brug <span class="highlight">Dativ</span> ved <span class="highlight">ophold</span> (hvor?). <div class="example">Eksempel: Er ging <span class="highlight">in dem Park</span> spazieren. (Ophold inde i parken). Das Buch liegt <span class="highlight">auf dem Tisch</span>. (Ophold henne på bordet).</div>
                      </li>
                  </ul>
             </div>
@@ -498,7 +515,7 @@
                          <tr><td>gut</td><td>besser</td><td>am besten (uregelmæssig!)</td></tr>
                      </tbody>
                  </table>
-                  <div class="example">Eksempel: Das Auto fährt <span class="highlight">schnell</span>. Dieses fährt <span class="highlight">schneller</span>. Jenes fährt <span class="highlight">am schnellsten</span>.</div>
+                 <div class="example">Eksempel: Das Auto fährt <span class="highlight">schnell</span>. Dieses fährt <span class="highlight">schneller</span>. Jenes fährt <span class="highlight">am schnellsten</span>.</div>
              </div>
         </div>
 
@@ -520,6 +537,11 @@
 
 
         <p style="text-align: center; margin-top: 40px; color: #457b9d;">Denk dran zu üben! Jo mere du bruger tysk, desto nemmere bliver det! 😊 Se i øvrigt også denne side for mere tysk grammatik: https://www.sproglinks.dk/tysk</p>
+
+        <div class="button-container">
+            <a href="Grammatik-landing.html">Tilbage til sprog</a>
+            <a href="index.html">Tilbage til forside</a>
+        </div>
 
     </div>
 
