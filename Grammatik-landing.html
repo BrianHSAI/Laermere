@@ -34,6 +34,7 @@
             flex-direction: column; /* Stack buttons vertically on smaller screens */
             gap: 15px; /* Space between buttons */
             align-items: center; /* Center buttons if they don't fill the width */
+            margin-bottom: 20px; /* Add space below language buttons */
         }
          .language-buttons a {
             display: block; /* Make links behave like blocks */
@@ -61,6 +62,23 @@
              cursor: default; /* Indicate not clickable */
          }
 
+         /* Style for the back button */
+         .back-button {
+             display: inline-block; /* Allows margin and padding */
+             margin-top: 20px; /* Space above the button */
+             padding: 10px 20px;
+             background-color: #e63946; /* Reddish color for emphasis */
+             color: white;
+             text-decoration: none;
+             border-radius: 8px;
+             font-size: 1em;
+             transition: background-color 0.2s ease;
+         }
+
+         .back-button:hover {
+             background-color: #c1121f; /* Darker red on hover */
+         }
+
 
     </style>
 </head>
@@ -72,8 +90,13 @@
         <div class="language-buttons">
             <a href="Grammatik-Engelsk.html">Engelsk</a>
             <a href="Grammatik-tysk.html">Tysk</a>
-            <a href="#">Fransk</a> <a href="#">Spansk</a> </div>
-         <p style="margin-top: 30px; color: #777;">Flere sprog kommer snart! 😊</p>
+            <a href="#">Fransk</a>
+            <a href="#">Spansk</a>
+        </div>
+
+        <a href="index.html" class="back-button">Tilbage</a>
+
+        <p style="margin-top: 30px; color: #777;"></p>
     </div>
 
 </body>
