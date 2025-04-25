@@ -10,18 +10,24 @@
             line-height: 1.6;
             margin: 0;
             padding: 0; /* Reset padding */
-            background: linear-gradient(to bottom right, #a8dadc, #f1faee); /* Light blue/green to light yellow/white gradient inspired by image */
+            background: linear-gradient(to bottom right, #a8dadc, #f1faee);
+            /* Light blue/green to light yellow/white gradient inspired by image */
             color: #333;
             min-height: 100vh; /* Ensure gradient covers full viewport height */
-            padding-bottom: 40px; /* Add padding at bottom */
+            padding-bottom: 40px;
+            /* Add padding at bottom */
         }
         .container {
             max-width: 800px;
             margin: 40px auto; /* Add margin top/bottom and auto for center */
-            background-color: #fff; /* White content area */
-            padding: 30px; /* More padding inside */
-            border-radius: 15px; /* More rounded corners */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Softer, larger shadow */
+            background-color: #fff;
+            /* White content area */
+            padding: 30px;
+            /* More padding inside */
+            border-radius: 15px;
+            /* More rounded corners */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            /* Softer, larger shadow */
         }
         h1 {
             text-align: center;
@@ -30,42 +36,59 @@
             font-size: 2.5em; /* Larger title */
         }
          h1 span {
-            color: #fca311; /* Orange star/highlight */
+            color: #fca311;
+            /* Orange star/highlight */
          }
         h2 {
-            color: #1d3557; /* Dark blue */
+            color: #1d3557;
+            /* Dark blue */
             margin-top: 25px;
-            margin-bottom: 0; /* Adjust margin for fold-out */
-            padding: 15px 20px; /* Padding inside header */
-            background-color: #f1faee; /* Light background for header */
-            border-radius: 10px; /* Rounded corners for header */
-            cursor: pointer; /* Indicate it's clickable */
-            transition: background-color 0.2s ease; /* Smooth hover effect */
-            display: flex; /* Use flexbox to align icon */
-            justify-content: space-between; /* Space between text and icon */
+            margin-bottom: 0;
+            /* Adjust margin for fold-out */
+            padding: 15px 20px;
+            /* Padding inside header */
+            background-color: #f1faee;
+            /* Light background for header */
+            border-radius: 10px;
+            /* Rounded corners for header */
+            cursor: pointer;
+            /* Indicate it's clickable */
+            transition: background-color 0.2s ease;
+            /* Smooth hover effect */
+            display: flex;
+            /* Use flexbox to align icon */
+            justify-content: space-between;
+            /* Space between text and icon */
             align-items: center;
             border: 1px solid #a8dadc; /* Light border */
         }
          h2:hover {
-            background-color: #e0f2f7; /* Lighter hover state */
+            background-color: #e0f2f7;
+            /* Lighter hover state */
          }
         h3 {
-             color: #457b9d; /* Muted blue */
+             color: #457b9d;
+             /* Muted blue */
              margin-top: 20px;
              margin-bottom: 10px;
          }
         .commandments {
-            background-color: #a8dadc; /* Light blue background */
-            padding: 25px; /* More padding */
-            border-radius: 15px; /* Rounded corners */
+            background-color: #a8dadc;
+            /* Light blue background */
+            padding: 25px;
+            /* More padding */
+            border-radius: 15px;
+            /* Rounded corners */
             margin-bottom: 30px;
             border: 1px solid #457b9d; /* Muted blue border */
-            color: #1d3557; /* Dark blue text */
+            color: #1d3557;
+            /* Dark blue text */
         }
         .commandments h2 {
             text-align: center;
             color: #1d3557; /* Dark blue */
-            background-color: transparent; /* No background for inner header */
+            background-color: transparent;
+            /* No background for inner header */
             padding: 0;
             margin-bottom: 20px;
             cursor: default;
@@ -76,43 +99,56 @@
             padding-left: 25px;
         }
         .commandments li {
-            margin-bottom: 12px; /* More space between list items */
+            margin-bottom: 12px;
+            /* More space between list items */
             padding-left: 5px;
             line-height: 1.8;
         }
         .grammar-section .content {
             padding: 20px;
             background-color: #fff; /* White background for content */
-            border: 1px solid #a8dadc; /* Light border */
-            border-top: none; /* No top border, connects to header visually */
-            border-bottom-left-radius: 10px; /* Rounded bottom corners */
+            border: 1px solid #a8dadc;
+            /* Light border */
+            border-top: none;
+            /* No top border, connects to header visually */
+            border-bottom-left-radius: 10px;
+            /* Rounded bottom corners */
             border-bottom-right-radius: 10px;
-            margin-top: 0; /* Connects to header */
-            display: none; /* Hide content by default */
+            margin-top: 0;
+            /* Connects to header */
+            display: none;
+            /* Hide content by default */
         }
 
         .grammar-section .content.show {
-            display: block; /* Show content when 'show' class is added */
+            display: block;
+            /* Show content when 'show' class is added */
         }
 
         .example {
             font-style: italic;
             margin: 15px 20px; /* More margin */
-            color: #457b9d; /* Muted blue */
-            background-color: #f1faee; /* Light background */
+            color: #457b9d;
+            /* Muted blue */
+            background-color: #f1faee;
+            /* Light background */
             padding: 10px;
             border-left: 4px solid #a8dadc; /* Blue border on left */
             border-radius: 5px;
         }
         code {
-            background-color: #e9ecef; /* Lighter grey for code */
-            padding: 3px 6px; /* More padding */
+            background-color: #e9ecef;
+            /* Lighter grey for code */
+            padding: 3px 6px;
+            /* More padding */
             border-radius: 5px;
             font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-             color: #e63946; /* Reddish color */
+             color: #e63946;
+            /* Reddish color */
         }
          .highlight {
-            color: #e63946; /* Reddish color from image */
+            color: #e63946;
+            /* Reddish color from image */
             font-weight: bold;
          }
 
@@ -123,23 +159,28 @@
              margin-bottom: 15px;
          }
          th, td {
-             border: 1px solid #a8dadc; /* Light blue border */
+             border: 1px solid #a8dadc;
+             /* Light blue border */
              padding: 10px;
              text-align: left;
          }
          th {
-             background-color: #457b9d; /* Muted blue background */
+             background-color: #457b9d;
+             /* Muted blue background */
              color: white;
              font-weight: bold;
          }
          tr:nth-child(even) {
-             background-color: #f1faee; /* Lightest background for rows */
+             background-color: #f1faee;
+             /* Lightest background for rows */
          }
          tr:hover {
-             background-color: #a8dadc; /* Light blue hover */
+             background-color: #a8dadc;
+             /* Light blue hover */
          }
         .verb-table-small th, .verb-table-small td {
-            padding: 8px; /* Less padding for smaller table */
+            padding: 8px;
+            /* Less padding for smaller table */
         }
 
          .arrow {
@@ -147,13 +188,36 @@
              height: 0;
              border-left: 6px solid transparent;
              border-right: 6px solid transparent;
-             border-top: 8px solid #1d3557; /* Dark blue arrow */
+             border-top: 8px solid #1d3557;
+             /* Dark blue arrow */
              transition: transform 0.3s ease;
          }
 
          h2.active .arrow {
-             transform: rotate(180deg); /* Rotate arrow when active */
+             transform: rotate(180deg);
+             /* Rotate arrow when active */
          }
+
+         .button-container {
+            text-align: center;
+            margin-top: 30px;
+         }
+
+         .button-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            color: white;
+            background-color: #457b9d;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+         }
+
+         .button-container a:hover {
+            background-color: #1d3557;
+         }
+
     </style>
 </head>
 <body>
@@ -167,10 +231,11 @@
             <ol>
                 <li>Navneord (Nouns) er ord for <span class="highlight">personer, steder eller ting</span> (f.eks. dog, city, book).</li>
                 <li>Når der er <span class="highlight">flere</span> af et navneord, sætter du ofte et <span class="highlight">-s</span> på (f.eks. dogs, books).</li>
-                <li>Brug <span class="highlight">a</span> eller <span class="highlight">an</span> foran <span class="highlight">én</span> ting. Brug <span class="highlight">an</span> foran en vokal (a, e, i, o, u) (f.eks. <span class="highlight">a</span> cat, <span class="highlight">an</span> apple).</li>
+                <li>Brug <span class="highlight">a</span> eller
+ <span class="highlight">an</span> foran <span class="highlight">én</span> ting. Brug <span class="highlight">an</span> foran en vokal (a, e, i, o, u) (f.eks. <span class="highlight">a</span> cat, <span class="highlight">an</span> apple).</li>
                 <li>Brug <span class="highlight">the</span> når du taler om en <span class="highlight">bestemt</span> ting, som du og den du taler med, kender (f.eks. <span class="highlight">the</span> sun, <span class="highlight">the</span> book on the table).</li>
-                <li>Udsagnsord (Verbs) er <span class="highlight">handlingeord</span> (f.eks. run, eat, sleep, talk).</li>
-                <li>Når du bruger He, She eller It (eller ét navn), skal der ofte et <span class="highlight">-s</span> på udsagnsordet i nutid (f.eks. He eat<span class="highlight">s</span>, She talk<span class="highlight">s</span>, The dog sleep<span class="highlight">s</span>).</li>
+                <li>Udsagnsord (Verbs) er <span class="highlight">handlingeord</span> (f.eks. run, eat, sleep, talk).
+                <li>Når du bruger He, She eller It (eller ét navn), skal der ofte et <span class="highlight">-s</span> på udsagnsordet i nutid (f.eks. He eat<span class="highlight">-s</span>, She talk<span class="highlight">-s</span>, The dog sleep<span class="highlight">-s</span>).</li>
                 <li>Tillægsord (Adjectives) <span class="highlight">beskriver</span> navneord (f.eks. a <span class="highlight">big</span> house, a <span class="highlight">happy</span> child).</li>
                 <li>Biord (Adverbs) <span class="highlight">beskriver</span> udsagnsord eller tillægsord (f.eks. run <span class="highlight">quickly</span>, very <span class="highlight">happy</span>).</li>
                 <li>Brug <span class="highlight">not</span> (ofte med do/does/is/are) for at sige at du <span class="highlight">ikke</span> gør noget (f.eks. I do <span class="highlight">not</span> like...).</li>
@@ -187,7 +252,7 @@
                 <p><h3>Ental og Flertal:</h3></p>
                 <p>Det meste af tiden laver du flertal ved at sætte <code>-s</code> på navneordet. Tænk på det som at tælle flere af noget!</p>
                 <div class="example">Eksempel: en kat &rarr; mange kat<span class="highlight">te</span> (cat &rarr; cat<span class="highlight">s</span>), én bil &rarr; mange bil<span class="highlight">er</span> (car &rarr; car<span class="highlight">s</span>)</div>
-                
+
                 <p>Men nogle gange er der små snyde-regler for, hvordan du laver flertal:</p>
 
                 <p>1. Hvis et navneord slutter på <code>-s</code>, <code>-ch</code>, <code>-sh</code>, <code>-ss</code>, <code>-x</code> eller <code>-z</code>, skal du sætte <code>-es</code> på for at lave flertal. Tænk på, at det er nemmere at sige "bus-ses" end "buss-s".</p>
@@ -232,7 +297,8 @@
          </div>
 
          <div class="grammar-section">
-             <h2>Biord (Adverbs) <span class="arrow"></span></h2>
+             <h2>Biord
+ (Adverbs) <span class="arrow"></span></h2>
              <div class="content">
                  <p>Biord beskriver udsagnsord, tillægsord eller andre biord. De fortæller hvordan, hvornår eller hvor noget sker.</p>
                  <p>Mange biord ender på <code>-ly</code>.</p>
@@ -264,7 +330,7 @@
                              <td>played</td>
                              <td>playing</td>
                          </tr>
-                         <tr>
+                        <tr>
                              <td>talk</td>
                              <td>talks</td>
                              <td>talked</td>
@@ -293,7 +359,7 @@
                               <td>eating</td>
                           </tr>
                            <tr>
-                             <td>be (uregelmæssig!)</td>
+                                <td>be (uregelmæssig!)</td>
                                <td>is</td>
                                <td>was/were</td>
                                <td>been</td>
@@ -344,7 +410,7 @@
                  <p><h3>Førdatid (Past Perfect):</h3> Brug det, når du taler om fortiden og vil sige, at noget skete <span class="highlight">før</span> noget andet i fortiden.</p>
                  <p>Lavet med <span class="highlight">had</span> + <span class="highlight">Past Participle</span>.</p>
                   <table class="verb-table-small">
-                  <thead>
+                   <thead>
                          <tr>
                              <th>Subjekt</th>
                              <th>had</th>
@@ -386,7 +452,8 @@
                 <div class="example">Eksempel: on Monday, on 10th May, on the table, on the wall</div>
                 <p><h3>At:</h3> Brug om <span class="highlight">præcise tidspunkter</span> (at 3 o'clock, at midnight), ved <span class="highlight">bestemte steder</span> (at home, at school, at the bus stop).</p>
                 <div class="example">Eksempel: at 7 o'clock, at noon, at home, at the station</div>
-                <p><em>(Der er mange forholdsord, men start med disse!)</em></p>
+                <p><em>(Der
+ er mange forholdsord, men start med disse!)</em></p>
             </div>
         </div>
 
@@ -404,11 +471,12 @@
         </div>
 
         <div class="grammar-section">
-             <h2>Spørgsmål (Questions) <span class="arrow"></span></h2>
+            <h2>Spørgsmål (Questions) <span class="arrow"></span></h2>
              <div class="content">
                  <p>Hvordan spørger du på engelsk?</p>
                  <p><h3>Ja/Nej spørgsmål:</h3> Start ofte med en form af 'do', 'be' eller et modalverbum.</p>
-                 <div class="example">Eksempel: <span class="highlight">Do</span> you like pizza? <span class="highlight">Are</span> you happy? <span class="highlight">Can</span> you swim?</div>
+                 <div class="example">Eksempel: <span class="highlight">Do</span> you
+ like pizza? <span class="highlight">Are</span> you happy? <span class="highlight">Can</span> you swim?</div>
                  <p><h3>Spørgsmål med spørgeord (Wh-words):</h3> Brug ord som Who, What, Where, When, Why, How.</p>
                   <div class="example">Eksempel: <span class="highlight">What</span> is your name? <span class="highlight">Where</span> do you live? <span class="highlight">When</span> does it start?</div>
              </div>
@@ -436,6 +504,11 @@
         </div>
 
         <p style="text-align: center; margin-top: 40px; color: #457b9d;">Husk at øve dig! Jo mere du bruger engelsk, jo nemmere bliver det! 😊 For en dybere forklaring på de forskellige ting, kig eksempelvis på denne side: <a href="https://gf.dk/Engelsk/IT-engelsk/Grammar/Index.htm">Engelsk Grammatik</a> eller denne <a href="https://www.sproglinks.dk/engelsk">Sproglinks Engelsk</a></p>
+
+        <div class="button-container">
+            <a href="Grammatik-landing.html">Tilbage til sprog</a>
+            <a href="index.html">Tilbage til forside</a>
+        </div>
 
     </div>
 
