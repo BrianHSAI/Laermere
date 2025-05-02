@@ -380,6 +380,8 @@
                         <li><a href="Lektiekalender.html"><i class="fas fa-clipboard-list"></i> Lektiekalender</a></li>
                         <li><a href="Opgaveplanlægger.html"><i class="fas fa-tasks"></i> Opgaveplanlægger</a></li>
                         <li><a href="Pomodoro.html"><i class="fas fa-clock"></i> Fokushjælper</a></li>
+                        <li><a href="Note.html"><i class="fas fa-pencil-alt"></i> Mine Noter</a></li>
+                        <li><a href="Nextwordpl.html"><i class="fas fa-file-alt"></i> NextWordPL</a></li>
                     </ul>
                 </nav>
             </aside>
@@ -440,10 +442,8 @@
             const element = document.getElementById(elementId);
             if (!element) return;
 
-            const noDataIcon = element.querySelector('.no-data-message i')?.className ||
-'fas fa-question-circle';
-            const noDataText = element.querySelector('.no-data-message p')?.textContent ||
-'Ingen data fundet.';
+            const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle';
+            const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
             if (items && items.length > 0) {
                 element.innerHTML = '';
                 items.forEach(item => {
