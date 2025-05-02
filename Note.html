@@ -3,41 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note Program (Drag & Drop & Design)</title>
+    <title>Note Program (Med Tilbageknap)</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Ligner skærmbilledets font */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            background-color: #f0f4f8; /* Lys blå/grå baggrund */
+            background-color: #f0f4f8;
             margin: 0;
             min-height: 100vh;
             color: #333;
-            overflow: hidden; /* Undgå scrollbars på body */
+            overflow: hidden;
         }
 
         .container {
             display: flex;
             width: 100%;
-            max-width: 1200px; /* Max bredde for indholdet */
-            margin: 20px auto; /* Centrer container */
+            max-width: 1200px;
+            margin: 20px auto;
             background-color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Blødere skygge */
-            border-radius: 8px; /* Afrundede hjørner */
-            overflow: hidden; /* Skjul indhold der går ud over kanter */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         #subjects {
-            width: 250px; /* Lidt bredere fag-menu */
-            padding: 20px 0; /* Padding top/bund, ingen sider da .subject-item har padding */
-            border-right: 1px solid #eee; /* Lettere kant */
-            background-color: #f8f9fa; /* Lysere baggrund for sidepanel */
+            width: 250px;
+            padding: 20px 0;
+            border-right: 1px solid #eee;
+            background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             flex-shrink: 0;
         }
         #subjects h3 {
-            margin: 0 20px 15px 20px; /* Padding for overskrift */
+            margin: 0 20px 15px 20px;
             color: #555;
             font-size: 1.1em;
             border-bottom: 1px solid #eee;
@@ -45,44 +45,42 @@
         }
 
         #subject-list {
-            flex-grow: 1; /* Lad listen fylde resten af pladsen */
-             padding: 0 10px; /* Padding indeni liste */
+            flex-grow: 1;
+             padding: 0 10px;
         }
 
         .subject-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 10px; /* Mere padding */
-            cursor: grab; /* Cursor indikerer kan trækkes */
+            padding: 12px 10px;
+            cursor: grab;
             border-bottom: 1px solid #eee;
             transition: background-color 0.2s ease, transform 0.1s ease;
-            border-radius: 4px; /* Afrundede hjørner */
-            margin-bottom: 4px; /* Lidt mellemrum */
+            border-radius: 4px;
+            margin-bottom: 4px;
         }
          .subject-item:last-child {
-             border-bottom: none; /* Ingen kant på sidste element */
+             border-bottom: none;
              margin-bottom: 0;
          }
         .subject-item:hover {
-            background-color: #e9ecef; /* Lysere grå ved hover */
+            background-color: #e9ecef;
         }
          .subject-item.active {
-            background-color: #007bff; /* Blå baggrund for valgt fag */
+            background-color: #007bff;
             color: white;
             font-weight: bold;
          }
          .subject-item.active .delete-subject-btn {
-             color: rgba(255, 255, 255, 0.8); /* Lidt gennemsigtig hvid skraldespand */
+             color: rgba(255, 255, 255, 0.8);
          }
 
-         /* Styling når man trækker i et element */
          .subject-item.dragging {
              opacity: 0.5;
              border: 2px dashed #007bff;
              background-color: #e9ecef;
          }
-
 
         .subject-name {
              flex-grow: 1;
@@ -94,26 +92,26 @@
             font-size: 1.1em;
             visibility: hidden;
             padding: 2px;
-             background: none; /* Ingen baggrund */
-             border: none; /* Ingen kant */
+             background: none;
+             border: none;
         }
         .subject-item:hover .delete-subject-btn {
             visibility: visible;
         }
          .subject-item.active:hover .delete-subject-btn {
-             visibility: visible; /* Vis også ved hover på aktivt fag */
+             visibility: visible;
          }
 
         #add-subject-area {
-            padding: 15px 20px; /* Mere padding */
+            padding: 15px 20px;
             border-top: 1px solid #eee;
             margin-top: auto;
             background-color: #f8f9fa;
         }
         #add-subject-area input[type="text"] {
-            width: calc(100% - 20px); /* Juster bredde for padding */
-            padding: 10px; /* Mere padding */
-            margin-bottom: 10px; /* Mere afstand */
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 1em;
@@ -121,7 +119,7 @@
         #add-subject-area button {
             width: 100%;
             padding: 10px;
-            background-color: #007bff; /* Blå knap */
+            background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
@@ -130,7 +128,7 @@
             font-size: 1em;
         }
         #add-subject-area button:hover {
-             background-color: #0056b3; /* Mørkere blå ved hover */
+             background-color: #0056b3;
         }
 
         #notes-area {
@@ -144,7 +142,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 15px; /* Mere padding */
+            padding-bottom: 15px;
             border-bottom: 1px solid #eee;
              flex-shrink: 0;
         }
@@ -152,22 +150,43 @@
             margin: 0;
             color: #333;
             font-size: 1.5em;
+             flex-grow: 1; /* Lad titlen fylde pladsen */
+             margin-right: 10px; /* Afstand til knapper */
         }
+         #notes-header .header-actions {
+             display: flex;
+             align-items: center;
+             gap: 10px; /* Mellemrum mellem knapper */
+         }
+
+        .back-button {
+            padding: 10px 15px; /* Padding som en knap */
+            background-color: #6c757d; /* Grå farve som Annuller knap */
+            color: white;
+            text-decoration: none; /* Fjern understregning */
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+            font-size: 1em;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
         #add-note-btn {
-            padding: 10px 20px; /* Større padding */
-            font-size: 1em; /* Mindre font for bedre pasform */
+            padding: 10px 20px;
+            font-size: 1em;
             cursor: pointer;
-            background-color: #28a745; /* Grøn knap */
+            background-color: #28a745;
             color: white;
             border: none;
             border-radius: 5px;
             transition: background-color 0.2s ease;
         }
         #add-note-btn:hover {
-            background-color: #218838; /* Mørkere grøn ved hover */
+            background-color: #218838;
         }
         #notes-list {
-            margin-top: 0; /* Ingen top margin da header har bund margin */
+            margin-top: 0;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
@@ -185,7 +204,7 @@
             transform: rotate(calc(-2deg + Math.random() * 4deg));
             transition: transform 0.2s ease;
             word-wrap: break-word;
-            border-radius: 5px; /* Lidt afrundede hjørner på post-its */
+            border-radius: 5px;
         }
          .note:hover {
             transform: scale(1.03) rotate(calc(-2deg + Math.random() * 4deg));
@@ -198,8 +217,8 @@
          }
         .delete-note-btn {
             position: absolute;
-            top: 8px; /* Justeret placering */
-            right: 8px; /* Justeret placering */
+            top: 8px;
+            right: 8px;
             background-color: #dc3545;
             color: white;
             border: none;
@@ -228,7 +247,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* Lidt mørkere overlay */
+            background-color: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -244,33 +263,33 @@
 
         .modal-box {
             background-color: #fff;
-            padding: 25px; /* Mere padding */
+            padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Tydeligere skygge */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             width: 90%;
             max-width: 500px;
             position: relative;
             display: flex;
             flex-direction: column;
-            opacity: 0; /* Start skjult for animation */
-            transform: translateY(-20px); /* Start lidt over midten */
+            opacity: 0;
+            transform: translateY(-20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
          .modal-overlay.visible .modal-box {
              opacity: 1;
-             transform: translateY(0); /* Glid ind på plads */
+             transform: translateY(0);
          }
 
         .modal-box h3 {
             margin-top: 0;
-            margin-bottom: 20px; /* Mere afstand */
+            margin-bottom: 20px;
             color: #333;
             font-size: 1.3em;
-            border-bottom: 1px solid #eee; /* Linje under titel */
+            border-bottom: 1px solid #eee;
             padding-bottom: 10px;
         }
         .modal-box textarea {
-            width: calc(100% - 20px); /* Juster bredde */
+            width: calc(100% - 20px);
             height: 200px;
             padding: 10px;
             border: 1px solid #ccc;
@@ -278,7 +297,7 @@
             resize: vertical;
             font-family: sans-serif;
             font-size: 1em;
-            margin-bottom: 20px; /* Mere afstand */
+            margin-bottom: 20px;
         }
         .modal-actions {
             display: flex;
@@ -286,7 +305,7 @@
             gap: 10px;
         }
         .modal-actions button {
-            padding: 10px 20px; /* Større knapper */
+            padding: 10px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -294,14 +313,14 @@
             font-size: 1em;
         }
         .modal-actions .save-btn {
-            background-color: #28a745; /* Grøn gem knap */
+            background-color: #28a745;
             color: white;
         }
         .modal-actions .save-btn:hover {
             background-color: #218838;
         }
         .modal-actions .cancel-btn {
-            background-color: #6c757d; /* Grå annuller knap */
+            background-color: #6c757d;
             color: white;
         }
          .modal-actions .cancel-btn:hover {
@@ -309,9 +328,9 @@
          }
          .modal-close {
              position: absolute;
-             top: 15px; /* Justeret placering */
-             right: 15px; /* Justeret placering */
-             font-size: 1.8em; /* Større kryds */
+             top: 15px;
+             right: 15px;
+             font-size: 1.8em;
              cursor: pointer;
              color: #aaa;
              transition: color 0.2s ease;
@@ -338,7 +357,10 @@
         <div id="notes-area">
             <div id="notes-header" style="display: none;">
                 <h2 id="current-subject-title"></h2>
-                <button id="add-note-btn">Tilføj Note</button>
+                <div class="header-actions">
+                    <a href="index.html" class="back-button">Tilbage</a>
+                    <button id="add-note-btn">Tilføj Note</button>
+                </div>
             </div>
             <div id="notes-list">
                 <p style="text-align: center; color: #777;">Vælg et fag for at se noter.</p>
@@ -426,13 +448,20 @@
                         subjectItem.classList.add('active');
                     }
                     subjectItem.dataset.subject = subject;
-                    subjectItem.setAttribute('draggable', true); // Gør elementet trækkeligt
+                    subjectItem.setAttribute('draggable', true);
 
                     subjectItem.innerHTML = `
                         <span class="subject-name">${subject}</span>
-                        <button class="delete-subject-btn">🗑️</button> `;
+                        <button class="delete-subject-btn">🗑️</button>
+                    `;
                     subjectsContainer.appendChild(subjectItem);
                 });
+
+                 // Tilføj drag-and-drop listeners efter at fagene er vist
+                 subjectsContainer.querySelectorAll('.subject-item').forEach(item => {
+                     item.addEventListener('dragstart', handleDragStart);
+                     item.addEventListener('dragleave', handleDragLeave);
+                 });
             }
         }
 
@@ -462,7 +491,8 @@
                     noteElement.dataset.index = index;
                      noteElement.innerHTML = `
                         <div class="note-content">${note.replace(/\n/g, '<br>')}</div>
-                        <button class="delete-note-btn">🗑️</button> `;
+                        <button class="delete-note-btn">🗑️</button>
+                    `;
 
                     const randomRotation = Math.random() * 4 - 2;
                     noteElement.style.transform = `rotate(${randomRotation}deg)`;
@@ -478,7 +508,7 @@
             modalTitle.textContent = title;
             noteModalTextarea.value = content;
             noteModalOverlay.classList.add('visible');
-            noteModalTextarea.focus(); // Sæt fokus på tekstfeltet
+            noteModalTextarea.focus();
         }
 
         function hideModal() {
@@ -492,15 +522,14 @@
         function handleDragStart(event) {
             draggedItem = event.target;
             event.dataTransfer.effectAllowed = 'move';
-            event.dataTransfer.setData('text/html', draggedItem.innerHTML);
+            // event.dataTransfer.setData('text/html', draggedItem.innerHTML); // Ikke nødvendigt for reordering i samme liste
              draggedItem.classList.add('dragging');
         }
 
         function handleDragOver(event) {
-            event.preventDefault(); // Nødvendigt for at tillade slip
+            event.preventDefault();
             event.dataTransfer.dropEffect = 'move';
 
-             // Tilføj visuel indikation hvor elementet slippes
              const targetItem = event.target.closest('.subject-item');
              if (targetItem && targetItem !== draggedItem) {
                  const rect = targetItem.getBoundingClientRect();
@@ -513,7 +542,6 @@
                       targetItem.style.borderTop = 'none';
                  }
              }
-             // Fjern border fra andre elementer
              subjectsContainer.querySelectorAll('.subject-item').forEach(item => {
                  if (item !== targetItem) {
                       item.style.borderTop = 'none';
@@ -523,21 +551,21 @@
         }
 
          function handleDragLeave(event) {
-              // Fjern visuel indikation når man forlader et element
-             event.target.style.borderTop = 'none';
-             event.target.style.borderBottom = 'none';
+              const subjectItem = event.target.closest('.subject-item');
+              if (subjectItem) {
+                 subjectItem.style.borderTop = 'none';
+                 subjectItem.style.borderBottom = 'none';
+              }
          }
 
 
         function handleDrop(event) {
             event.preventDefault();
 
-             // Fjern alle border indikatorer
              subjectsContainer.querySelectorAll('.subject-item').forEach(item => {
                  item.style.borderTop = 'none';
                  item.style.borderBottom = 'none';
              });
-
 
             const targetItem = event.target.closest('.subject-item');
 
@@ -546,23 +574,24 @@
                 const midpoint = rect.y + rect.height / 2;
 
                 if (event.clientY < midpoint) {
-                    // Slip over midten af target
                     subjectsContainer.insertBefore(draggedItem, targetItem);
                 } else {
-                    // Slip under midten af target
                     subjectsContainer.insertBefore(draggedItem, targetItem.nextSibling);
                 }
 
-                // Opdater rækkefølgen i subjects arrayet og localStorage
                 updateSubjectOrder();
+            } else if (!targetItem && event.target === subjectsContainer) {
+                // Håndter slip i en tom liste eller i bunden af listen
+                 subjectsContainer.appendChild(draggedItem);
+                 updateSubjectOrder();
             }
+
 
              draggedItem.classList.remove('dragging');
              draggedItem = null;
         }
 
          function handleDragEnd() {
-              // Sørg for at fjerne 'dragging' klasse og border hvis træk afbrydes
               subjectsContainer.querySelectorAll('.subject-item').forEach(item => {
                   item.classList.remove('dragging');
                    item.style.borderTop = 'none';
@@ -576,16 +605,26 @@
             const subjectItems = subjectsContainer.querySelectorAll('.subject-item');
             const newOrder = Array.from(subjectItems).map(item => item.dataset.subject);
             saveSubjects(newOrder);
+             // Gen-vis fagene for at opdatere active class baseret på den nye rækkefølge
+             displaySubjects();
+             // Gen-vis noter for det aktive fag, hvis et er valgt
+             if (currentSubject) {
+                 displayNotes(currentSubject);
+             } else {
+                  // Hvis intet fag var valgt, og der nu er fag, vis første fag
+                  const allSubjects = getSubjects();
+                  if (allSubjects.length > 0) {
+                       displayNotes(allSubjects[0]);
+                  }
+             }
         }
 
 
         // --- Event Listeners og Funktionalitet ---
 
-        // Håndter klik på fag i listen og slet fag knap
         subjectsContainer.addEventListener('click', (event) => {
             const target = event.target;
 
-            // Tjek om klikket var på slet-knappen
             if (target.classList.contains('delete-subject-btn')) {
                 const subjectItem = target.closest('.subject-item');
                 if (subjectItem) {
@@ -593,7 +632,6 @@
                     deleteSubject(subject);
                 }
             } else {
-                 // Håndter klik på selve fag-elementet for at vise noter
                  const subjectItem = target.closest('.subject-item');
                  if (subjectItem) {
                      const subject = subjectItem.dataset.subject;
@@ -602,7 +640,6 @@
             }
         });
 
-        // Håndter klik på noter (til redigering) og slet note knap
         notesList.addEventListener('click', (event) => {
             const target = event.target;
             const noteElement = target.closest('.note');
@@ -611,7 +648,6 @@
                  if (target.classList.contains('delete-note-btn')) {
                     deleteNote(noteElement);
                 } else {
-                    // Rediger note
                     editingNoteIndex = parseInt(noteElement.dataset.index);
                     const notes = getNotes(currentSubject);
                     showModal('Rediger Note', notes[editingNoteIndex]);
@@ -619,28 +655,21 @@
             }
         });
 
-        // Drag and drop listeners på containeren
         subjectsContainer.addEventListener('dragover', handleDragOver);
         subjectsContainer.addEventListener('drop', handleDrop);
-        subjectsContainer.addEventListener('dragleave', handleDragLeave); // Tilføjet handleDragLeave
-        subjectsContainer.addEventListener('dragend', handleDragEnd); // Tilføjet handleDragEnd
-
-        // Drag start listener på de enkelte elementer (tilføjes ved displaySubjects)
+        subjectsContainer.addEventListener('dragend', handleDragEnd);
 
 
-        // Håndter klik på "Tilføj Fag" knap
         addSubjectBtn.addEventListener('click', () => {
             addSubject();
         });
 
-        // Gør det muligt at tilføje fag ved at trykke Enter i inputfeltet
         addSubjectInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 addSubject();
             }
         });
 
-        // Håndter klik på "Tilføj Note" knap
         addNoteBtn.addEventListener('click', () => {
             if (currentSubject) {
                  editingNoteIndex = null;
@@ -650,56 +679,48 @@
             }
         });
 
-        // Håndter klik på Gem i modal
         modalSaveBtn.addEventListener('click', () => {
             const noteContent = noteModalTextarea.value.trim();
 
-            if (currentSubject) { // Tjek om et fag er valgt
+            if (currentSubject) {
                  const notes = getNotes(currentSubject);
 
                  if (editingNoteIndex !== null) {
-                    // Rediger eksisterende note
                      if (noteContent) {
                          notes[editingNoteIndex] = noteContent;
                          saveNotes(currentSubject, notes);
                          displayNotes(currentSubject);
                      } else {
-                         // Hvis noten tømmes ved redigering, spørg om sletning
                          if (confirm('Noten er tom. Vil du slette den?')) {
                              notes.splice(editingNoteIndex, 1);
                              saveNotes(currentSubject, notes);
                              displayNotes(currentSubject);
                          } else {
-                              // Gendan den oprindelige note hvis sletning annulleres
                               displayNotes(currentSubject);
                          }
                      }
                  } else {
-                    // Tilføj ny note
                     if (noteContent) {
                          notes.push(noteContent);
                          saveNotes(currentSubject, notes);
                          displayNotes(currentSubject);
                     }
                  }
-                 hideModal(); // Skjul modal efter gem/slet
+                 hideModal();
             } else {
-                 alert('Fejl: Intet fag valgt at gemme noten i.'); // Skulle ikke ske med knaplogik, men for sikkerhed
+                 alert('Fejl: Intet fag valgt at gemme noten i.');
                  hideModal();
             }
         });
 
-        // Håndter klik på Annuller i modal
         modalCancelBtn.addEventListener('click', () => {
             hideModal();
         });
 
-        // Håndter klik på krydset i modal
         modalCloseBtn.addEventListener('click', () => {
             hideModal();
         });
 
-        // Håndter klik uden for modal-box (luk modal)
          noteModalOverlay.addEventListener('click', (event) => {
              if (event.target === noteModalOverlay) {
                  hideModal();
@@ -763,7 +784,7 @@
                     }
                 } else {
                      if (currentSubject !== null) {
-                         displayNotes(currentSubject); // Gen-vis noter for det aktive fag
+                         displayNotes(currentSubject);
                      }
                 }
             }
@@ -771,15 +792,7 @@
 
         // --- Initialisering ---
 
-        // Indlæs og vis fag ved sideindlæsning
         displaySubjects();
-
-         // Tilføj drag-and-drop listeners til eksisterende fag
-         subjectsContainer.querySelectorAll('.subject-item').forEach(item => {
-             item.addEventListener('dragstart', handleDragStart);
-             item.addEventListener('dragleave', handleDragLeave); // Tilføj leave her også
-         });
-
 
         const lastSubject = localStorage.getItem('lastSubject');
         const allSubjects = getSubjects();
@@ -792,14 +805,14 @@
              notesList.innerHTML = '<p style="text-align: center; color: #777;">Tilføj et fag for at komme i gang.</p>';
         }
 
-         // Observer for at tilføje drag-and-drop listeners til nye fag
+         // Observer for at tilføje drag-and-drop listeners til nye fag, der oprettes efter initial visning
          const observer = new MutationObserver(mutations => {
              mutations.forEach(mutation => {
                  if (mutation.addedNodes) {
                      mutation.addedNodes.forEach(node => {
                          if (node.nodeType === 1 && node.classList.contains('subject-item')) {
                              node.addEventListener('dragstart', handleDragStart);
-                              node.addEventListener('dragleave', handleDragLeave);
+                             node.addEventListener('dragleave', handleDragLeave);
                          }
                      });
                  }
@@ -807,7 +820,6 @@
          });
 
          observer.observe(subjectsContainer, { childList: true });
-
 
     </script>
 
