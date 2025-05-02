@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note Program (Med Tilbageknap)</title>
+    <title>Mine Noter</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -82,6 +82,7 @@
              background-color: #e9ecef;
          }
 
+
         .subject-name {
              flex-grow: 1;
              margin-right: 10px;
@@ -150,27 +151,36 @@
             margin: 0;
             color: #333;
             font-size: 1.5em;
-             flex-grow: 1; /* Lad titlen fylde pladsen */
-             margin-right: 10px; /* Afstand til knapper */
+             flex-grow: 1;
+             margin-right: 10px;
         }
          #notes-header .header-actions {
              display: flex;
              align-items: center;
-             gap: 10px; /* Mellemrum mellem knapper */
+             gap: 10px;
          }
 
-        .back-button {
-            padding: 10px 15px; /* Padding som en knap */
-            background-color: #6c757d; /* Grå farve som Annuller knap */
+        .back-button, .download-button {
+            padding: 10px 15px;
+            background-color: #6c757d;
             color: white;
-            text-decoration: none; /* Fjern understregning */
+            text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.2s ease;
             font-size: 1em;
+             border: none; /* Gør download knap til button */
+             cursor: pointer; /* Gør download knap til pointer */
         }
-        .back-button:hover {
+        .back-button:hover, .download-button:hover {
             background-color: #5a6268;
         }
+         .download-button {
+             background-color: #17a2b8; /* Cyan farve til download */
+         }
+         .download-button:hover {
+             background-color: #138496;
+         }
+
 
         #add-note-btn {
             padding: 10px 20px;
@@ -205,15 +215,28 @@
             transition: transform 0.2s ease;
             word-wrap: break-word;
             border-radius: 5px;
+            display: flex; /* Brug flexbox til overskrift/indhold/sletknap */
+            flex-direction: column;
         }
          .note:hover {
             transform: scale(1.03) rotate(calc(-2deg + Math.random() * 4deg));
             z-index: 1;
         }
+         .note h4 {
+             margin: 0 0 10px 0; /* Margin under overskrift */
+             font-size: 1.1em;
+             border-bottom: 1px solid #eee; /* Let streg under overskrift */
+             padding-bottom: 5px;
+             word-wrap: break-word; /* Bryd lange ord i overskrift */
+         }
          .note-content {
+             flex-grow: 1; /* Lad indhold fylde resten */
              display: block;
              width: 100%;
              height: 100%;
+             /* Fjern padding herfra, da det er på .note */
+             /* white-space: pre-wrap; */ /* Bevares fra .note */
+             /* word-wrap: break-word; */ /* Bevares fra .note */
          }
         .delete-note-btn {
             position: absolute;
@@ -288,6 +311,14 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
         }
+         .modal-box input[type="text"] {
+             width: calc(100% - 20px); /* Juster bredde for padding */
+             padding: 10px;
+             margin-bottom: 15px; /* Afstand til textarea */
+             border: 1px solid #ccc;
+             border-radius: 4px;
+             font-size: 1em;
+         }
         .modal-box textarea {
             width: calc(100% - 20px);
             height: 200px;
@@ -340,6 +371,7 @@
          }
 
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -358,6 +390,7 @@
             <div id="notes-header" style="display: none;">
                 <h2 id="current-subject-title"></h2>
                 <div class="header-actions">
+                    <button id="download-pdf-btn" class="download-button">Download som PDF</button>
                     <a href="index.html" class="back-button">Tilbage</a>
                     <button id="add-note-btn">Tilføj Note</button>
                 </div>
@@ -372,7 +405,7 @@
         <div class="modal-box">
             <span class="modal-close">&times;</span>
             <h3 id="modal-title"></h3>
-            <textarea id="note-modal-textarea" placeholder="Skriv din note her..."></textarea>
+             <input type="text" id="note-title-input" placeholder="Overskrift (valgfri)"> <textarea id="note-modal-textarea" placeholder="Skriv din note her..."></textarea>
             <div class="modal-actions">
                 <button class="cancel-btn">Annuller</button>
                 <button class="save-btn">Gem Note</button>
@@ -390,10 +423,12 @@
         const currentSubjectTitle = document.getElementById('current-subject-title');
         const addNoteBtn = document.getElementById('add-note-btn');
         const notesList = document.getElementById('notes-list');
+         const downloadPdfBtn = document.getElementById('download-pdf-btn'); // Hent download knap
 
         // Modal elementer
         const noteModalOverlay = document.getElementById('note-modal-overlay');
         const modalTitle = document.getElementById('modal-title');
+         const noteTitleInput = document.getElementById('note-title-input'); // Hent overskrift input
         const noteModalTextarea = document.getElementById('note-modal-textarea');
         const modalSaveBtn = noteModalOverlay.querySelector('.save-btn');
         const modalCancelBtn = noteModalOverlay.querySelector('.cancel-btn');
@@ -409,9 +444,21 @@
 
         // --- Funktioner til Local Storage ---
 
+        // Opdateret til at håndtere noter som objekter
         function getNotes(subject) {
             const notes = localStorage.getItem(`notes_${subject}`);
-            return notes ? JSON.parse(notes) : [];
+            // Sørg for at returnere et array af objekter, selv hvis gamle noter er strenge
+            if (notes) {
+                const parsedNotes = JSON.parse(notes);
+                return parsedNotes.map(note => {
+                    if (typeof note === 'string') {
+                        // Konverter gammel streng note til objekt
+                        return { title: '', content: note };
+                    }
+                    return note; // Note er allerede et objekt
+                });
+            }
+            return [];
         }
 
         function saveNotes(subject, notes) {
@@ -457,7 +504,6 @@
                     subjectsContainer.appendChild(subjectItem);
                 });
 
-                 // Tilføj drag-and-drop listeners efter at fagene er vist
                  subjectsContainer.querySelectorAll('.subject-item').forEach(item => {
                      item.addEventListener('dragstart', handleDragStart);
                      item.addEventListener('dragleave', handleDragLeave);
@@ -489,8 +535,12 @@
                     const noteElement = document.createElement('div');
                     noteElement.classList.add('note');
                     noteElement.dataset.index = index;
+
+                     // Inkluder overskrift hvis den findes
+                     const noteContentHTML = note.title ? `<h4>${note.title}</h4><div class="note-content">${note.content.replace(/\n/g, '<br>')}</div>` : `<div class="note-content">${note.content.replace(/\n/g, '<br>')}</div>`;
+
                      noteElement.innerHTML = `
-                        <div class="note-content">${note.replace(/\n/g, '<br>')}</div>
+                        ${noteContentHTML}
                         <button class="delete-note-btn">🗑️</button>
                     `;
 
@@ -504,15 +554,18 @@
 
         // --- Modal Funktioner ---
 
-        function showModal(title, content = '') {
+        // Opdateret til at håndtere overskrift input
+        function showModal(title, note = { title: '', content: '' }) {
             modalTitle.textContent = title;
-            noteModalTextarea.value = content;
+             noteTitleInput.value = note.title; // Sæt overskrift
+            noteModalTextarea.value = note.content; // Sæt indhold
             noteModalOverlay.classList.add('visible');
-            noteModalTextarea.focus();
+            noteTitleInput.focus(); // Sæt fokus på overskrift
         }
 
         function hideModal() {
             noteModalOverlay.classList.remove('visible');
+             noteTitleInput.value = ''; // Ryd overskrift input
             noteModalTextarea.value = '';
             editingNoteIndex = null;
         }
@@ -522,7 +575,6 @@
         function handleDragStart(event) {
             draggedItem = event.target;
             event.dataTransfer.effectAllowed = 'move';
-            // event.dataTransfer.setData('text/html', draggedItem.innerHTML); // Ikke nødvendigt for reordering i samme liste
              draggedItem.classList.add('dragging');
         }
 
@@ -558,7 +610,6 @@
               }
          }
 
-
         function handleDrop(event) {
             event.preventDefault();
 
@@ -581,11 +632,9 @@
 
                 updateSubjectOrder();
             } else if (!targetItem && event.target === subjectsContainer) {
-                // Håndter slip i en tom liste eller i bunden af listen
                  subjectsContainer.appendChild(draggedItem);
                  updateSubjectOrder();
             }
-
 
              draggedItem.classList.remove('dragging');
              draggedItem = null;
@@ -600,18 +649,14 @@
              draggedItem = null;
          }
 
-
         function updateSubjectOrder() {
             const subjectItems = subjectsContainer.querySelectorAll('.subject-item');
             const newOrder = Array.from(subjectItems).map(item => item.dataset.subject);
             saveSubjects(newOrder);
-             // Gen-vis fagene for at opdatere active class baseret på den nye rækkefølge
              displaySubjects();
-             // Gen-vis noter for det aktive fag, hvis et er valgt
              if (currentSubject) {
                  displayNotes(currentSubject);
              } else {
-                  // Hvis intet fag var valgt, og der nu er fag, vis første fag
                   const allSubjects = getSubjects();
                   if (allSubjects.length > 0) {
                        displayNotes(allSubjects[0]);
@@ -650,6 +695,7 @@
                 } else {
                     editingNoteIndex = parseInt(noteElement.dataset.index);
                     const notes = getNotes(currentSubject);
+                    // Vis modal med eksisterende note data
                     showModal('Rediger Note', notes[editingNoteIndex]);
                 }
             }
@@ -673,40 +719,46 @@
         addNoteBtn.addEventListener('click', () => {
             if (currentSubject) {
                  editingNoteIndex = null;
-                 showModal('Tilføj Note');
+                 showModal('Tilføj Note'); // Åbn modal for ny note
             } else {
                 alert('Vælg et fag først!');
             }
         });
 
+        // Håndter klik på Gem i modal
         modalSaveBtn.addEventListener('click', () => {
-            const noteContent = noteModalTextarea.value.trim();
+            const noteTitle = noteTitleInput.value.trim(); // Hent overskrift
+            const noteContent = noteModalTextarea.value.trim(); // Hent indhold
 
             if (currentSubject) {
                  const notes = getNotes(currentSubject);
 
                  if (editingNoteIndex !== null) {
-                     if (noteContent) {
-                         notes[editingNoteIndex] = noteContent;
+                    // Rediger eksisterende note
+                     if (noteContent) { // Gem kun hvis der er indhold
+                         notes[editingNoteIndex] = { title: noteTitle, content: noteContent };
                          saveNotes(currentSubject, notes);
                          displayNotes(currentSubject);
                      } else {
-                         if (confirm('Noten er tom. Vil du slette den?')) {
+                         // Hvis indhold tømmes ved redigering, spørg om sletning
+                         if (confirm('Notens indhold er tomt. Vil du slette noten?')) {
                              notes.splice(editingNoteIndex, 1);
                              saveNotes(currentSubject, notes);
                              displayNotes(currentSubject);
                          } else {
+                              // Gendan den oprindelige note hvis sletning annulleres
                               displayNotes(currentSubject);
                          }
                      }
                  } else {
-                    if (noteContent) {
-                         notes.push(noteContent);
+                    // Tilføj ny note
+                    if (noteContent) { // Tilføj kun hvis der er indhold
+                         notes.push({ title: noteTitle, content: noteContent });
                          saveNotes(currentSubject, notes);
                          displayNotes(currentSubject);
                     }
                  }
-                 hideModal();
+                 hideModal(); // Skjul modal efter gem/slet
             } else {
                  alert('Fejl: Intet fag valgt at gemme noten i.');
                  hideModal();
@@ -725,6 +777,62 @@
              if (event.target === noteModalOverlay) {
                  hideModal();
              }
+         });
+
+         // Håndter download som PDF
+         downloadPdfBtn.addEventListener('click', () => {
+             if (!currentSubject) {
+                 alert('Vælg et fag for at downloade noter.');
+                 return;
+             }
+
+             const notes = getNotes(currentSubject);
+             if (notes.length === 0) {
+                 alert('Der er ingen noter at downloade for dette fag.');
+                 return;
+             }
+
+             // Opret en midlertidig container til PDF-generering
+             const pdfContent = document.createElement('div');
+             pdfContent.style.padding = '20px';
+             pdfContent.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+             const subjectTitle = document.createElement('h1');
+             subjectTitle.textContent = `${currentSubject} Noter`;
+             pdfContent.appendChild(subjectTitle);
+
+             notes.forEach((note, index) => {
+                 const noteElement = document.createElement('div');
+                 noteElement.style.marginBottom = '20px';
+                 noteElement.style.paddingBottom = '15px';
+                 noteElement.style.borderBottom = '1px solid #eee';
+
+                 if (note.title) {
+                     const noteTitle = document.createElement('h4');
+                     noteTitle.textContent = note.title;
+                     noteTitle.style.margin = '0 0 8px 0';
+                     noteTitle.style.fontSize = '1.1em';
+                     noteElement.appendChild(noteTitle);
+                 }
+
+                 const noteContent = document.createElement('p');
+                 noteContent.textContent = note.content;
+                 noteContent.style.margin = '0';
+                 noteContent.style.fontSize = '1em';
+                 noteContent.style.whiteSpace = 'pre-wrap'; // Bevar linjeskift
+                 noteElement.appendChild(noteContent);
+
+                 pdfContent.appendChild(noteElement);
+             });
+
+             // Brug html2pdf biblioteket til at generere PDF
+             html2pdf().from(pdfContent).set({
+                 margin: 10,
+                 filename: `${currentSubject}_noter.pdf`,
+                 image: { type: 'jpeg', quality: 0.98 },
+                 html2canvas: { scale: 2 },
+                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+             }).save();
          });
 
 
@@ -805,7 +913,6 @@
              notesList.innerHTML = '<p style="text-align: center; color: #777;">Tilføj et fag for at komme i gang.</p>';
         }
 
-         // Observer for at tilføje drag-and-drop listeners til nye fag, der oprettes efter initial visning
          const observer = new MutationObserver(mutations => {
              mutations.forEach(mutation => {
                  if (mutation.addedNodes) {
