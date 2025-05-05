@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MinPrompt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Farver baseret på det nye billede */
+            --background-color: #e0f2f7; /* Lys blå-grå baggrund */
+            --card-background: #ffffff;
+            --primary-blue: #007bff; /* Standard blå, hvis vi har brug for den */
+            --accent-green: #28a745; /* Grøn til ikoner/succes */
+            --accent-orange: #ffc107; /* Orange linje */
+            --text-color: #343a40; /* Mørk grå tekst */
+            --light-text-color: #6c757d; /* Lys grå tekst */
+            --border-color: #dee2e6; /* Lys kant */
+            --error-color: #dc3545; /* Rød fejl */
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --tab-inactive: #e9ecef; /* Farve for inaktiv fane */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto; /* Centrer og giv lidt top/bund margin */
+        }
+
+        .main-card {
+             background: var(--card-background);
+             border-radius: 8px; /* Mindre afrunding for at matche billedet */
+             box-shadow: 0 2px 10px var(--shadow-light);
+             overflow: hidden; /* Sikrer at afrunding gælder for indhold */
+        }
+
+        .card-header-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-header-tab {
+            flex-grow: 1;
+            text-align: center;
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: var(--tab-inactive);
+            color: var(--light-text-color);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .card-header-tab.active {
+            background-color: var(--card-background);
+            color: var(--primary-blue); /* Eller en anden accentfarve */
+            border-bottom: 3px solid var(--primary-blue); /* Aktiv indikator */
+            margin-bottom: -1px; /* Trækker ind over border-bottom */
+        }
+         .card-header-tab:first-child {
+             border-top-left-radius: 8px;
+         }
+         .card-header-tab:last-child {
+             border-top-right-radius: 8px;
+         }
+          .card-header-tab:hover:not(.active) {
+             background-color: #e2e6ea; /* Lettere hover farve */
+          }
+
+
+        .card-content {
+            padding: 30px; /* Padding inden i kortet */
+        }
+
+        .screen, .step {
+            margin-bottom: 20px;
+            padding: 0;
+        }
+
+        .step {
+             padding-top: 20px;
+             border-top: 1px solid #eee; /* Lettere skillelinje */
+             opacity: 1;
+             transform: translateY(0);
+             transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+         .step:first-child {
+             border-top: none;
+             padding-top: 0;
+         }
+         .step.hidden {
+             opacity: 0;
+             transform: translateY(20px);
+             pointer-events: none;
+             position: absolute; /* For at skjulte steps ikke optager plads */
+             width: calc(100% - 60px); /* Match card-content bredde minus padding */
+         }
+          #promptForm .card-content {
+             position: relative; /* Nødvendig for absolut positionerede steps */
+          }
+           #promptForm .step:not(.hidden) {
+             position: static; /* Vis det aktive step normalt */
+           }
+
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 2em;
+        }
+         .card-title {
+             font-size: 1.5em;
+             color: var(--text-color);
+             font-weight: 600;
+             margin-bottom: 20px;
+             display: flex; /* For icon alignment */
+             align-items: center;
+         }
+          .card-title .icon {
+              color: var(--accent-green);
+              margin-right: 10px;
+              font-size: 1.2em; /* Størrelse på plus ikon */
+              font-weight: 700;
+          }
+
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1em; /* Mindre end sidst for at matche billedet */
+        }
+
+        input[type="radio"],
+        input[type="text"],
+        textarea,
+        select {
+            display: block;
+            margin-bottom: 15px; /* Mellemrum */
+            padding: 10px 12px; /* Mindre padding end sidst */
+            border: 1px solid var(--border-color);
+            border-radius: 4px; /* Mindre afrunding */
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: #f8f9fa; /* Let grå baggrund i input */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+         input[type="text"]:focus,
+         textarea:focus,
+         select:focus {
+             outline: none;
+             border-color: var(--primary-blue);
+             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+              background-color: var(--card-background); /* Hvid baggrund ved fokus */
+         }
+
+         input[type="radio"] {
+             display: inline-block;
+             width: auto;
+             margin-right: 5px;
+             vertical-align: middle;
+         }
+        .radio-group label {
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: normal;
+            color: var(--text-color); /* Mørkere label tekst for radio */
+            font-size: 1em;
+             cursor: pointer;
+        }
+         .radio-group label:last-child {
+             margin-right: 0;
+         }
+
+
+        textarea {
+            resize: vertical;
+            min-height: 80px; /* Mindre minimum højde */
+        }
+
+        button {
+            display: inline-block;
+            background-color: var(--primary-blue); /* Standard blå knap */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+            font-weight: 600;
+        }
+         button:hover:not(:disabled) {
+             background-color: var(--primary-dark);
+         }
+         button:active:not(:disabled) {
+              transform: scale(0.98);
+         }
+         button:disabled {
+              background-color: #cccccc;
+              cursor: not-allowed;
+         }
+
+
+        .button-group button {
+            margin-right: 10px; /* Mindre mellemrum */
+            margin-bottom: 10px;
+        }
+         .button-group button:last-child {
+             margin-right: 0;
+         }
+
+        /* Knap stil fra billedet (Tilbage) */
+        .button-outline-secondary {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+             padding: 9px 20px; /* Juster padding pga border */
+             margin-top: 0; /* Juster placering */
+        }
+         .button-outline-secondary:hover:not(:disabled) {
+             background-color: var(--secondary-color);
+             color: white;
+         }
+
+
+         .success-button {
+             background-color: var(--accent-green);
+         }
+          .success-button:hover:not(:disabled) {
+              background-color: #218838;
+          }
+
+         .delete-button {
+             background-color: var(--error-color);
+         }
+          .delete-button:hover:not(:disabled) {
+              background-color: #c82333;
+          }
+
+
+        #promptOutput, #promptEdit, #libraryScreen {
+            margin-top: 0; /* Inde i kortet, ingen top margin her */
+            padding: 0; /* Padding håndteres af .card-content */
+        }
+
+
+        #generatedPromptText, #promptEditTextArea {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #f8f9fa; /* Let grå baggrund */
+            padding: 15px; /* Mindre padding */
+            border: 1px solid var(--border-color);
+            border-radius: 4px; /* Mindre afrunding */
+            margin-bottom: 20px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1em;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+         #promptEditTextArea {
+             min-height: 150px; /* Mindre start højde */
+         }
+
+        .hidden {
+            display: none; /* Brug standard hidden */
+        }
+         /* Styles for screen transitions */
+          .screen {
+               opacity: 1;
+               transition: opacity 0.5s ease-out;
+          }
+           .screen.hidden {
+               opacity: 0;
+           }
+
+
+        .error {
+            color: var(--error-color);
+            margin-top: -10px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* Styles for Library */
+         #promptList {
+             list-style: none;
+             padding: 0;
+         }
+         #promptList li {
+             background-color: var(--card-background);
+             border: 1px solid var(--border-color);
+             border-radius: 8px;
+             padding: 15px; /* Mindre padding */
+             margin-bottom: 10px;
+             word-break: break-word;
+             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05); /* Lettere skygge */
+         }
+         #promptList li strong {
+             display: block;
+             margin-bottom: 8px; /* Mindre mellemrum */
+             color: var(--primary-blue);
+             font-weight: 600;
+             font-size: 1em; /* Mindre skrift */
+         }
+          #promptList li div {
+              color: var(--text-color);
+              margin-bottom: 15px;
+              font-size: 0.95em;
+          }
+
+         .prompt-actions button {
+             padding: 6px 12px; /* Mindre knapper */
+             font-size: 0.85em;
+             margin-top: 5px;
+             margin-right: 8px; /* Mindre mellemrum */
+         }
+         .prompt-actions {
+             margin-top: 15px;
+             border-top: 1px dashed #eee; /* Lettere streg */
+             padding-top: 10px;
+         }
+
+         #noPromptsMessage {
+             text-align: center;
+             color: var(--light-text-color);
+             font-size: 1em;
+             padding: 20px;
+             border: 1px dashed var(--border-color);
+             border-radius: 8px;
+             background-color: #fefefe;
+         }
+
+
+          /* Layout for Title and Back button */
+          .card-content-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+              padding-bottom: 15px;
+              border-bottom: 1px solid var(--accent-orange); /* Orange streg */
+          }
+           .card-content-header .card-title {
+               margin-bottom: 0; /* Fjern bund margin når i header */
+           }
+            .card-content-header .button-outline-secondary {
+                margin-top: 0; /* Juster knap margin */
+            }
+
+
+         /* Styles for specific 'Other' inputs visibility */
+          .input-group {
+              margin-bottom: 15px;
+          }
+          .input-group label {
+              margin-bottom: 8px;
+          }
+           .input-group input[type="text"],
+           .input-group select,
+            .input-group textarea {
+               margin-bottom: 0;
+           }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>MinPrompt</h1>
+
+        <div class="main-card">
+            <div class="card-header-tabs">
+                <div class="card-header-tab active" id="tabNewPrompt">Ny prompt</div>
+                <div class="card-header-tab" id="tabMyLibrary">Mit promptbibliotek (<span id="libraryCount">0</span>)</div>
+            </div>
+
+            <div class="card-content">
+
+                <div id="startScreen" class="screen">
+                     <p style="text-align: center; color: var(--light-text-color);">Vælg "Ny prompt" for at oprette en ny prompt trin for trin, eller "Mit promptbibliotek" for at se dine gemte prompts.</p>
+                     </div>
+
+
+                <div id="promptForm" class="screen hidden">
+                    <div class="card-content-header">
+                        <h2 class="card-title"><span class="icon">+</span>Tilføj ny prompt</h2>
+                         <button onclick="showScreen('startScreen')" class="button-outline-secondary">← Tilbage</button>
+                    </div>
+
+
+                    <div class="step" id="step1">
+                        <h2>Trin 1: Hvem er du?</h2>
+                        <div class="radio-group">
+                            <label><input type="radio" name="userType" value="lærer"> Lærer</label>
+                            <label><input type="radio" name="userType" value="elev"> Elev</label>
+                            <label><input type="radio" name="userType" value="andet"> Andet</label>
+                        </div>
+                        <div id="otherUserTypeInput" class="input-group hidden">
+                            <label for="otherUserTypeText">Beskriv kort dig selv (valgfrit):</label>
+                            <input type="text" id="otherUserTypeText" placeholder="fx Studerende, Forsker, Hobbyist">
+                        </div>
+                        <div id="step1Error" class="error hidden"></div>
+                        <button onclick="nextStep(1)">Næste</button>
+                    </div>
+
+                    <div class="step hidden" id="step2">
+                        <h2>Trin 2: Mere om dig</h2>
+
+                        <div id="teacherDetails" class="hidden">
+                            <div class="input-group">
+                                 <label for="teacherYear">Vælg årgang/uddannelsestrin:</label>
+                                 <select id="teacherYear">
+                                     <option value="">-- Vælg venligst --</option>
+                                     <option value="grundskolen 0.-3. klasse">Grundskolen 0.-3. klasse</option>
+                                     <option value="grundskolen 4.-6. klasse">Grundskolen 4.-6. klasse</option>
+                                     <option value="grundskolen 7.-10. klasse">Grundskolen 7.-10. klasse</option>
+                                     <option value="gymnasiet (STX, HTX, HHX, HF)">Gymnasiet (STX, HTX, HHX, HF)</option>
+                                     <option value="erhvervsuddannelse">Erhvervsuddannelse</option>
+                                     <option value="korte/mellemlange videregående uddannelser">Korte/mellemlange videregående uddannelser</option>
+                                     <option value="lange videregående uddannelser">Lange videregående uddannelser</option>
+                                     <option value="andet uddannelsestrin">Andet uddannelsestrin</option>
+                                 </select>
+                            </div>
+                            <div class="input-group">
+                                 <label for="teacherSubject">Vælg fag:</label>
+                                 <select id="teacherSubject">
+                                     <option value="">-- Vælg venligst --</option>
+                                     <option value="dansk">Dansk</option>
+                                     <option value="matematik">Matematik</option>
+                                     <option value="engelsk">Engelsk</option>
+                                     <option value="fysik">Fysik</option>
+                                     <option value="kemi">Kemi</option>
+                                     <option value="biologi">Biologi</option>
+                                     <option value="geografi">Geografi</option>
+                                     <option value="historie">Historie</option>
+                                     <option value="samfundsfag">Samfundsfag</option>
+                                     <option value="religion">Religion</option>
+                                     <option value="idræt">Idræt</option>
+                                     <option value="musik">Musik</option>
+                                     <option value="billedkunst">Billedkunst</option>
+                                     <option value="madkundskab">Madkundskab</option>
+                                     <option value="håndværk og design">Håndværk og design</option>
+                                     <option value="tysk">Tysk</option>
+                                     <option value="fransk">Fransk</option>
+                                     <option value="informatik">Informatik</option>
+                                     <option value="teknologi">Teknologi</option>
+                                     <option value="psykologi">Psykologi</option>
+                                     <option value="virksomhedsøkonomi">Virksomhedsøkonomi</option>
+                                     <option value="international økonomi">International økonomi</option>
+                                     <option value="afsetning">Afsetning</option>
+                                     <option value="innovation">Innovation</option>
+                                     <option value="programmering">Programmering</option>
+                                     <option value="digitalisering">Digitalisering</option>
+                                     <option value="et fag, der ikke er på listen">Et fag, der ikke er på listen</option>
+                                 </select>
+                            </div>
+                             <div id="otherTeacherSubjectInput" class="input-group hidden">
+                                 <label for="otherTeacherSubjectText">Skriv fag her:</label>
+                                 <input type="text" id="otherTeacherSubjectText" placeholder="fx Naturfag, Filosofi">
+                             </div>
+                        </div>
+
+                        <div id="studentDetails" class="hidden">
+                             <div class="input-group">
+                                <label for="studentYear">Vælg årgang/uddannelsestrin:</label>
+                                <select id="studentYear">
+                                    <option value="">-- Vælg venligst --</option>
+                                    <option value="0. klasse">0. klasse</option>
+                                    <option value="1. klasse">1. klasse</option>
+                                    <option value="2. klasse">2. klasse</option>
+                                    <option value="3. klasse">3. klasse</option>
+                                    <option value="4. klasse">4. klasse</option>
+                                    <option value="5. klasse">5. klasse</option>
+                                    <option value="6. klasse">6. klasse</option>
+                                    <option value="7. klasse">7. klasse</option>
+                                    <option value="8. klasse">8. klasse</option>
+                                    <option value="9. klasse">9. klasse</option>
+                                    <option value="10. klasse">10. klasse</option>
+                                    <option value="1. g/HTX/HHX/HF">1. g/HTX/HHX/HF</option>
+                                    <option value="2. g/HTX/HHX/HF">2. g/HTX/HHX/HF</option>
+                                    <option value="3. g/HTX/HHX">3. g/HTX/HHX</option>
+                                    <option value="på en erhvervsuddannelse">På en erhvervsuddannelse</option>
+                                    <option value="på en videregående uddannelse">På en videregående uddannelse</option>
+                                    <option value="på et andet uddannelsestrin">På et andet uddannelsestrin</option>
+                                </select>
+                             </div>
+                             <label>Hvordan vurderer du din faglige sikkerhed i forhold til opgaven?</label>
+                             <div class="radio-group">
+                                 <label><input type="radio" name="studentConfidence" value="fagligt sikker"> Fagligt sikker</label>
+                                 <label><input type="radio" name="studentConfidence" value="fagligt nogenlunde sikker"> Fagligt nogenlunde sikker</label>
+                                 <label><input type="radio" name="studentConfidence" value="fagligt usikker"> Fagligt usikker</label>
+                             </div>
+                        </div>
+
+                        <div id="otherDetails" class="hidden">
+                            <div class="input-group">
+                                <label for="jobDescription">Beskriv dit job/din rolle mere detaljeret (valgfrit):</label>
+                                <input type="text" id="jobDescription" placeholder="fx arbejder med...">
+                            </div>
+                        </div>
+                        <div id="step2Error" class="error hidden"></div>
+                        <button onclick="nextStep(2)">Næste</button>
+                    </div>
+
+                    <div class="step hidden" id="step3">
+                        <h2>Trin 3: Chatbottens rolle</h2>
+                         <div class="input-group">
+                            <label for="chatbotRole">Vælg, hvilken rolle du vil have, at chatbotten skal have:</label>
+                            <select id="chatbotRole">
+                                <option value="">-- Vælg venligst --</option>
+                                <option value="ekspert inden for [relevant fag]">Ekspert inden for et specifikt fag</option>
+                                <option value="underviser">Underviser</option>
+                                <option value="vejleder">Vejleder</option>
+                                <option value="kreativ idémager">Kreativ idémager</option>
+                                <option value="kritisk sparringspartner">Kritisk sparringspartner</option>
+                                <option value="resumé-skriver">Resumé-skriver</option>
+                                <option value="oversætter">Oversætter</option>
+                                <option value="tekstforfatter">Tekstforfatter</option>
+                                <option value="programmørassistent">Programmørassistent</option>
+                                <option value="debug-assistent">Debug-assistent</option>
+                                <option value="research-assistent">Research-assistent</option>
+                                <option value="Andet">Andet (specificer nedenfor)</option>
+                            </select>
+                         </div>
+                         <div id="otherRoleInput" class="input-group hidden">
+                             <label for="otherRoleText">Skriv den ønskede rolle her:</label>
+                             <input type="text" id="otherRoleText" placeholder="fx Din personlige studiecoach">
+                         </div>
+                         <div id="step3Error" class="error hidden"></div>
+                        <button onclick="nextStep(3)">Næste</button>
+                    </div>
+
+                    <div class="step hidden" id="step4">
+                        <h2>Trin 4: Opgave</h2>
+                         <div class="input-group">
+                            <label for="chatbotTask">Vælg eller beskriv den opgave, chatbotten skal løse:</label>
+                             <select id="chatbotTask">
+                                 <option value="">-- Vælg venligst --</option>
+                                 <option value="forklar et komplekst emne">Forklare et komplekst emne</option>
+                                 <option value="generer ideer til en opgave">Generere ideer til en opgave</option>
+                                 <option value="opsummere en tekst/artikel">Opsummere en tekst/artikel</option>
+                                 <option value="skriv et udkast til en tekst">Skrive et udkast til en tekst</option>
+                                 <option value="besvar spørgsmål om et givent emne">Besvare spørgsmål om et givent emne</option>
+                                 <option value="hjælp med at brainstorme">Hjælpe med at brainstorme</option>
+                                 <option value="give feedback på en tekst">Give feedback på en tekst</option>
+                                 <option value="oversæt tekst">Oversætte tekst</option>
+                                 <option value="find fejl i kode">Finde fejl i kode</option>
+                                 <option value="skriv kode til et simpelt problem">Skrive kode til et simpelt problem</option>
+                                 <option value="lav en tidsplan">Lave en tidsplan</option>
+                                 <option value="forklar et matematisk koncept">Forklare et matematisk koncept</option>
+                                 <option value="forklar et naturvidenskabeligt fænomen">Forklare et naturvidenskabeligt fænomen</option>
+                                 <option value="hjælp mig med at forstå historiske begivenheder">Hjælpe mig med at forstå historiske begivenheder</option>
+                                 <option value="Andet">Andet (specificer nedenfor)</option>
+                             </select>
+                         </div>
+                         <div id="otherTaskInput" class="input-group hidden">
+                             <label for="otherTaskText">Skriv opgaven her:</label>
+                             <input type="text" id="otherTaskText" placeholder="fx Lav en liste over...">
+                         </div>
+                         <div id="step4Error" class="error hidden"></div>
+                        <button onclick="nextStep(4)">Næste</button>
+                    </div>
+
+                    <div class="step hidden" id="step5">
+                        <h2>Trin 5: Format</h2>
+                         <div class="input-group">
+                            <label for="chatbotFormat">Vælg, hvilket format du vil have svaret leveret i:</label>
+                             <select id="chatbotFormat">
+                                 <option value="">-- Vælg venligst --</option>
+                                 <option value="en liste">En liste</option>
+                                 <option value="en punktopstilling">En punktopstilling</option>
+                                 <option value="en tabel">En tabel</option>
+                                 <option value="en kort og præcis tekst">En kort og præcis tekst</option>
+                                 <option value="en detaljeret forklaring">En detaljeret forklaring</option>
+                                 <option value="en opsummering">En opsummering</option>
+                                 <option value="en dialog">En dialog</option>
+                                 <option value="kodeeksempel">Kodeeksempel</option>
+                                 <option value="et digt">Et digt</option>
+                                 <option value="en historie">En historie</option>
+                                 <option value="et skuespil">Et skuespil</option>
+                                 <option value="Andet">Andet (specificer nedenfor)</option>
+                             </select>
+                         </div>
+                         <div id="otherFormatInput" class="input-group hidden">
+                             <label for="otherFormatText">Skriv det ønskede format her:</label>
+                             <input type="text" id="otherFormatText" placeholder="fx Et mindmap i tekstform">
+                         </div>
+                         <div id="step5Error" class="error hidden"></div>
+                        <button onclick="nextStep(5)">Næste</button>
+                    </div>
+
+                     <div class="step hidden" id="step6">
+                        <h2>Trin 6: Kilder/Materiale (Valgfrit)</h2>
+                        <div class="input-group">
+                            <label for="chatbotSources">Indsæt kilder, specifikke tekster, links eller ønsker til materiale, chatbotten skal tage udgangspunkt i. (Valgfrit)</label>
+                            <textarea id="chatbotSources" rows="4" placeholder="Indsæt tekst, links (URL'er), eller beskriv materialet her..."></textarea>
+                        </div>
+                        <div id="step6Error" class="error hidden"></div>
+                        <button onclick="nextStep(6)">Næste</button>
+                    </div>
+
+                    <div class="step hidden" id="step7">
+                        <h2>Trin 7: Sprog</h2>
+                        <div class="input-group">
+                            <label for="outputLanguage">Vælg, hvilket sprog svaret skal være på:</label>
+                            <select id="outputLanguage">
+                                <option value="">-- Vælg venligst --</option>
+                                <option value="dansk">Dansk</option>
+                                <option value="engelsk">Engelsk</option>
+                                <option value="tysk">Tysk</option>
+                                <option value="fransk">Fransk</option>
+                                 <option value="svensk">Svensk</option>
+                                 <option value="norsk">Norsk</option>
+                                 <option value="spansk">Spansk</option>
+                                 <option value="italiensk">Italiensk</option>
+                                 <option value="et andet sprog (specificer i prompten efter generering)">Et andet sprog</option>
+                            </select>
+                        </div>
+                        <div id="step7Error" class="error hidden"></div>
+                        <button onclick="generatePrompt()">Generer prompt</button>
+                    </div>
+
+                </div> <div id="promptOutput" class="screen hidden">
+                     <div class="card-content-header">
+                         <h2 class="card-title">Din genererede prompt</h2>
+                         <button onclick="showScreen('startScreen')" class="button-outline-secondary">← Tilbage</button>
+                     </div>
+                    <p id="generatedPromptText"></p>
+                    <div class="button-group">
+                         <button id="copyPromptBtn">Kopier prompt</button>
+                         <button id="editPromptBtn" class="secondary-button">Rediger prompt</button>
+                         <button id="addToLibraryBtn" class="success-button">Tilføj til mit promptbibliotek</button>
+                    </div>
+                </div>
+
+                 <div id="promptEdit" class="screen hidden">
+                     <div class="card-content-header">
+                         <h2 class="card-title">Rediger prompt</h2>
+                          </div>
+                    <textarea id="promptEditTextArea"></textarea>
+                     <div class="button-group">
+                        <button id="copyEditedPromptBtn">Kopier prompt</button>
+                         <button onclick="saveEditedPrompt()" class="secondary-button">Gem ændringer & tilbage</button>
+                     </div>
+                </div>
+
+                 <div id="libraryScreen" class="screen hidden">
+                      <div class="card-content-header">
+                          <h2 class="card-title">Mit promptbibliotek (<span id="libraryCountLibrary">0</span>)</h2>
+                          <button onclick="showScreen('startScreen')" class="button-outline-secondary">← Tilbage</button>
+                      </div>
+                     <ul id="promptList">
+                         </ul>
+                     <p id="noPromptsMessage" class="hidden">Dit bibliotek er tomt.</p>
+                 </div>
+
+            </div> </div> </div> <script>
+        const STORAGE_KEY = 'minPromptLibrary'; // Unique key for this app
+        let currentStep = 1;
+        const totalSteps = 7;
+
+        // --- Element References ---
+        const container = document.querySelector('.container');
+        const mainCard = document.querySelector('.main-card');
+        const cardContent = document.querySelector('.card-content');
+        const cardHeaderTabs = document.querySelector('.card-header-tabs');
+        const tabNewPrompt = document.getElementById('tabNewPrompt');
+        const tabMyLibrary = document.getElementById('tabMyLibrary');
+
+        const startScreen = document.getElementById('startScreen'); // Now just the initial state inside the card
+        const promptForm = document.getElementById('promptForm');
+        const promptOutput = document.getElementById('promptOutput');
+        const promptEdit = document.getElementById('promptEdit');
+        const libraryScreen = document.getElementById('libraryScreen');
+
+        const screens = document.querySelectorAll('.card-content .screen'); // Select screens within card-content
+
+        const steps = document.querySelectorAll('#promptForm .step');
+
+        const generatedPromptText = document.getElementById('generatedPromptText');
+        const promptEditTextArea = document.getElementById('promptEditTextArea');
+
+        const copyPromptBtn = document.getElementById('copyPromptBtn');
+        const editPromptBtn = document.getElementById('editPromptBtn');
+        const copyEditedPromptBtn = document.getElementById('copyEditedPromptBtn');
+        const addToLibraryBtn = document.getElementById('addToLibraryBtn');
+        const promptList = document.getElementById('promptList');
+        const noPromptsMessage = document.getElementById('noPromptsMessage');
+        const libraryCountSpan = document.getElementById('libraryCount'); // Count on tab
+        const libraryCountLibrarySpan = document.getElementById('libraryCountLibrary'); // Count on library screen title
+
+
+        // Step 1 Elements
+        const userTypeRadios = document.querySelectorAll('input[name="userType"]');
+        const otherUserTypeInputDiv = document.getElementById('otherUserTypeInput');
+        const otherUserTypeText = document.getElementById('otherUserTypeText');
+        const step1Error = document.getElementById('step1Error');
+
+        // Step 2 Elements
+        const teacherDetailsDiv = document.getElementById('teacherDetails');
+        const teacherYearSelect = document.getElementById('teacherYear');
+        const teacherSubjectSelect = document.getElementById('teacherSubject');
+        const otherTeacherSubjectInputDiv = document.getElementById('otherTeacherSubjectInput');
+        const otherTeacherSubjectText = document.getElementById('otherTeacherSubjectText');
+
+        const studentDetailsDiv = document.getElementById('studentDetails');
+        const studentYearSelect = document.getElementById('studentYear');
+        const studentConfidenceRadios = document.querySelectorAll('input[name="studentConfidence"]');
+
+        const otherDetailsDiv = document.getElementById('otherDetails');
+        const jobDescriptionInput = document.getElementById('jobDescription');
+        const step2Error = document.getElementById('step2Error');
+
+
+        // Step 3 Elements
+        const chatbotRoleSelect = document.getElementById('chatbotRole');
+        const otherRoleInputDiv = document.getElementById('otherRoleInput');
+        const otherRoleText = document.getElementById('otherRoleText');
+        const step3Error = document.getElementById('step3Error');
+
+        // Step 4 Elements
+        const chatbotTaskSelect = document.getElementById('chatbotTask');
+        const otherTaskInputDiv = document.getElementById('otherTaskInput');
+        const otherTaskText = document.getElementById('otherTaskText');
+        const step4Error = document.getElementById('step4Error');
+
+        // Step 5 Elements
+        const chatbotFormatSelect = document.getElementById('chatbotFormat');
+        const otherFormatInputDiv = document.getElementById('otherFormatInput');
+        const otherFormatText = document.getElementById('otherFormatText');
+        const step5Error = document.getElementById('step5Error');
+
+        // Step 6 Elements
+        const chatbotSourcesTextarea = document.getElementById('chatbotSources');
+        const step6Error = document.getElementById('step6Error');
+
+        // Step 7 Elements
+        const outputLanguageSelect = document.getElementById('outputLanguage');
+        const step7Error = document.getElementById('step7Error');
+
+
+        // --- Screen Management ---
+        function hideAllScreens() {
+            screens.forEach(screen => {
+                screen.classList.add('hidden');
+            });
+        }
+
+        function showScreen(screenId) {
+            hideAllScreens();
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                 targetScreen.classList.remove('hidden');
+            }
+
+            // Manage active tab look
+            cardHeaderTabs.querySelectorAll('.card-header-tab').forEach(tab => tab.classList.remove('active'));
+            if (screenId === 'promptForm' || screenId === 'promptOutput' || screenId === 'promptEdit' || screenId === 'startScreen') {
+                 tabNewPrompt.classList.add('active');
+            } else if (screenId === 'libraryScreen') {
+                 tabMyLibrary.classList.add('active');
+                 loadAndDisplayPrompts(); // Load library whenever the tab is active
+            }
+
+             // Specific actions after showing screen
+             if (screenId === 'promptForm') {
+                 // When showing the form, always start/return to the current step
+                  showStep(currentStep);
+             } else if (screenId === 'startScreen') {
+                 // When showing the initial state, hide steps within the form
+                  hideAllSteps();
+                  // Also clear the form? Or allow resuming? Let's allow resuming for now.
+             }
+        }
+
+        // --- Step Management ---
+        function hideAllSteps() {
+            steps.forEach(step => {
+                step.classList.add('hidden');
+            });
+        }
+
+        function showStep(stepNumber) {
+            // Ensure we are on the promptForm screen when showing a step
+             if (promptForm.classList.contains('hidden')) {
+                 showScreen('promptForm'); // Go to form screen first if not already there
+             }
+
+            hideAllSteps();
+            const targetStep = document.getElementById('step' + stepNumber);
+            if (targetStep) {
+                 targetStep.classList.remove('hidden');
+                 currentStep = stepNumber;
+
+                 // Logic to show/hide conditional inputs within steps
+                 // This is repeated in nextStep, but needed here too if returning to a step
+                 const selectedUserType = getRadioValue('userType');
+                 teacherDetailsDiv.classList.add('hidden');
+                 studentDetailsDiv.classList.add('hidden');
+                 otherDetailsDiv.classList.add('hidden');
+
+                 if (stepNumber === 1) {
+                      if (selectedUserType === 'andet') otherUserTypeInputDiv.classList.remove('hidden'); else otherUserTypeInputDiv.classList.add('hidden');
+                 } else if (stepNumber === 2) {
+                      if (selectedUserType === 'lærer') teacherDetailsDiv.classList.remove('hidden');
+                      else if (selectedUserType === 'elev') studentDetailsDiv.classList.remove('hidden');
+                      else if (selectedUserType === 'andet') otherDetailsDiv.classList.remove('hidden');
+
+                       if (selectedUserType === 'lærer' && teacherSubjectSelect.value === 'et fag, der ikke er på listen') otherTeacherSubjectInputDiv.classList.remove('hidden'); else otherTeacherSubjectInputDiv.classList.add('hidden');
+
+                 } else if (stepNumber === 3) {
+                      if (chatbotRoleSelect.value === 'Andet') otherRoleInputDiv.classList.remove('hidden'); else otherRoleInputDiv.classList.add('hidden');
+                 } else if (stepNumber === 4) {
+                       if (chatbotTaskSelect.value === 'Andet') otherTaskInputDiv.classList.remove('hidden'); else otherTaskInputDiv.classList.add('hidden');
+                 } else if (stepNumber === 5) {
+                       if (chatbotFormatSelect.value === 'Andet') otherFormatInputDiv.classList.remove('hidden'); else otherFormatInputDiv.classList.add('hidden');
+                 }
+                 // Hide all other specific inputs when showing a step, they are handled above
+                 if (stepNumber !== 1) otherUserTypeInputDiv.classList.add('hidden');
+                 if (stepNumber !== 2) { teacherDetailsDiv.classList.add('hidden'); studentDetailsDiv.classList.add('hidden'); otherDetailsDiv.classList.add('hidden'); otherTeacherSubjectInputDiv.classList.add('hidden'); }
+                 if (stepNumber !== 3) otherRoleInputDiv.classList.add('hidden');
+                 if (stepNumber !== 4) otherTaskInputDiv.classList.add('hidden');
+                 if (stepNumber !== 5) otherFormatInputDiv.classList.add('hidden');
+
+            }
+        }
+
+         function getRadioValue(name) {
+             const radios = document.querySelectorAll(`input[name="${name}"]:checked`);
+             return radios.length > 0 ? radios[0].value : null;
+         }
+
+         function hideError(stepNumber) {
+             const errorElement = document.getElementById(`step${stepNumber}Error`);
+             if (errorElement) {
+                 errorElement.classList.add('hidden');
+                  errorElement.textContent = '';
+             }
+         }
+          function showError(stepNumber, message) {
+               const errorElement = document.getElementById(`step${stepNumber}Error`);
+              if (errorElement) {
+                  errorElement.textContent = message;
+                  errorElement.classList.remove('hidden');
+              }
+          }
+
+
+        // --- Event Listeners for 'Other' Inputs ---
+        // These listeners now just manage the visibility of the text input,
+        // the state is captured in nextStep/generatePrompt.
+        userTypeRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (document.querySelector('input[name="userType"]:checked').value === 'andet') {
+                    otherUserTypeInputDiv.classList.remove('hidden');
+                } else {
+                    otherUserTypeInputDiv.classList.add('hidden');
+                    otherUserTypeText.value = '';
+                }
+                 hideError(1);
+            });
+        });
+
+        teacherSubjectSelect.addEventListener('change', () => {
+            if (teacherSubjectSelect.value === 'et fag, der ikke er på listen') {
+                otherTeacherSubjectInputDiv.classList.remove('hidden');
+            } else {
+                 otherTeacherSubjectInputDiv.classList.add('hidden');
+                 otherTeacherSubjectText.value = '';
+            }
+             hideError(2);
+        });
+
+         studentYearSelect.addEventListener('change', () => { hideError(2); });
+         studentConfidenceRadios.forEach(radio => { radio.addEventListener('change', () => { hideError(2); }); });
+
+
+        chatbotRoleSelect.addEventListener('change', () => {
+            if (chatbotRoleSelect.value === 'Andet') {
+                otherRoleInputDiv.classList.remove('hidden');
+            } else {
+                otherRoleInputDiv.classList.add('hidden');
+                otherRoleText.value = '';
+            }
+             hideError(3);
+        });
+
+        chatbotTaskSelect.addEventListener('change', () => {
+            if (chatbotTaskSelect.value === 'Andet') {
+                otherTaskInputDiv.classList.remove('hidden');
+            } else {
+                 otherTaskInputDiv.classList.add('hidden');
+                 otherTaskText.value = '';
+            }
+             hideError(4);
+        });
+
+        chatbotFormatSelect.addEventListener('change', () => {
+            if (chatbotFormatSelect.value === 'Andet') {
+                otherFormatInputDiv.classList.remove('hidden');
+            } else {
+                otherFormatInputDiv.classList.add('hidden');
+                otherFormatText.value = '';
+            }
+             hideError(5);
+        });
+
+         outputLanguageSelect.addEventListener('change', () => { hideError(7); });
+
+
+        // --- Navigation Logic ---
+
+        function nextStep(stepNumber) {
+            hideError(stepNumber);
+
+            let validationPassed = true;
+            let errorMessage = '';
+
+            // --- Validation for each step ---
+            if (stepNumber === 1) {
+                const userType = getRadioValue('userType');
+                if (!userType) {
+                    validationPassed = false;
+                    errorMessage = 'Vælg venligst, hvem du er.';
+                }
+            } else if (stepNumber === 2) {
+                const userType = getRadioValue('userType');
+                 if (userType === 'lærer') {
+                     if (teacherYearSelect.value === '' || teacherSubjectSelect.value === '') {
+                         validationPassed = false;
+                         errorMessage = 'Vælg venligst årgang og fag.';
+                     } else if (teacherSubjectSelect.value === 'et fag, der ikke er på listen' && otherTeacherSubjectText.value.trim() === '') {
+                          validationPassed = false;
+                          errorMessage = 'Skriv venligst dit fag.';
+                     }
+                 } else if (userType === 'elev') {
+                     if (studentYearSelect.value === '' || !getRadioValue('studentConfidence')) {
+                         validationPassed = false;
+                         errorMessage = 'Vælg venligst årgang og faglig sikkerhed.';
+                     }
+                 } else if (userType === 'andet') {
+                      // jobDescription is optional
+                 } else {
+                     validationPassed = false; // Should not happen
+                     errorMessage = 'Fejl i bruger type.';
+                 }
+            } else if (stepNumber === 3) {
+                const role = chatbotRoleSelect.value;
+                if (!role) {
+                    validationPassed = false;
+                    errorMessage = 'Vælg venligst en rolle.';
+                } else if (role === 'Andet' && otherRoleText.value.trim() === '') {
+                    validationPassed = false;
+                    errorMessage = 'Skriv venligst den ønskede rolle.';
+                }
+            } else if (stepNumber === 4) {
+                const task = chatbotTaskSelect.value;
+                if (!task) {
+                     validationPassed = false;
+                     errorMessage = 'Vælg venligst en opgave.';
+                 } else if (task === 'Andet' && otherTaskText.value.trim() === '') {
+                     validationPassed = false;
+                     errorMessage = 'Skriv venligst opgaven.';
+                 }
+            } else if (stepNumber === 5) {
+                const format = chatbotFormatSelect.value;
+                if (!format) {
+                     validationPassed = false;
+                     errorMessage = 'Vælg venligst et format.';
+                 } else if (format === 'Andet' && otherFormatText.value.trim() === '') {
+                     validationPassed = false;
+                     errorMessage = 'Skriv venligst det ønskede format.';
+                 }
+            }
+            // Step 6 (Sources) has no mandatory validation
+            else if (stepNumber === 7) { // Validation for the LAST step before generating
+                 const language = outputLanguageSelect.value;
+                 if (!language) {
+                      validationPassed = false;
+                      errorMessage = 'Vælg venligst et sprog.';
+                 }
+            }
+
+
+            // --- Proceed if validation passes ---
+            if (validationPassed) {
+                if (stepNumber < totalSteps) {
+                    showStep(stepNumber + 1);
+                } else {
+                     // This is the final step (Step 7), so generate prompt
+                     generatePrompt();
+                }
+            } else {
+                 showError(stepNumber, errorMessage);
+            }
+        }
+
+
+        // --- Generate Prompt Function ---
+
+        function generatePrompt() {
+             // Data collection is done here AFTER all steps are validated by nextStep(7)
+
+            const userType = getRadioValue('userType');
+            const otherUserTypeTextValue = otherUserTypeText.value.trim();
+
+            let omMig = '';
+            let mereOmMig = '';
+
+            if (userType === 'lærer') {
+                const teacherYear = teacherYearSelect.value;
+                 const teacherSubject = teacherSubjectSelect.value === 'et fag, der ikke er på listen'
+                                            ? otherTeacherSubjectText.value.trim()
+                                            : teacherSubjectSelect.value;
+                 omMig = `lærer i ${teacherSubject} på ${teacherYear}`;
+            } else if (userType === 'elev') {
+                const studentYear = studentYearSelect.value;
+                const studentConfidence = getRadioValue('studentConfidence');
+                 omMig = `elev på ${studentYear}, som er fagligt ${studentConfidence}`;
+            } else if (userType === 'andet') {
+                omMig = otherUserTypeTextValue || 'noget andet';
+                mereOmMig = jobDescriptionInput.value.trim();
+            }
+
+            const role = chatbotRoleSelect.value === 'Andet' ? otherRoleText.value.trim() : chatbotRoleSelect.value;
+            const task = chatbotTaskSelect.value === 'Andet' ? otherTaskText.value.trim() : chatbotTaskSelect.value;
+            const format = chatbotFormatSelect.value === 'Andet' ? otherFormatText.value.trim() : chatbotFormatSelect.value;
+            const sources = chatbotSourcesTextarea.value.trim();
+            const finalLanguage = outputLanguageSelect.value;
+
+
+            // Build the prompt string
+            let prompt = `Jeg er ${omMig}`;
+
+            if (userType === 'andet' && mereOmMig) {
+                 prompt += ` ${mereOmRig}`; // Typo fixed: mereOmMig
+            } else if (userType !== 'andet' && omMig) {
+                 // Add period for teacher/student if not adding mereOmMig
+                 // The template "Jeg er [om mig] [mere om mig]." suggests the period comes after
+                 // the second part if it exists. Let's stick to that structure.
+                 // The period is added later in the prompt string construction.
+            }
+
+
+            prompt += `. Du er ${role}, og du skal hjælpe mig med følgende opgave: ${task}. Du skal levere det i følgene format: ${format}.`;
+
+            if (sources) {
+                prompt += ` Til at løse opgaven skal du tage udgangspunkt i ${sources}.`;
+            }
+
+            prompt += ` Skriv på ${finalLanguage}`;
+
+
+            // Display the prompt
+            generatedPromptText.textContent = prompt;
+
+            // Show the output area
+            showScreen('promptOutput');
+        }
+
+
+        // --- Copy and Edit Functionality ---
+
+        async function copyTextToClipboard(text) {
+             try {
+                 await navigator.clipboard.writeText(text);
+                 console.log('Text copied to clipboard');
+             } catch (err) {
+                 console.error('Could not copy text: ', err);
+                 alert('Kunne ikke kopiere tekst. Prøv at markere og kopiere manuelt.');
+             }
+         }
+
+        copyPromptBtn.addEventListener('click', () => {
+            copyTextToClipboard(generatedPromptText.textContent);
+        });
+
+        editPromptBtn.addEventListener('click', () => {
+            promptEditTextArea.value = generatedPromptText.textContent;
+            showScreen('promptEdit');
+        });
+
+        copyEditedPromptBtn.addEventListener('click', () => {
+            copyTextToClipboard(promptEditTextArea.value);
+        });
+
+         function saveEditedPrompt() {
+             generatedPromptText.textContent = promptEditTextArea.value;
+             showScreen('promptOutput');
+         }
+
+
+        // --- Local Storage (Prompt Library) ---
+
+        function getPrompts() {
+            const promptsString = localStorage.getItem(STORAGE_KEY);
+            try {
+                return promptsString ? JSON.parse(promptsString) : [];
+            } catch (e) {
+                console.error("Error parsing prompts from localStorage:", e);
+                return [];
+            }
+        }
+
+        function savePrompts(prompts) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(prompts));
+            updateLibraryCount();
+        }
+
+        function addPrompt(promptText) {
+             if (!promptText || promptText.trim() === '') {
+                 alert('Kan ikke gemme en tom prompt.');
+                 return;
+             }
+             const prompts = getPrompts();
+
+             // Check if a prompt with identical text already exists
+             const exists = prompts.some(p => p.text === promptText.trim()); // Compare trimmed text
+             if (exists) {
+                  alert('Denne prompt findes allerede i dit bibliotek.');
+                  return;
+             }
+
+             // Simple prompt name based on content or timestamp
+             // Could ask user for a name if needed, but keep it simple for now.
+             let promptName = promptText.trim().substring(0, 50); // Use start of prompt as name
+              if (promptText.trim().length > 50) promptName += '...';
+              if (promptName === '') promptName = 'Tom prompt'; // Should not happen due to check above, but safety.
+
+
+             const newPrompt = {
+                 id: Date.now(),
+                 name: promptName,
+                 text: promptText.trim(), // Save trimmed text
+                 savedAt: new Date().toLocaleString('da-DK') // Use Danish locale for date format
+             };
+
+
+             prompts.push(newPrompt);
+             savePrompts(prompts);
+             alert('Prompt gemt i biblioteket!');
+         }
+
+         function deletePrompt(id) {
+              if (confirm('Er du sikker på, at du vil slette denne prompt?')) {
+                  let prompts = getPrompts();
+                  prompts = prompts.filter(prompt => prompt.id !== id);
+                  savePrompts(prompts);
+                  loadAndDisplayPrompts(); // Refresh the displayed list
+              }
+         }
+
+
+         function loadAndDisplayPrompts() {
+             const prompts = getPrompts();
+             promptList.innerHTML = '';
+
+             if (prompts.length === 0) {
+                 noPromptsMessage.classList.remove('hidden');
+             } else {
+                 noPromptsMessage.classList.add('hidden');
+                 prompts.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+
+                 prompts.forEach(prompt => {
+                     const listItem = document.createElement('li');
+                      // Using data attribute with JSON.stringify for robust text handling
+                     listItem.innerHTML = `
+                         <strong>${prompt.name}</strong>
+                         <div class="prompt-text-display">${prompt.text}</div>
+                         <div class="prompt-actions">
+                             <button class="copy-library-prompt" data-prompt-text='${JSON.stringify(prompt.text)}'>Kopier</button>
+                             <button onclick="deletePrompt(${prompt.id})" class="delete-button">Slet</button>
+                         </div>
+                     `;
+                     promptList.appendChild(listItem);
+                 });
+
+                  promptList.querySelectorAll('.copy-library-prompt').forEach(button => {
+                     button.addEventListener('click', (event) => {
+                         // Parse the text stored in the data attribute
+                         const textToCopy = JSON.parse(event.target.dataset.promptText);
+                         copyTextToClipboard(textToCopy);
+                     });
+                 });
+             }
+             updateLibraryCount();
+         }
+
+         function updateLibraryCount() {
+             const prompts = getPrompts();
+             const count = prompts.length;
+             libraryCountSpan.textContent = count;
+             libraryCountLibrarySpan.textContent = count;
+
+              // Update button visibility on start screen (though we removed those buttons)
+              // If we re-add them, this count can update their labels.
+         }
+
+
+        // --- Initial Load and Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial screen setup
+            showScreen('startScreen');
+            updateLibraryCount();
+
+            // Tab button listeners
+            tabNewPrompt.addEventListener('click', () => {
+                 // Reset form state when starting a new prompt?
+                 // A full form reset is complex with the step logic.
+                 // For now, just show step 1 and allow previous inputs to remain unless user changes them.
+                 currentStep = 1; // Ensure we start at step 1 visually
+                 showScreen('promptForm');
+                 showStep(1); // Explicitly show the first step of the form
+            });
+
+            tabMyLibrary.addEventListener('click', () => {
+                 showScreen('libraryScreen');
+            });
+
+            // Add to Library Button on Output screen
+            addToLibraryBtn.addEventListener('click', () => {
+                 const promptText = generatedPromptText.textContent;
+                 if (promptText) {
+                     addPrompt(promptText);
+                 } else {
+                     alert('Der er ingen prompt at gemme endnu.');
+                 }
+            });
+
+            // --- Setup for showing/hiding conditional inputs initially and on changes ---
+            // This part is crucial when returning to a step or on initial load
+            userTypeRadios.forEach(radio => radio.addEventListener('change', () => showStep(currentStep))); // Re-evaluate step layout on relevant changes
+             teacherSubjectSelect.addEventListener('change', () => showStep(currentStep));
+             chatbotRoleSelect.addEventListener('change', () => showStep(currentStep));
+             chatbotTaskSelect.addEventListener('change', () => showStep(currentStep));
+             chatbotFormatSelect.addEventListener('change', () => showStep(currentStep));
+
+             // Initial setup of 'Other' inputs based on default/saved state
+             // (Assuming no saved state on first load, defaults apply)
+             showStep(currentStep); // Call showStep once on load to setup initial step and conditional inputs
+
+        });
+
+    </script>
+
+</body>
+</html>
