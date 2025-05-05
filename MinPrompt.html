@@ -11,6 +11,7 @@
             --background-color: #e0f2f7; /* Lys blå-grå baggrund */
             --card-background: #ffffff;
             --primary-blue: #007bff; /* Standard blå, hvis vi har brug for den */
+            --primary-dark: #0056b3;
             --accent-green: #28a745; /* Grøn til ikoner/succes */
             --accent-orange: #ffc107; /* Orange linje */
             --text-color: #343a40; /* Mørk grå tekst */
@@ -29,22 +30,23 @@
             color: var(--text-color);
             padding: 20px;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column; /* Arrange items vertically */
+            align-items: center; /* Center content horizontally */
             min-height: 100vh;
         }
 
         .container {
             width: 100%;
             max-width: 800px;
-            margin: 20px auto; /* Centrer og giv lidt top/bund margin */
+            margin: 0 auto; /* Centrer containeren */
         }
 
         .main-card {
              background: var(--card-background);
-             border-radius: 8px; /* Mindre afrunding for at matche billedet */
+             border-radius: 8px;
              box-shadow: 0 2px 10px var(--shadow-light);
-             overflow: hidden; /* Sikrer at afrunding gælder for indhold */
+             overflow: hidden;
+             margin-top: 20px; /* Add margin above the card */
         }
 
         .card-header-tabs {
@@ -61,13 +63,14 @@
             background-color: var(--tab-inactive);
             color: var(--light-text-color);
             transition: background-color 0.2s ease, color 0.2s ease;
+            user-select: none;
         }
 
         .card-header-tab.active {
             background-color: var(--card-background);
-            color: var(--primary-blue); /* Eller en anden accentfarve */
-            border-bottom: 3px solid var(--primary-blue); /* Aktiv indikator */
-            margin-bottom: -1px; /* Trækker ind over border-bottom */
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--primary-blue);
+            margin-bottom: -1px;
         }
          .card-header-tab:first-child {
              border-top-left-radius: 8px;
@@ -76,12 +79,12 @@
              border-top-right-radius: 8px;
          }
           .card-header-tab:hover:not(.active) {
-             background-color: #e2e6ea; /* Lettere hover farve */
+             background-color: #e2e6ea;
           }
 
 
         .card-content {
-            padding: 30px; /* Padding inden i kortet */
+            padding: 30px;
         }
 
         .screen, .step {
@@ -91,7 +94,7 @@
 
         .step {
              padding-top: 20px;
-             border-top: 1px solid #eee; /* Lettere skillelinje */
+             border-top: 1px solid #eee;
              opacity: 1;
              transform: translateY(0);
              transition: opacity 0.4s ease-out, transform 0.4s ease-out;
@@ -104,14 +107,14 @@
              opacity: 0;
              transform: translateY(20px);
              pointer-events: none;
-             position: absolute; /* For at skjulte steps ikke optager plads */
-             width: calc(100% - 60px); /* Match card-content bredde minus padding */
+             position: absolute;
+             width: calc(100% - 60px);
          }
           #promptForm .card-content {
-             position: relative; /* Nødvendig for absolut positionerede steps */
+             position: relative;
           }
            #promptForm .step:not(.hidden) {
-             position: static; /* Vis det aktive step normalt */
+             position: static;
            }
 
 
@@ -127,13 +130,13 @@
              color: var(--text-color);
              font-weight: 600;
              margin-bottom: 20px;
-             display: flex; /* For icon alignment */
+             display: flex;
              align-items: center;
          }
           .card-title .icon {
               color: var(--accent-green);
               margin-right: 10px;
-              font-size: 1.2em; /* Størrelse på plus ikon */
+              font-size: 1.2em;
               font-weight: 700;
           }
 
@@ -143,7 +146,7 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--text-color);
-            font-size: 1em; /* Mindre end sidst for at matche billedet */
+            font-size: 1em;
         }
 
         input[type="radio"],
@@ -151,15 +154,15 @@
         textarea,
         select {
             display: block;
-            margin-bottom: 15px; /* Mellemrum */
-            padding: 10px 12px; /* Mindre padding end sidst */
+            margin-bottom: 15px;
+            padding: 10px 12px;
             border: 1px solid var(--border-color);
-            border-radius: 4px; /* Mindre afrunding */
+            border-radius: 4px;
             width: 100%;
             box-sizing: border-box;
             font-size: 1em;
             color: var(--text-color);
-            background-color: #f8f9fa; /* Let grå baggrund i input */
+            background-color: #f8f9fa;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
          input[type="text"]:focus,
@@ -168,7 +171,7 @@
              outline: none;
              border-color: var(--primary-blue);
              box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-              background-color: var(--card-background); /* Hvid baggrund ved fokus */
+              background-color: var(--card-background);
          }
 
          input[type="radio"] {
@@ -181,7 +184,7 @@
             display: inline-block;
             margin-right: 15px;
             font-weight: normal;
-            color: var(--text-color); /* Mørkere label tekst for radio */
+            color: var(--text-color);
             font-size: 1em;
              cursor: pointer;
         }
@@ -192,12 +195,12 @@
 
         textarea {
             resize: vertical;
-            min-height: 80px; /* Mindre minimum højde */
+            min-height: 80px;
         }
 
         button {
             display: inline-block;
-            background-color: var(--primary-blue); /* Standard blå knap */
+            background-color: var(--primary-blue);
             color: white;
             padding: 10px 20px;
             border: none;
@@ -221,7 +224,7 @@
 
 
         .button-group button {
-            margin-right: 10px; /* Mindre mellemrum */
+            margin-right: 10px;
             margin-bottom: 10px;
         }
          .button-group button:last-child {
@@ -233,12 +236,17 @@
             background-color: transparent;
             color: var(--secondary-color);
             border: 1px solid var(--secondary-color);
-             padding: 9px 20px; /* Juster padding pga border */
-             margin-top: 0; /* Juster placering */
+             padding: 9px 20px;
+             margin-top: 0;
         }
          .button-outline-secondary:hover:not(:disabled) {
              background-color: var(--secondary-color);
              color: white;
+         }
+         #backToIndexBtn { /* Style for the specific back to index button */
+             display: block; /* Place it on its own line */
+             margin: 20px auto; /* Center it and add space */
+              width: fit-content; /* Don't stretch across */
          }
 
 
@@ -258,18 +266,18 @@
 
 
         #promptOutput, #promptEdit, #libraryScreen {
-            margin-top: 0; /* Inde i kortet, ingen top margin her */
-            padding: 0; /* Padding håndteres af .card-content */
+            margin-top: 0;
+            padding: 0;
         }
 
 
         #generatedPromptText, #promptEditTextArea {
             white-space: pre-wrap;
             word-wrap: break-word;
-            background-color: #f8f9fa; /* Let grå baggrund */
-            padding: 15px; /* Mindre padding */
+            background-color: #f8f9fa;
+            padding: 15px;
             border: 1px solid var(--border-color);
-            border-radius: 4px; /* Mindre afrunding */
+            border-radius: 4px;
             margin-bottom: 20px;
             display: block;
             width: 100%;
@@ -279,11 +287,11 @@
             color: var(--text-color);
         }
          #promptEditTextArea {
-             min-height: 150px; /* Mindre start højde */
+             min-height: 150px;
          }
 
         .hidden {
-            display: none; /* Brug standard hidden */
+            display: none !important;
         }
          /* Styles for screen transitions */
           .screen {
@@ -312,17 +320,17 @@
              background-color: var(--card-background);
              border: 1px solid var(--border-color);
              border-radius: 8px;
-             padding: 15px; /* Mindre padding */
+             padding: 15px;
              margin-bottom: 10px;
              word-break: break-word;
-             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05); /* Lettere skygge */
+             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
          }
          #promptList li strong {
              display: block;
-             margin-bottom: 8px; /* Mindre mellemrum */
+             margin-bottom: 8px;
              color: var(--primary-blue);
              font-weight: 600;
-             font-size: 1em; /* Mindre skrift */
+             font-size: 1em;
          }
           #promptList li div {
               color: var(--text-color);
@@ -331,16 +339,20 @@
           }
 
          .prompt-actions button {
-             padding: 6px 12px; /* Mindre knapper */
+             padding: 6px 12px;
              font-size: 0.85em;
              margin-top: 5px;
-             margin-right: 8px; /* Mindre mellemrum */
+             margin-right: 8px;
          }
          .prompt-actions {
              margin-top: 15px;
-             border-top: 1px dashed #eee; /* Lettere streg */
+             border-top: 1px dashed #eee;
              padding-top: 10px;
          }
+          #printLibraryBtn {
+              margin-left: 10px;
+          }
+
 
          #noPromptsMessage {
              text-align: center;
@@ -360,13 +372,21 @@
               align-items: center;
               margin-bottom: 20px;
               padding-bottom: 15px;
-              border-bottom: 1px solid var(--accent-orange); /* Orange streg */
+              border-bottom: 1px solid var(--accent-orange);
           }
            .card-content-header .card-title {
-               margin-bottom: 0; /* Fjern bund margin når i header */
+               margin-bottom: 0;
            }
             .card-content-header .button-outline-secondary {
-                margin-top: 0; /* Juster knap margin */
+                margin-top: 0;
+            }
+           .card-content-header .button-group {
+                margin-top: 0;
+                display: flex;
+                align-items: center;
+           }
+            .card-content-header .button-group button {
+                margin-top: 0;
             }
 
 
@@ -383,10 +403,95 @@
                margin-bottom: 0;
            }
 
+           /* --- Print Styles --- */
+           @media print {
+               body {
+                   background-color: white;
+                   padding: 0;
+                   margin: 0;
+                   justify-content: flex-start;
+                   align-items: flex-start;
+               }
+               .container {
+                   box-shadow: none;
+                   margin: 0;
+                   max-width: 100%;
+                   width: 100%;
+               }
+               .main-card {
+                   box-shadow: none;
+                   border-radius: 0;
+                    background-color: white;
+                    margin-top: 0; /* Remove print margin */
+               }
+               h1, .card-header-tabs, .card-content-header .button-outline-secondary,
+               .prompt-actions, #noPromptsMessage, .button-group, #printLibraryBtn,
+               #backToIndexBtn /* Hide the index button in print */
+               {
+                   display: none !important;
+               }
+
+                .card-content {
+                    padding: 10mm;
+                }
+
+                .card-content-header {
+                    border-bottom: none;
+                    padding-bottom: 0;
+                    margin-bottom: 20px;
+                }
+
+                .card-title {
+                     font-size: 1.2em;
+                     font-weight: 700;
+                     color: #000;
+                }
+                 .card-title .icon {
+                     display: none;
+                 }
+
+
+               #libraryScreen {
+                   display: block !important;
+                   opacity: 1 !important;
+                   position: static !important;
+                   padding: 0;
+               }
+
+               #promptList {
+                   padding: 0;
+               }
+               #promptList li {
+                   border: 1px solid #ccc;
+                   box-shadow: none;
+                   margin-bottom: 15px;
+                   padding: 15px;
+                   page-break-inside: avoid;
+               }
+                 #promptList li strong {
+                     color: #333;
+                     margin-bottom: 5px;
+                     font-size: 1em;
+                 }
+                 #promptList li div {
+                      color: #555;
+                      margin-bottom: 0;
+                      font-size: 0.95em;
+                 }
+
+                #promptList li .prompt-text-display {
+                     white-space: pre-wrap !important;
+                     word-wrap: break-word !important;
+                     overflow: visible !important;
+                }
+           }
+
 
     </style>
 </head>
 <body>
+
+    <button id="backToIndexBtn" class="button-outline-secondary">← Tilbage til Index</button>
 
     <div class="container">
         <h1>MinPrompt</h1>
@@ -401,7 +506,7 @@
 
                 <div id="startScreen" class="screen">
                      <p style="text-align: center; color: var(--light-text-color);">Vælg "Ny prompt" for at oprette en ny prompt trin for trin, eller "Mit promptbibliotek" for at se dine gemte prompts.</p>
-                     </div>
+                 </div>
 
 
                 <div id="promptForm" class="screen hidden">
@@ -670,7 +775,10 @@
                  <div id="libraryScreen" class="screen hidden">
                       <div class="card-content-header">
                           <h2 class="card-title">Mit promptbibliotek (<span id="libraryCountLibrary">0</span>)</h2>
-                          <button onclick="showScreen('startScreen')" class="button-outline-secondary">← Tilbage</button>
+                           <div class="button-group">
+                             <button onclick="showScreen('startScreen')" class="button-outline-secondary">← Tilbage</button>
+                             <button id="printLibraryBtn" class="secondary-button">Udskriv prompts</button>
+                           </div>
                       </div>
                      <ul id="promptList">
                          </ul>
@@ -678,11 +786,12 @@
                  </div>
 
             </div> </div> </div> <script>
-        const STORAGE_KEY = 'minPromptLibrary'; // Unique key for this app
+        const STORAGE_KEY = 'minPromptLibrary';
         let currentStep = 1;
         const totalSteps = 7;
 
         // --- Element References ---
+        const backToIndexBtn = document.getElementById('backToIndexBtn'); // New button reference
         const container = document.querySelector('.container');
         const mainCard = document.querySelector('.main-card');
         const cardContent = document.querySelector('.card-content');
@@ -690,13 +799,13 @@
         const tabNewPrompt = document.getElementById('tabNewPrompt');
         const tabMyLibrary = document.getElementById('tabMyLibrary');
 
-        const startScreen = document.getElementById('startScreen'); // Now just the initial state inside the card
+        const startScreen = document.getElementById('startScreen');
         const promptForm = document.getElementById('promptForm');
         const promptOutput = document.getElementById('promptOutput');
         const promptEdit = document.getElementById('promptEdit');
         const libraryScreen = document.getElementById('libraryScreen');
 
-        const screens = document.querySelectorAll('.card-content .screen'); // Select screens within card-content
+        const screens = document.querySelectorAll('.card-content .screen');
 
         const steps = document.querySelectorAll('#promptForm .step');
 
@@ -709,8 +818,9 @@
         const addToLibraryBtn = document.getElementById('addToLibraryBtn');
         const promptList = document.getElementById('promptList');
         const noPromptsMessage = document.getElementById('noPromptsMessage');
-        const libraryCountSpan = document.getElementById('libraryCount'); // Count on tab
-        const libraryCountLibrarySpan = document.getElementById('libraryCountLibrary'); // Count on library screen title
+        const libraryCountSpan = document.getElementById('libraryCount');
+        const libraryCountLibrarySpan = document.getElementById('libraryCountLibrary');
+        const printLibraryBtn = document.getElementById('printLibraryBtn');
 
 
         // Step 1 Elements
@@ -782,17 +892,13 @@
                  tabNewPrompt.classList.add('active');
             } else if (screenId === 'libraryScreen') {
                  tabMyLibrary.classList.add('active');
-                 loadAndDisplayPrompts(); // Load library whenever the tab is active
+                 loadAndDisplayPrompts();
             }
 
-             // Specific actions after showing screen
              if (screenId === 'promptForm') {
-                 // When showing the form, always start/return to the current step
                   showStep(currentStep);
              } else if (screenId === 'startScreen') {
-                 // When showing the initial state, hide steps within the form
                   hideAllSteps();
-                  // Also clear the form? Or allow resuming? Let's allow resuming for now.
              }
         }
 
@@ -804,9 +910,8 @@
         }
 
         function showStep(stepNumber) {
-            // Ensure we are on the promptForm screen when showing a step
              if (promptForm.classList.contains('hidden')) {
-                 showScreen('promptForm'); // Go to form screen first if not already there
+                 showScreen('promptForm');
              }
 
             hideAllSteps();
@@ -815,36 +920,33 @@
                  targetStep.classList.remove('hidden');
                  currentStep = stepNumber;
 
-                 // Logic to show/hide conditional inputs within steps
-                 // This is repeated in nextStep, but needed here too if returning to a step
                  const selectedUserType = getRadioValue('userType');
                  teacherDetailsDiv.classList.add('hidden');
                  studentDetailsDiv.classList.add('hidden');
                  otherDetailsDiv.classList.add('hidden');
+                 otherUserTypeInputDiv.classList.add('hidden');
+                 otherTeacherSubjectInputDiv.classList.add('hidden');
+                 otherRoleInputDiv.classList.add('hidden');
+                 otherTaskInputDiv.classList.add('hidden');
+                 otherFormatInputDiv.classList.add('hidden');
+
 
                  if (stepNumber === 1) {
-                      if (selectedUserType === 'andet') otherUserTypeInputDiv.classList.remove('hidden'); else otherUserTypeInputDiv.classList.add('hidden');
+                      if (selectedUserType === 'andet') otherUserTypeInputDiv.classList.remove('hidden');
                  } else if (stepNumber === 2) {
                       if (selectedUserType === 'lærer') teacherDetailsDiv.classList.remove('hidden');
                       else if (selectedUserType === 'elev') studentDetailsDiv.classList.remove('hidden');
                       else if (selectedUserType === 'andet') otherDetailsDiv.classList.remove('hidden');
 
-                       if (selectedUserType === 'lærer' && teacherSubjectSelect.value === 'et fag, der ikke er på listen') otherTeacherSubjectInputDiv.classList.remove('hidden'); else otherTeacherSubjectInputDiv.classList.add('hidden');
+                       if (selectedUserType === 'lærer' && teacherSubjectSelect.value === 'et fag, der ikke er på listen') otherTeacherSubjectInputDiv.classList.remove('hidden');
 
                  } else if (stepNumber === 3) {
-                      if (chatbotRoleSelect.value === 'Andet') otherRoleInputDiv.classList.remove('hidden'); else otherRoleInputDiv.classList.add('hidden');
+                      if (chatbotRoleSelect.value === 'Andet') otherRoleInputDiv.classList.remove('hidden');
                  } else if (stepNumber === 4) {
-                       if (chatbotTaskSelect.value === 'Andet') otherTaskInputDiv.classList.remove('hidden'); else otherTaskInputDiv.classList.add('hidden');
+                       if (chatbotTaskSelect.value === 'Andet') otherTaskInputDiv.classList.remove('hidden');
                  } else if (stepNumber === 5) {
-                       if (chatbotFormatSelect.value === 'Andet') otherFormatInputDiv.classList.remove('hidden'); else otherFormatInputDiv.classList.add('hidden');
+                       if (chatbotFormatSelect.value === 'Andet') otherFormatInputDiv.classList.remove('hidden');
                  }
-                 // Hide all other specific inputs when showing a step, they are handled above
-                 if (stepNumber !== 1) otherUserTypeInputDiv.classList.add('hidden');
-                 if (stepNumber !== 2) { teacherDetailsDiv.classList.add('hidden'); studentDetailsDiv.classList.add('hidden'); otherDetailsDiv.classList.add('hidden'); otherTeacherSubjectInputDiv.classList.add('hidden'); }
-                 if (stepNumber !== 3) otherRoleInputDiv.classList.add('hidden');
-                 if (stepNumber !== 4) otherTaskInputDiv.classList.add('hidden');
-                 if (stepNumber !== 5) otherFormatInputDiv.classList.add('hidden');
-
             }
         }
 
@@ -870,65 +972,14 @@
 
 
         // --- Event Listeners for 'Other' Inputs ---
-        // These listeners now just manage the visibility of the text input,
-        // the state is captured in nextStep/generatePrompt.
-        userTypeRadios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                if (document.querySelector('input[name="userType"]:checked').value === 'andet') {
-                    otherUserTypeInputDiv.classList.remove('hidden');
-                } else {
-                    otherUserTypeInputDiv.classList.add('hidden');
-                    otherUserTypeText.value = '';
-                }
-                 hideError(1);
-            });
-        });
-
-        teacherSubjectSelect.addEventListener('change', () => {
-            if (teacherSubjectSelect.value === 'et fag, der ikke er på listen') {
-                otherTeacherSubjectInputDiv.classList.remove('hidden');
-            } else {
-                 otherTeacherSubjectInputDiv.classList.add('hidden');
-                 otherTeacherSubjectText.value = '';
-            }
-             hideError(2);
-        });
-
-         studentYearSelect.addEventListener('change', () => { hideError(2); });
-         studentConfidenceRadios.forEach(radio => { radio.addEventListener('change', () => { hideError(2); }); });
-
-
-        chatbotRoleSelect.addEventListener('change', () => {
-            if (chatbotRoleSelect.value === 'Andet') {
-                otherRoleInputDiv.classList.remove('hidden');
-            } else {
-                otherRoleInputDiv.classList.add('hidden');
-                otherRoleText.value = '';
-            }
-             hideError(3);
-        });
-
-        chatbotTaskSelect.addEventListener('change', () => {
-            if (chatbotTaskSelect.value === 'Andet') {
-                otherTaskInputDiv.classList.remove('hidden');
-            } else {
-                 otherTaskInputDiv.classList.add('hidden');
-                 otherTaskText.value = '';
-            }
-             hideError(4);
-        });
-
-        chatbotFormatSelect.addEventListener('change', () => {
-            if (chatbotFormatSelect.value === 'Andet') {
-                otherFormatInputDiv.classList.remove('hidden');
-            } else {
-                otherFormatInputDiv.classList.add('hidden');
-                otherFormatText.value = '';
-            }
-             hideError(5);
-        });
-
-         outputLanguageSelect.addEventListener('change', () => { hideError(7); });
+        userTypeRadios.forEach(radio => { radio.addEventListener('change', () => showStep(currentStep)); hideError(1); });
+        teacherSubjectSelect.addEventListener('change', () => { showStep(currentStep); hideError(2); });
+        studentYearSelect.addEventListener('change', () => { showStep(currentStep); hideError(2); });
+        studentConfidenceRadios.forEach(radio => { radio.addEventListener('change', () => { showStep(currentStep); hideError(2); }); });
+        chatbotRoleSelect.addEventListener('change', () => { showStep(currentStep); hideError(3); });
+        chatbotTaskSelect.addEventListener('change', () => { showStep(currentStep); hideError(4); });
+        chatbotFormatSelect.addEventListener('change', () => { showStep(currentStep); hideError(5); });
+        outputLanguageSelect.addEventListener('change', () => { hideError(7); });
 
 
         // --- Navigation Logic ---
@@ -939,80 +990,40 @@
             let validationPassed = true;
             let errorMessage = '';
 
-            // --- Validation for each step ---
             if (stepNumber === 1) {
                 const userType = getRadioValue('userType');
-                if (!userType) {
-                    validationPassed = false;
-                    errorMessage = 'Vælg venligst, hvem du er.';
-                }
+                if (!userType) { validationPassed = false; errorMessage = 'Vælg venligst, hvem du er.'; }
             } else if (stepNumber === 2) {
                 const userType = getRadioValue('userType');
                  if (userType === 'lærer') {
-                     if (teacherYearSelect.value === '' || teacherSubjectSelect.value === '') {
-                         validationPassed = false;
-                         errorMessage = 'Vælg venligst årgang og fag.';
-                     } else if (teacherSubjectSelect.value === 'et fag, der ikke er på listen' && otherTeacherSubjectText.value.trim() === '') {
-                          validationPassed = false;
-                          errorMessage = 'Skriv venligst dit fag.';
-                     }
+                     if (teacherYearSelect.value === '' || teacherSubjectSelect.value === '') { validationPassed = false; errorMessage = 'Vælg venligst årgang og fag.'; }
+                     else if (teacherSubjectSelect.value === 'et fag, der ikke er på listen' && otherTeacherSubjectText.value.trim() === '') { validationPassed = false; errorMessage = 'Skriv venligst dit fag.'; }
                  } else if (userType === 'elev') {
-                     if (studentYearSelect.value === '' || !getRadioValue('studentConfidence')) {
-                         validationPassed = false;
-                         errorMessage = 'Vælg venligst årgang og faglig sikkerhed.';
-                     }
-                 } else if (userType === 'andet') {
-                      // jobDescription is optional
-                 } else {
-                     validationPassed = false; // Should not happen
-                     errorMessage = 'Fejl i bruger type.';
-                 }
+                     if (studentYearSelect.value === '' || !getRadioValue('studentConfidence')) { validationPassed = false; errorMessage = 'Vælg venligst årgang og faglig sikkerhed.'; }
+                 } else if (userType === 'andet') { /* Optional */ }
+                 else { validationPassed = false; errorMessage = 'Fejl i bruger type.'; }
             } else if (stepNumber === 3) {
                 const role = chatbotRoleSelect.value;
-                if (!role) {
-                    validationPassed = false;
-                    errorMessage = 'Vælg venligst en rolle.';
-                } else if (role === 'Andet' && otherRoleText.value.trim() === '') {
-                    validationPassed = false;
-                    errorMessage = 'Skriv venligst den ønskede rolle.';
-                }
+                if (!role) { validationPassed = false; errorMessage = 'Vælg venligst en rolle.'; }
+                else if (role === 'Andet' && otherRoleText.value.trim() === '') { validationPassed = false; errorMessage = 'Skriv venligst den ønskede rolle.'; }
             } else if (stepNumber === 4) {
                 const task = chatbotTaskSelect.value;
-                if (!task) {
-                     validationPassed = false;
-                     errorMessage = 'Vælg venligst en opgave.';
-                 } else if (task === 'Andet' && otherTaskText.value.trim() === '') {
-                     validationPassed = false;
-                     errorMessage = 'Skriv venligst opgaven.';
-                 }
+                if (!task) { validationPassed = false; errorMessage = 'Vælg venligst en opgave.'; }
+                else if (task === 'Andet' && otherTaskText.value.trim() === '') { validationPassed = false; errorMessage = 'Skriv venligst opgaven.'; }
             } else if (stepNumber === 5) {
                 const format = chatbotFormatSelect.value;
-                if (!format) {
-                     validationPassed = false;
-                     errorMessage = 'Vælg venligst et format.';
-                 } else if (format === 'Andet' && otherFormatText.value.trim() === '') {
-                     validationPassed = false;
-                     errorMessage = 'Skriv venligst det ønskede format.';
-                 }
+                if (!format) { validationPassed = false; errorMessage = 'Vælg venligst et format.'; }
+                else if (format === 'Andet' && otherFormatText.value.trim() === '') { validationPassed = false; errorMessage = 'Skriv venligst det ønskede format.'; }
             }
-            // Step 6 (Sources) has no mandatory validation
-            else if (stepNumber === 7) { // Validation for the LAST step before generating
+            else if (stepNumber === 7) {
                  const language = outputLanguageSelect.value;
-                 if (!language) {
-                      validationPassed = false;
-                      errorMessage = 'Vælg venligst et sprog.';
-                 }
+                 if (!language) { validationPassed = false; errorMessage = 'Vælg venligst et sprog.'; }
             }
 
 
-            // --- Proceed if validation passes ---
             if (validationPassed) {
-                if (stepNumber < totalSteps) {
-                    showStep(stepNumber + 1);
-                } else {
-                     // This is the final step (Step 7), so generate prompt
-                     generatePrompt();
-                }
+                if (stepNumber < totalSteps) { showStep(stepNumber + 1); }
+                else { generatePrompt(); }
             } else {
                  showError(stepNumber, errorMessage);
             }
@@ -1022,19 +1033,14 @@
         // --- Generate Prompt Function ---
 
         function generatePrompt() {
-             // Data collection is done here AFTER all steps are validated by nextStep(7)
-
             const userType = getRadioValue('userType');
             const otherUserTypeTextValue = otherUserTypeText.value.trim();
-
             let omMig = '';
             let mereOmMig = '';
 
             if (userType === 'lærer') {
                 const teacherYear = teacherYearSelect.value;
-                 const teacherSubject = teacherSubjectSelect.value === 'et fag, der ikke er på listen'
-                                            ? otherTeacherSubjectText.value.trim()
-                                            : teacherSubjectSelect.value;
+                 const teacherSubject = teacherSubjectSelect.value === 'et fag, der ikke er på listen' ? otherTeacherSubjectText.value.trim() : teacherSubjectSelect.value;
                  omMig = `lærer i ${teacherSubject} på ${teacherYear}`;
             } else if (userType === 'elev') {
                 const studentYear = studentYearSelect.value;
@@ -1051,33 +1057,13 @@
             const sources = chatbotSourcesTextarea.value.trim();
             const finalLanguage = outputLanguageSelect.value;
 
-
-            // Build the prompt string
             let prompt = `Jeg er ${omMig}`;
-
-            if (userType === 'andet' && mereOmMig) {
-                 prompt += ` ${mereOmRig}`; // Typo fixed: mereOmMig
-            } else if (userType !== 'andet' && omMig) {
-                 // Add period for teacher/student if not adding mereOmMig
-                 // The template "Jeg er [om mig] [mere om mig]." suggests the period comes after
-                 // the second part if it exists. Let's stick to that structure.
-                 // The period is added later in the prompt string construction.
-            }
-
-
+            if (userType === 'andet' && mereOmMig) { prompt += ` ${mereOmMig}`; }
             prompt += `. Du er ${role}, og du skal hjælpe mig med følgende opgave: ${task}. Du skal levere det i følgene format: ${format}.`;
-
-            if (sources) {
-                prompt += ` Til at løse opgaven skal du tage udgangspunkt i ${sources}.`;
-            }
-
+            if (sources) { prompt += ` Til at løse opgaven skal du tage udgangspunkt i ${sources}.`; }
             prompt += ` Skriv på ${finalLanguage}`;
 
-
-            // Display the prompt
             generatedPromptText.textContent = prompt;
-
-            // Show the output area
             showScreen('promptOutput');
         }
 
@@ -1094,35 +1080,18 @@
              }
          }
 
-        copyPromptBtn.addEventListener('click', () => {
-            copyTextToClipboard(generatedPromptText.textContent);
-        });
-
-        editPromptBtn.addEventListener('click', () => {
-            promptEditTextArea.value = generatedPromptText.textContent;
-            showScreen('promptEdit');
-        });
-
-        copyEditedPromptBtn.addEventListener('click', () => {
-            copyTextToClipboard(promptEditTextArea.value);
-        });
-
-         function saveEditedPrompt() {
-             generatedPromptText.textContent = promptEditTextArea.value;
-             showScreen('promptOutput');
-         }
+        copyPromptBtn.addEventListener('click', () => { copyTextToClipboard(generatedPromptText.textContent); });
+        editPromptBtn.addEventListener('click', () => { promptEditTextArea.value = generatedPromptText.textContent; showScreen('promptEdit'); });
+        copyEditedPromptBtn.addEventListener('click', () => { copyTextToClipboard(promptEditTextArea.value); });
+        function saveEditedPrompt() { generatedPromptText.textContent = promptEditTextArea.value; showScreen('promptOutput'); }
 
 
         // --- Local Storage (Prompt Library) ---
 
         function getPrompts() {
             const promptsString = localStorage.getItem(STORAGE_KEY);
-            try {
-                return promptsString ? JSON.parse(promptsString) : [];
-            } catch (e) {
-                console.error("Error parsing prompts from localStorage:", e);
-                return [];
-            }
+            try { return promptsString ? JSON.parse(promptsString) : []; }
+            catch (e) { console.error("Error parsing prompts from localStorage:", e); return []; }
         }
 
         function savePrompts(prompts) {
@@ -1131,34 +1100,22 @@
         }
 
         function addPrompt(promptText) {
-             if (!promptText || promptText.trim() === '') {
-                 alert('Kan ikke gemme en tom prompt.');
-                 return;
-             }
+             if (!promptText || promptText.trim() === '') { alert('Kan ikke gemme en tom prompt.'); return; }
              const prompts = getPrompts();
+             const trimmedText = promptText.trim();
+             const exists = prompts.some(p => p.text === trimmedText);
+             if (exists) { alert('Denne prompt findes allerede i dit bibliotek.'); return; }
 
-             // Check if a prompt with identical text already exists
-             const exists = prompts.some(p => p.text === promptText.trim()); // Compare trimmed text
-             if (exists) {
-                  alert('Denne prompt findes allerede i dit bibliotek.');
-                  return;
-             }
-
-             // Simple prompt name based on content or timestamp
-             // Could ask user for a name if needed, but keep it simple for now.
-             let promptName = promptText.trim().substring(0, 50); // Use start of prompt as name
-              if (promptText.trim().length > 50) promptName += '...';
-              if (promptName === '') promptName = 'Tom prompt'; // Should not happen due to check above, but safety.
-
+             let promptName = trimmedText.substring(0, 50);
+              if (trimmedText.length > 50) promptName += '...';
+              if (promptName === '') promptName = 'Tom prompt';
 
              const newPrompt = {
                  id: Date.now(),
                  name: promptName,
-                 text: promptText.trim(), // Save trimmed text
-                 savedAt: new Date().toLocaleString('da-DK') // Use Danish locale for date format
+                 text: trimmedText,
+                 savedAt: new Date().toLocaleString('da-DK')
              };
-
-
              prompts.push(newPrompt);
              savePrompts(prompts);
              alert('Prompt gemt i biblioteket!');
@@ -1169,10 +1126,9 @@
                   let prompts = getPrompts();
                   prompts = prompts.filter(prompt => prompt.id !== id);
                   savePrompts(prompts);
-                  loadAndDisplayPrompts(); // Refresh the displayed list
+                  loadAndDisplayPrompts();
               }
          }
-
 
          function loadAndDisplayPrompts() {
              const prompts = getPrompts();
@@ -1180,14 +1136,15 @@
 
              if (prompts.length === 0) {
                  noPromptsMessage.classList.remove('hidden');
+                  printLibraryBtn.disabled = true;
              } else {
                  noPromptsMessage.classList.add('hidden');
+                  printLibraryBtn.disabled = false;
                  prompts.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
 
                  prompts.forEach(prompt => {
                      const listItem = document.createElement('li');
-                      // Using data attribute with JSON.stringify for robust text handling
-                     listItem.innerHTML = `
+                      listItem.innerHTML = `
                          <strong>${prompt.name}</strong>
                          <div class="prompt-text-display">${prompt.text}</div>
                          <div class="prompt-actions">
@@ -1200,7 +1157,6 @@
 
                   promptList.querySelectorAll('.copy-library-prompt').forEach(button => {
                      button.addEventListener('click', (event) => {
-                         // Parse the text stored in the data attribute
                          const textToCopy = JSON.parse(event.target.dataset.promptText);
                          copyTextToClipboard(textToCopy);
                      });
@@ -1214,53 +1170,51 @@
              const count = prompts.length;
              libraryCountSpan.textContent = count;
              libraryCountLibrarySpan.textContent = count;
+         }
 
-              // Update button visibility on start screen (though we removed those buttons)
-              // If we re-add them, this count can update their labels.
+         // --- Print Functionality ---
+         function printPrompts() {
+              window.print();
          }
 
 
         // --- Initial Load and Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Initial screen setup
             showScreen('startScreen');
             updateLibraryCount();
 
             // Tab button listeners
-            tabNewPrompt.addEventListener('click', () => {
-                 // Reset form state when starting a new prompt?
-                 // A full form reset is complex with the step logic.
-                 // For now, just show step 1 and allow previous inputs to remain unless user changes them.
-                 currentStep = 1; // Ensure we start at step 1 visually
-                 showScreen('promptForm');
-                 showStep(1); // Explicitly show the first step of the form
-            });
-
-            tabMyLibrary.addEventListener('click', () => {
-                 showScreen('libraryScreen');
-            });
+            tabNewPrompt.addEventListener('click', () => { currentStep = 1; showScreen('promptForm'); showStep(1); });
+            tabMyLibrary.addEventListener('click', () => { showScreen('libraryScreen'); });
 
             // Add to Library Button on Output screen
             addToLibraryBtn.addEventListener('click', () => {
                  const promptText = generatedPromptText.textContent;
-                 if (promptText) {
-                     addPrompt(promptText);
-                 } else {
-                     alert('Der er ingen prompt at gemme endnu.');
-                 }
+                 if (promptText) { addPrompt(promptText); }
+                 else { alert('Der er ingen prompt at gemme endnu.'); }
             });
 
-            // --- Setup for showing/hiding conditional inputs initially and on changes ---
-            // This part is crucial when returning to a step or on initial load
-            userTypeRadios.forEach(radio => radio.addEventListener('change', () => showStep(currentStep))); // Re-evaluate step layout on relevant changes
+            // Print button listener
+            printLibraryBtn.addEventListener('click', printPrompts);
+
+            // Back to Index button listener
+            backToIndexBtn.addEventListener('click', () => {
+                window.location.href = 'index.html'; // Navigate to index.html
+            });
+
+
+            // Listeners for showing/hiding conditional inputs on page load/step change
+            userTypeRadios.forEach(radio => radio.addEventListener('change', () => showStep(currentStep)));
              teacherSubjectSelect.addEventListener('change', () => showStep(currentStep));
+             studentYearSelect.addEventListener('change', () => showStep(currentStep));
+             studentConfidenceRadios.forEach(radio => radio.addEventListener('change', () => showStep(currentStep)));
              chatbotRoleSelect.addEventListener('change', () => showStep(currentStep));
              chatbotTaskSelect.addEventListener('change', () => showStep(currentStep));
              chatbotFormatSelect.addEventListener('change', () => showStep(currentStep));
+             outputLanguageSelect.addEventListener('change', () => showStep(currentStep));
 
-             // Initial setup of 'Other' inputs based on default/saved state
-             // (Assuming no saved state on first load, defaults apply)
-             showStep(currentStep); // Call showStep once on load to setup initial step and conditional inputs
+             // Initial setup
+             showStep(currentStep);
 
         });
 
