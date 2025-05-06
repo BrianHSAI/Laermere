@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            /* Definér farver som CSS variabler for nemmere justering */
-            --primary-color: #007bff; /* En klar blå */
-            --secondary-color: #28a745; /* En grøn */
-            --accent-color: #17a2b8; /* En turkis/teal */
-            --background-color: #f8f9fa; /* Meget lys grå baggrund */
-            --light-grey: #e9ecef; /* Lys grå */
-            --medium-grey: #ced4da; /* Medium grå */
-            --dark-grey: #343a40; /* Mørk grå tekst */
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --accent-color: #17a2b8;
+            --background-color: #f8f9fa;
+            --light-grey: #e9ecef;
+            --medium-grey: #ced4da;
+            --dark-grey: #343a40;
             --white: #ffffff;
             --box-shadow-light: 0 2px 5px rgba(0, 0, 0, 0.08);
             --box-shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.08);
@@ -27,7 +26,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--dark-grey); /* Standard tekstfarve */
+            color: var(--dark-grey);
         }
 
         body {
@@ -38,7 +37,7 @@
         }
 
         .container {
-            max-width: 1600px; /* Øget maksimal bredde for at gøre plads til ny sidebar */
+            max-width: 1600px;
             width: 98%;
             margin: 0 auto;
             padding: 20px;
@@ -49,12 +48,12 @@
         }
 
         header {
-            background-color: #e0f7fa; /* Meget lys turkis baggrund */
+            background-color: #e0f7fa;
             color: var(--dark-grey);
             padding: 25px 0;
             text-align: center;
             box-shadow: var(--box-shadow-medium);
-            flex-shrink: 0; /* Header skal ikke skrumpe */
+            flex-shrink: 0;
         }
 
         h1 {
@@ -62,7 +61,6 @@
             color: #004d40;
         }
 
-        /* Startskærm */
         #start-screen {
             display: flex;
             flex-direction: column;
@@ -129,13 +127,11 @@
         }
 
         #start-button:active {
-             transform: translateY(0);
+            transform: translateY(0);
         }
 
-
-        /* Editor skærm */
         #editor-screen {
-            display: none; /* Skjult som standard */
+            display: none;
             height: 100%;
             padding: 0;
             flex-direction: column;
@@ -152,7 +148,6 @@
             padding: 20px;
         }
 
-        /* Venstre Sidepanel (Importeret tekst) */
         .sidebar {
             width: 350px;
             flex-shrink: 0;
@@ -164,9 +159,9 @@
             flex-direction: column;
             overflow: hidden;
             border: 1px solid var(--medium-grey);
-             margin-left: -5px;
-             margin-top: -5px;
-             margin-bottom: -5px;
+            margin-left: -5px;
+            margin-top: -5px;
+            margin-bottom: -5px;
         }
 
         .sidebar.collapsed {
@@ -188,9 +183,9 @@
             flex-shrink: 0;
         }
 
-         .sidebar.collapsed .sidebar-header {
+        .sidebar.collapsed .sidebar-header {
             justify-content: center;
-         }
+        }
 
         .sidebar-header span {
             font-weight: bold;
@@ -205,7 +200,7 @@
             width: 0;
         }
 
-        .toggle-sidebar { /* Bruges af både venstre og højre sidebar */
+        .toggle-sidebar {
             background: none;
             color: var(--primary-color);
             border: none;
@@ -226,21 +221,21 @@
             background-color: rgba(0, 123, 255, 0.1);
         }
 
-        .sidebar-content { /* Bruges af både venstre og højre sidebar indhold */
+        .sidebar-content {
             padding: 15px;
             flex-grow: 1;
             overflow-y: auto;
             color: var(--dark-grey);
-             opacity: 1;
-             transition: opacity 0.2s ease 0.1s;
-             pointer-events: auto;
+            opacity: 1;
+            transition: opacity 0.2s ease 0.1s;
+            pointer-events: auto;
         }
 
         .sidebar.collapsed .sidebar-content,
-        #saved-projects-sidebar.collapsed .sidebar-content { /* Skjul indhold når kollapset */
-             opacity: 0;
-             pointer-events: none;
-             transition: opacity 0.1s ease;
+        #saved-projects-sidebar.collapsed .sidebar-content {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s ease;
         }
 
         .imported-text {
@@ -251,14 +246,13 @@
             cursor: pointer;
         }
 
-        /* Hovedredigeringsfelt */
         .editor-main {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             gap: 15px;
             min-width: 0;
-             padding: 5px;
+            padding: 5px;
         }
 
         .toolbar {
@@ -276,32 +270,32 @@
 
         .toolbar button,
         .toolbar select {
-             padding: 8px 12px;
-             background-color: var(--white);
-             color: var(--dark-grey);
-             border: 1px solid var(--medium-grey);
-             border-radius: 4px;
-             cursor: pointer;
-             font-size: 15px;
-             transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+            padding: 8px 12px;
+            background-color: var(--white);
+            color: var(--dark-grey);
+            border: 1px solid var(--medium-grey);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
         }
 
         .toolbar button:hover,
         .toolbar select:hover {
             background-color: var(--light-grey);
-             border-color: var(--medium-grey);
-             transform: translateY(-1px);
+            border-color: var(--medium-grey);
+            transform: translateY(-1px);
         }
-         .toolbar button:active,
-         .toolbar select:active {
-             background-color: var(--medium-grey);
-             transform: translateY(0);
-         }
+
+        .toolbar button:active,
+        .toolbar select:active {
+            background-color: var(--medium-grey);
+            transform: translateY(0);
+        }
 
         .toolbar select {
-             min-width: 140px;
+            min-width: 140px;
         }
-
 
         .content-editor {
             flex-grow: 1;
@@ -323,105 +317,114 @@
             cursor: text;
         }
 
-         /* Justering til elementer i editor */
-         #editor p, #editor div, #editor h1, #editor h2, #editor h3, #editor h4, #editor h5, #editor h6, #editor ul, #editor ol, #editor blockquote {
-             margin-bottom: 1em;
-         }
-         #editor p:last-child, #editor div:last-child, #editor h1:last-child, #editor h2:last-child, #editor h3:last-child, #editor h4:last-child, #editor h5:last-child, #editor h6:last-child, #editor ul:last-child, #editor ol:last-child, #editor blockquote:last-child {
-             margin-bottom: 0;
-         }
+        #editor p, #editor div, #editor h1, #editor h2, #editor h3, #editor h4, #editor h5, #editor h6, #editor ul, #editor ol, #editor blockquote {
+            margin-bottom: 1em;
+        }
 
-        /* Container til tællere */
+        #editor p:last-child, #editor div:last-child, #editor h1:last-child, #editor h2:last-child, #editor h3:last-child, #editor h4:last-child, #editor h5:last-child, #editor h6:last-child, #editor ul:last-child, #editor ol:last-child, #editor blockquote:last-child {
+            margin-bottom: 0;
+        }
+
+        #editor ul, #editor ol {
+            padding-left: 20px;
+        }
+
+        #editor ul li, #editor ol li {
+            margin-bottom: 0.5em;
+        }
+
         .count-container {
-             display: flex;
-             justify-content: flex-end;
-             gap: 15px;
-             font-size: 14px;
-             color: #555;
-             margin-top: 10px;
-             padding: 0 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            padding: 0 10px;
         }
 
         #word-count,
         #char-count {
-            /* Grundstil er i count-container */
         }
 
-
-        .actions { /* Bruges for både hoved-actions og for gemte projekter knapper */
+        .actions {
             display: flex;
             justify-content: flex-end;
             gap: 15px;
             margin-top: 20px;
             flex-shrink: 0;
-             padding: 0 15px 15px 15px; /* Tilføjet padding for bund-actions i sidebar */
+            padding: 0 15px 15px 15px;
         }
 
-        /* Stil til Gem/Tilbage/Download knapper */
         .action-button,
         .back-button,
         .save-button,
         .export-button {
-             padding: 12px 25px;
-             border: none;
-             border-radius: 5px;
-             cursor: pointer;
-             font-size: 16px;
-             transition: background-color 0.3s ease, transform 0.1s ease;
-             box-shadow: var(--box-shadow-light);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: var(--box-shadow-light);
         }
 
         .back-button {
-             background-color: var(--medium-grey);
-             color: var(--dark-grey);
+            background-color: var(--medium-grey);
+            color: var(--dark-grey);
         }
-         .back-button:hover {
-             background-color: #b9c2cb;
-             transform: translateY(-1px);
-         }
-         .back-button:active {
-             transform: translateY(0);
-         }
+
+        .back-button:hover {
+            background-color: #b9c2cb;
+            transform: translateY(-1px);
+        }
+
+        .back-button:active {
+            transform: translateY(0);
+        }
 
         .save-button {
-             background-color: var(--primary-color);
-             color: var(--white);
-        }
-         .save-button:hover {
-             background-color: #0056b3;
-             transform: translateY(-1px);
-         }
-         .save-button:active {
-             transform: translateY(0);
+            background-color: var(--primary-color);
+            color: var(--white);
         }
 
+        .save-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .save-button:active {
+            transform: translateY(0);
+        }
 
         .action-button {
             background-color: var(--secondary-color);
             color: var(--white);
         }
+
         .action-button:hover {
             background-color: #218838;
             transform: translateY(-1px);
         }
-         .action-button:active {
-             transform: translateY(0);
-         }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
 
         .export-button {
             background-color: var(--accent-color);
             color: var(--white);
         }
-         .export-button:hover {
-             background-color: #138496;
-             transform: translateY(-1px);
-         }
-         .export-button:active {
-             transform: translateY(0);
-         }
 
+        .export-button:hover {
+            background-color: #138496;
+            transform: translateY(-1px);
+        }
 
-        /* Højre Sidepanel (Gemte projekter) */
+        .export-button:active {
+            transform: translateY(0);
+        }
+
         #saved-projects-sidebar {
             width: 300px;
             flex-shrink: 0;
@@ -433,16 +436,15 @@
             flex-direction: column;
             overflow: hidden;
             border: 1px solid var(--medium-grey);
-             margin-right: -5px;
-             margin-top: -5px;
-             margin-bottom: -5px;
+            margin-right: -5px;
+            margin-top: -5px;
+            margin-bottom: -5px;
         }
 
         #saved-projects-sidebar.collapsed {
-             width: 70px;
-             flex-shrink: 0;
+            width: 70px;
+            flex-shrink: 0;
         }
-
 
         .saved-projects-header {
             padding: 15px;
@@ -453,116 +455,114 @@
             font-weight: bold;
             color: var(--dark-grey);
             flex-shrink: 0;
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-         #saved-projects-sidebar.collapsed .saved-projects-header {
-             justify-content: center;
-         }
+        #saved-projects-sidebar.collapsed .saved-projects-header {
+            justify-content: center;
+        }
 
-         .saved-projects-header span {
-             transition: opacity 0.1s ease;
-             display: block;
-         }
+        .saved-projects-header span {
+            transition: opacity 0.1s ease;
+            display: block;
+        }
 
-         #saved-projects-sidebar.collapsed .saved-projects-header span {
-             opacity: 0;
-             pointer-events: none;
-             width: 0;
-         }
-
+        #saved-projects-sidebar.collapsed .saved-projects-header span {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+        }
 
         .saved-projects-list {
             flex-grow: 1;
             overflow-y: auto;
             padding: 10px 15px;
             list-style: none;
-             opacity: 1;
-             transition: opacity 0.2s ease 0.1s;
-             pointer-events: auto;
+            opacity: 1;
+            transition: opacity 0.2s ease 0.1s;
+            pointer-events: auto;
         }
-         #saved-projects-sidebar.collapsed .saved-projects-list {
-              opacity: 0;
-              pointer-events: none;
-              transition: opacity 0.1s ease;
-         }
 
-         /* TYDELIGERE HOVER EFFEKT PÅ LISTE ELEMENTER */
-         .saved-projects-list li {
-             padding: 10px;
-             border-bottom: 1px solid var(--light-grey);
-             cursor: pointer;
-             transition: background-color 0.2s ease, border-left-color 0.2s ease; /* Tilføjet border-left-color til transition */
-             font-size: 15px;
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             border-left: 4px solid transparent; /* Start med transparent kant */
-         }
+        #saved-projects-sidebar.collapsed .saved-projects-list {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s ease;
+        }
+
+        .saved-projects-list li {
+            padding: 10px;
+            border-bottom: 1px solid var(--light-grey);
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-left-color 0.2s ease;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+
+        .saved-projects-list li .saved-project-name {
+            cursor: pointer;
+        }
 
         .saved-projects-list li:last-child {
-             border-bottom: none;
+            border-bottom: none;
         }
 
         .saved-projects-list li:hover {
-             background-color: #d0d0d0; /* Lidt mørkere grå end før */
-             border-left-color: var(--primary-color); /* Blå kant ved hover */
+            background-color: #d0d0d0;
+            border-left-color: var(--primary-color);
         }
 
-
         .delete-project-button {
-             background: none;
-             border: none;
-             color: #dc3545;
-             cursor: pointer;
-             font-size: 14px;
-             transition: color 0.2s ease;
-             padding: 5px;
-             line-height: 1;
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.2s ease;
+            padding: 5px;
+            line-height: 1;
         }
 
         .delete-project-button:hover {
-             color: #c82333;
+            color: #c82333;
         }
 
-        /* Midlertidig div til PDF-generering */
         #pdf-export-temp-div {
-             position: absolute !important;
-             left: -9999px !important;
-             top: -9999px !important;
-             width: 210mm;
-             padding: 15mm;
-             background-color: white;
+            position: absolute !important;
+            left: -9999px !important;
+            top: -9999px !important;
+            width: 210mm;
+            padding: 15mm;
+            background-color: white;
         }
 
-         #pdf-export-temp-div h3 {
-             margin-top: 20px;
-             margin-bottom: 10px;
-             color: #004d40;
-         }
+        #pdf-export-temp-div h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #004d40;
+        }
 
-         #pdf-export-temp-div .exported-project-content {
-             border: 1px solid #ddd;
-             padding: 15px;
-             margin-bottom: 20px;
-             border-radius: 5px;
-         }
+        #pdf-export-temp-div .exported-project-content {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
 
-         #pdf-export-temp-div .imported-text-export {
-             font-style: italic;
-             color: #555;
-             margin-bottom: 15px;
-             padding-bottom: 15px;
-             border-bottom: 1px dashed #ccc;
-         }
+        .imported-text-export {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
 
-         #pdf-export-temp-div .edited-text-export {
-             /* Standard stil fra editor Div vil gælde her */
-             margin-bottom: 15px; /* Tilføj lidt mellemrum, da den nu kommer først */
-         }
-
+        #pdf-export-temp-div .edited-text-export {
+        }
 
     </style>
 </head>
@@ -609,7 +609,7 @@
                             <option value="'Courier New', monospace">Courier New</option>
                             <option value="Verdana, sans-serif">Verdana</option>
                             <option value="Tahoma, sans-serif">Tahoma</option>
-                             <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" selected>Segoe UI</option>
+                            <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" selected>Segoe UI</option>
                         </select>
 
                         <select id="font-size" title="Skriftstørrelse">
@@ -629,17 +629,20 @@
                         <button id="align-left" title="Venstrejusteret"><i class="fas fa-align-left"></i></button>
                         <button id="align-center" title="Centreret"><i class="fas fa-align-center"></i></button>
                         <button id="align-right" title="Højrejusteret"><i class="fas fa-align-right"></i></button>
+
+                        <button id="unordered-button" title="Punktopstilling"><i class="fas fa-list-ul"></i></button>
+                        <button id="ordered-button" title="Nummereret liste"><i class="fas fa-list-ol"></i></button>
+
                     </div>
 
                     <div class="content-editor">
                         <div id="editor" contenteditable="true"></div>
                     </div>
 
-                     <div class="count-container">
+                    <div class="count-container">
                         <div id="word-count">Ord: 0</div>
                         <div id="char-count">Tegn: 0</div>
                     </div>
-
 
                     <div class="actions">
                         <button id="back-button" class="back-button">Tilbage</button>
@@ -650,30 +653,25 @@
 
                 <div id="saved-projects-sidebar" class="saved-projects-sidebar">
                     <div class="saved-projects-header">
-                         <span>Gemte projekter</span>
-                         <button id="toggle-right-sidebar" class="toggle-sidebar" title="Fold sidepanel ind/ud"><i class="fas fa-chevron-right"></i></button>
+                        <span>Gemte projekter</span>
+                        <button id="toggle-right-sidebar" class="toggle-sidebar" title="Fold sidepanel ind/ud"><i class="fas fa-chevron-right"></i></button>
                     </div>
                     <div class="sidebar-content">
                         <ul id="saved-projects-list">
-                            </ul>
-                         <div class="actions" style="justify-content: center; padding: 15px; margin-top: 0;">
-                             <button id="export-all-button" class="export-button">Udskriv alle projekter</button>
-                         </div>
+                        </ul>
+                        <div class="actions" style="justify-content: center; padding: 15px; margin-top: 0;">
+                            <button id="export-all-button" class="export-button">Udskriv alle projekter</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-     <div id="pdf-export-temp-div" style="display: none;"></div>
-
+    <div id="pdf-export-temp-div" style="display: none;"></div>
 
     <script>
-        // Al kode inde i denne listener vil køre, når hele DOM'en er indlæst og parset
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("[Debug] DOMContentLoaded fired. Script execution started.");
-
-            // Variabler og DOM-elementer
             const startScreen = document.getElementById('start-screen');
             const editorScreen = document.getElementById('editor-screen');
             const initialTextArea = document.getElementById('initial-text');
@@ -692,16 +690,9 @@
             const exportAllButton = document.getElementById('export-all-button');
             const pdfExportTempDiv = document.getElementById('pdf-export-temp-div');
 
-            // Højre sidebar elementer
             const rightSidebar = document.getElementById('saved-projects-sidebar');
             const toggleRightSidebarButton = document.getElementById('toggle-right-sidebar');
 
-
-            console.log("[Debug] All main elements referenced.");
-            console.log("[Debug] startButton element reference:", startButton);
-
-
-            // Formattering knapper
             const fontFamilySelect = document.getElementById('font-family');
             const fontSizeSelect = document.getElementById('font-size');
             const boldButton = document.getElementById('bold-button');
@@ -710,66 +701,54 @@
             const alignLeftButton = document.getElementById('align-left');
             const alignCenterButton = document.getElementById('align-center');
             const alignRightButton = document.getElementById('align-right');
+            const unorderedButton = document.getElementById('unordered-button');
+            const orderedButton = document.getElementById('ordered-button');
 
-            console.log("[Debug] Formatting buttons referenced.");
-
-            // localStorage nøgle
             const STORAGE_KEY = 'nextwordpl_projects';
+            let currentLoadedProjectId = null;
 
-            // --- localStorage Funktioner ---
             function getProjectsFromStorage() {
-                try {
-                    const projectsJson = localStorage.getItem(STORAGE_KEY);
-                    return projectsJson ? JSON.parse(projectsJson) : [];
-                } catch (e) {
-                    console.error("[Debug] Fejl ved læsning fra localStorage:", e);
-                    return [];
-                }
+                const projectsJson = localStorage.getItem(STORAGE_KEY);
+                return projectsJson ? JSON.parse(projectsJson) : [];
             }
 
             function saveProjectsToStorage(projects) {
-                try {
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
-                     console.log("[Debug] Projekter gemt til localStorage.");
-                } catch (e) {
-                    console.error("[Debug] Fejl ved skrivning til localStorage:", e);
-                    alert("Kunne ikke gemme projekt. Local storage er muligvis fuld eller utilgængelig.");
-                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+            }
+
+            function isProjectNameTaken(name, excludeId = null) {
+                const projects = getProjectsFromStorage();
+                return projects.some(project =>
+                    project.name.trim().toLowerCase() === name.trim().toLowerCase() && project.id !== excludeId
+                );
             }
 
             function renderProjectList() {
-                console.log("[Debug] renderProjectList kaldt.");
                 const projects = getProjectsFromStorage();
-                savedProjectsList.innerHTML = ''; // Ryd den nuværende liste
+                savedProjectsList.innerHTML = '';
 
                 if (projects.length === 0) {
-                     const li = document.createElement('li');
-                     li.textContent = 'Ingen gemte projekter';
-                     li.style.fontStyle = 'italic';
-                     li.style.color = '#888';
-                     li.style.cursor = 'default';
-                     li.style.justifyContent = 'center';
-                     li.style.borderBottom = 'none';
-                     // Fjern hover-effekt for "ingen projekter" element
-                     li.style.backgroundColor = 'transparent';
-                     li.style.borderLeft = 'none';
-
-                     savedProjectsList.appendChild(li);
-                     exportAllButton.disabled = true;
-                     exportAllButton.style.opacity = 0.5;
-                     exportAllButton.style.cursor = 'not-allowed';
-                     console.log("[Debug] Ingen gemte projekter fundet.");
-                     return;
+                    const li = document.createElement('li');
+                    li.textContent = 'Ingen gemte projekter';
+                    li.style.fontStyle = 'italic';
+                    li.style.color = '#888';
+                    li.style.cursor = 'default';
+                    li.style.justifyContent = 'center';
+                    li.style.borderBottom = 'none';
+                    li.style.backgroundColor = 'transparent';
+                    li.style.borderLeft = 'none';
+                    savedProjectsList.appendChild(li);
+                    exportAllButton.disabled = true;
+                    exportAllButton.style.opacity = 0.5;
+                    exportAllButton.style.cursor = 'not-allowed';
+                    return;
                 }
 
                 exportAllButton.disabled = false;
-                 exportAllButton.style.opacity = 1;
-                 exportAllButton.style.cursor = 'pointer';
+                exportAllButton.style.opacity = 1;
+                exportAllButton.style.cursor = 'pointer';
 
-                // Sorter projekter efter timestamp (nyeste først)
                 projects.sort((a, b) => b.timestamp - a.timestamp);
-
-                console.log(`[Debug] Rendering ${projects.length} projekter.`);
 
                 projects.forEach(project => {
                     const li = document.createElement('li');
@@ -780,43 +759,86 @@
 
                     const deleteButton = document.createElement('button');
                     deleteButton.classList.add('delete-project-button');
-                    deleteButton.innerHTML = '<i class="fas fa-times"></i>';
+                    deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
                     deleteButton.title = 'Slet projekt';
                     deleteButton.addEventListener('click', function(event) {
                         event.stopPropagation();
-                        console.log(`[Debug] Slet knap klikket for projekt ID: ${project.id}`);
                         deleteProject(project.id);
                     });
-                     li.appendChild(deleteButton);
+                    li.appendChild(deleteButton);
 
+                    if (currentLoadedProjectId !== null && currentLoadedProjectId === project.id) {
+                        li.style.fontWeight = 'bold';
+                        li.style.backgroundColor = '#e9e9e9';
+                        li.title = 'Dette projekt er indlæst';
+                    }
 
                     li.addEventListener('click', function() {
-                         console.log(`[Debug] Projekt liste element klikket for ID: ${project.id}`);
                         loadProject(project.id);
                     });
 
                     savedProjectsList.appendChild(li);
                 });
-                 console.log("[Debug] Projekt liste rendering færdig.");
             }
 
             function saveCurrentProject() {
-                console.log("[Debug] Gem projekt knap klikket.");
-                const projectName = prompt("Indtast et navn for dit projekt:");
-                if (!projectName || projectName.trim() === "") {
-                    alert("Projektet blev ikke gemt. Navn påkrævet.");
-                     console.log("[Debug] Gem afbrudt: Navn ikke indtastet.");
-                    return;
+                const currentEditedText = editorDiv.innerHTML;
+                const currentImportedText = importedTextDiv.textContent;
+
+                if (currentLoadedProjectId !== null) {
+                    const projects = getProjectsFromStorage();
+                    const projectToOverwrite = projects.find(project => project.id === currentLoadedProjectId);
+
+                    if (projectToOverwrite) {
+                        const confirmOverwrite = confirm(`Projektet "${projectToOverwrite.name}" er allerede indlæst.\n\nVil du overskrive den eksisterende version med dine nuværende ændringer?\n\nTryk OK for at overskrive.\nTryk Annuller for at gemme som et nyt projekt.`);
+
+                        if (confirmOverwrite) {
+                            projectToOverwrite.editedText = currentEditedText;
+                            projectToOverwrite.importedText = currentImportedText;
+                            saveProjectsToStorage(projects);
+                            renderProjectList();
+                            alert(`Projekt "${projectToOverwrite.name}" er blevet overskrevet.`);
+                        } else {
+                            promptAndSaveNewProject();
+                        }
+                    } else {
+                        promptAndSaveNewProject();
+                    }
+                } else {
+                    promptAndSaveNewProject();
+                }
+            }
+
+            function promptAndSaveNewProject() {
+                let projectName = '';
+                let nameIsValid = false;
+
+                while (!nameIsValid) {
+                    projectName = prompt("Indtast et navn for dit nye projekt:");
+
+                    if (projectName === null) {
+                        return;
+                    }
+
+                    projectName = projectName.trim();
+
+                    if (projectName === "") {
+                        alert("Navn påkrævet for at gemme projektet.");
+                    } else if (isProjectNameTaken(projectName)) {
+                        alert(`Et projekt med navnet "${projectName}" eksisterer allerede.\nVælg venligst et andet navn.`);
+                    } else {
+                        nameIsValid = true;
+                    }
                 }
 
                 const projects = getProjectsFromStorage();
-                const timestamp = Date.now(); // Unik ID baseret på tid
+                const timestamp = Date.now();
 
                 const newProject = {
                     id: timestamp,
-                    name: projectName.trim(),
+                    name: projectName,
                     importedText: importedTextDiv.textContent,
-                    editedText: editorDiv.innerHTML, // Gem det redigerede HTML indhold
+                    editedText: editorDiv.innerHTML,
                     timestamp: timestamp
                 };
 
@@ -824,200 +846,163 @@
                 saveProjectsToStorage(projects);
                 renderProjectList();
 
-                alert(`Projekt "${newProject.name}" gemt!`);
-                 console.log(`[Debug] Projekt "${newProject.name}" gemt med ID: ${newProject.id}`);
+                alert(`Nyt projekt "${newProject.name}" gemt!`);
+
+                currentLoadedProjectId = newProject.id;
+                renderProjectList();
             }
 
             function loadProject(id) {
-                console.log(`[Debug] loadProject kaldt for ID: ${id}`);
                 const projects = getProjectsFromStorage();
                 const projectToLoad = projects.find(project => project.id === id);
 
                 if (projectToLoad) {
-                    console.log(`[Debug] Projekt fundet: "${projectToLoad.name}". Tjekker for ulagrede ændringer.`);
-                    // Tjek om der er ulagrede ændringer (simpelt tjek baseret på om editoren har indhold)
-                     const currentEditedText = editorDiv.innerHTML.trim();
-                     const currentImportedText = importedTextDiv.textContent.trim();
+                    const currentEditedText = editorDiv.innerHTML.trim();
+                    const currentImportedText = importedTextDiv.textContent.trim();
 
-                     if (currentEditedText !== '' || currentImportedText !== '') {
-                          const confirmLoad = confirm("Du har ulagrede ændringer i den aktuelle session. Vil du indlæse projektet alligevel? Dine nuværende ændringer vil gå tabt.");
-                          if (!confirmLoad) {
-                               console.log("[Debug] Indlæsning afbrudt af bruger.");
-                               return;
-                          }
-                          console.log("[Debug] Bruger bekræftede indlæsning trods ulagrede ændringer.");
-                     }
+                    const isCurrentEditorNotEmpty = (currentEditedText !== '' || currentImportedText !== '');
+                    const isLoadingSameProject = (currentLoadedProjectId === id);
+
+                    if (isCurrentEditorNotEmpty && !isLoadingSameProject) {
+                        const confirmLoad = confirm("Du har ulagrede ændringer i den aktuelle session. Vil du indlæse projektet alligevel? Dine nuværende ændringer vil gå tabt.");
+                        if (!confirmLoad) {
+                            return;
+                        }
+                    } else if (isCurrentEditorNotEmpty && isLoadingSameProject) {
+                        if (currentEditedText !== projectToLoad.editedText.trim() || currentImportedText !== projectToLoad.importedText.trim()) {
+                            const confirmRevert = confirm(`Du har ulagrede ændringer til projektet "${projectToLoad.name}".\n\nVil du forkaste dine ændringer og genindlæse den senest gemte version?`);
+                            if (!confirmRevert) {
+                                return;
+                            }
+                        } else {
+                            currentLoadedProjectId = projectToLoad.id;
+                            renderProjectList();
+                            return;
+                        }
+                    }
 
                     importedTextDiv.textContent = projectToLoad.importedText;
                     editorDiv.innerHTML = projectToLoad.editedText;
 
-                    // Opdater tællere efter indlæsning
                     updateTextStats();
-                    console.log("[Debug] Tællere opdateret efter indlæsning.");
 
-                    // Fjernet alert("Projekt indlæst!") herfra
-                    console.log(`[Debug] Projekt "${projectToLoad.name}" indlæst uden alert.`);
+                    currentLoadedProjectId = projectToLoad.id;
+                    renderProjectList();
                 } else {
                     alert("Projektet blev ikke fundet.");
-                     console.warn(`[Debug] Projekt med ID ${id} blev ikke fundet under indlæsning.`);
                 }
             }
 
             function deleteProject(id) {
-                 console.log(`[Debug] deleteProject kaldt for ID: ${id}`);
-                 const confirmDelete = confirm("Er du sikker på, at du vil slette dette projekt?");
-                 if (!confirmDelete) {
-                      console.log("[Debug] Sletning afbrudt af bruger.");
-                      return;
-                 }
+                const confirmDelete = confirm("Er du sikker på, at du vil slette dette projekt?");
+                if (!confirmDelete) {
+                    return;
+                }
 
                 let projects = getProjectsFromStorage();
-                const projectToDelete = projects.find(project => project.id === id); // Find projektet FØR filtrering for indholdstjek
+                const projectToDelete = projects.find(project => project.id === id);
                 projects = projects.filter(project => project.id !== id);
                 saveProjectsToStorage(projects);
+
+                if (currentLoadedProjectId !== null && currentLoadedProjectId === id) {
+                    editorDiv.innerHTML = '';
+                    importedTextDiv.textContent = '';
+                    updateTextStats();
+                    currentLoadedProjectId = null;
+                    alert(`Projekt "${projectToDelete ? projectToDelete.name : 'Ukendt projekt'}" slettet. Redigeringsfeltet er ryddet.`);
+                } else if (projectToDelete) {
+                    alert(`Projekt "${projectToDelete.name}" slettet.`);
+                } else {
+                    alert("Projekt slettet (det indlæste projekt var ikke dette).");
+                }
+
                 renderProjectList();
-
-                 // Tjek om det slettede projekt var det, der lige nu er indlæst, og ryd i så fald editoren
-                 const currentEditedText = editorDiv.innerHTML.trim();
-                 const currentImportedText = importedTextDiv.textContent.trim();
-
-                 if (projectToDelete && currentEditedText === projectToDelete.editedText.trim() && currentImportedText === projectToDelete.importedText.trim()) {
-                      editorDiv.innerHTML = ''; // Ryd editor
-                      importedTextDiv.textContent = ''; // Ryd imported text
-                      updateTextStats(); // Opdater tællere
-                      alert("Projekt slettet. Redigeringsfeltet er ryddet.");
-                      console.log(`[Debug] Projekt ID ${id} slettet, redigeringsfelt ryddet.`);
-                 } else {
-                     alert("Projekt slettet.");
-                     console.log(`[Debug] Projekt ID ${id} slettet.`);
-                 }
             }
 
             function exportAllProjects() {
-                 console.log("[Debug] Udskriv alle knap klikket.");
-                 const projects = getProjectsFromStorage();
+                const projects = getProjectsFromStorage();
 
-                 if (projects.length === 0) {
-                     alert("Der er ingen projekter at udskrive.");
-                      console.log("[Debug] Export afbrudt: Ingen projekter fundet.");
-                     return;
-                 }
+                if (projects.length === 0) {
+                    alert("Der er ingen projekter at udskrive.");
+                    return;
+                }
 
-                 // Byg HTML til PDF-eksport
-                 let combinedHtml = '<h1>Samlet Rapport - NextWordPL Projekter</h1>';
-                 combinedHtml += `<p>Genereret: ${new Date().toLocaleDateString('da-DK')} ${new Date().toLocaleTimeString('da-DK')}</p><hr>`;
+                let combinedHtml = '<h1>Samlet Rapport - NextWordPL Projekter</h1>';
+                combinedHtml += `<p>Genereret: ${new Date().toLocaleDateString('da-DK')} ${new Date().toLocaleTimeString('da-DK')}</p><hr>`;
 
+                projects.forEach(project => {
+                    combinedHtml += `<h3>${project.name || 'Projekt uden navn'}</h3>`;
+                    combinedHtml += `<div class="exported-project-content">`;
 
-                 projects.forEach(project => {
-                     combinedHtml += `<h3>${project.name || 'Projekt uden navn'}</h3>`;
-                     combinedHtml += `<div class="exported-project-content">`;
+                    if (project.editedText && project.editedText.trim() !== '') {
+                        combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>${project.editedText}</div>`;
+                    } else {
+                        combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>Ingen</div>`;
+                    }
 
-                     // --- OPPDATERET RÆKKEFØLGE HER: Redigeret tekst FØRST ---
-                     // 1. Tilføj redigeret tekst
-                     if (project.editedText && project.editedText.trim() !== '') {
-                         combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>${project.editedText}</div>`;
-                     } else {
-                          combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>Ingen</div>`;
-                     }
+                    combinedHtml += `</div><hr>`;
+                });
 
-                     // 2. Tilføj importeret tekst
-                     if (project.importedText && project.importedText.trim() !== '') {
-                          // Sørg for at HTML-tags i importedText ikke fortolkes i den midlertidige div
-                          const safeImportedText = project.importedText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                          combinedHtml += `<div class="imported-text-export"><strong>Importeret tekst:</strong><br>${safeImportedText.replace(/\n/g, '<br>')}</div>`;
-                     } else {
-                          combinedHtml += `<div class="imported-text-export"><strong>Importeret tekst:</strong><br>Ingen</div>`;
-                     }
-                     // ---------------------------------------------------------
+                pdfExportTempDiv.innerHTML = combinedHtml;
+                pdfExportTempDiv.style.width = '210mm';
+                pdfExportTempDiv.style.padding = '15mm';
+                pdfExportTempDiv.style.display = 'block';
 
+                html2canvas(pdfExportTempDiv, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
 
-                     combinedHtml += `</div><hr>`;
-                 });
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+                    const margin = 15;
 
-                 pdfExportTempDiv.innerHTML = combinedHtml;
-                 // Sæt dimensioner for at sikre korrekt rendering til html2canvas
-                 pdfExportTempDiv.style.width = '210mm'; // Standard A4 bredde
-                 pdfExportTempDiv.style.padding = '15mm'; // Match PDF margener
-                 pdfExportTempDiv.style.display = 'block'; // Gør midlertidigt synlig
+                    let imgWidth = pdfWidth - (2 * margin);
+                    let imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-                 console.log("[Debug] Byggede HTML for eksport, kalder html2canvas...");
+                    const imgHeightPage = pdfHeight - (2 * margin);
+                    let heightLeft = imgHeight;
+                    let position = margin;
 
-                 // Brug html2canvas til at fange indholdet af den midlertidige div
-                 html2canvas(pdfExportTempDiv, {
-                     scale: 2, // Højere skala for bedre opløsning
-                     useCORS: true,
-                     logging: false
-                 }).then(canvas => {
-                     console.log("[Debug] html2canvas færdig, genererer PDF.");
-                     const imgData = canvas.toDataURL('image/png');
-                     const { jsPDF } = window.jspdf;
-                     const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgX = margin;
 
-                     const pdfWidth = pdf.internal.pageSize.getWidth();
-                     const pdfHeight = pdf.internal.pageSize.getHeight();
-                     const margin = 15;
+                    while (heightLeft > 0) {
+                        if (position !== margin) {
+                            pdf.addPage();
+                        }
 
-                     let imgWidth = pdfWidth - (2 * margin);
-                     let imgHeight = (canvas.height * imgWidth) / canvas.width;
+                        const sliceHeightPx = Math.min(heightLeft / imgHeight * canvas.height, canvas.height);
+                        const sliceYPx = (imgHeight - heightLeft) / imgHeight * canvas.height;
 
-                     const imgHeightPage = pdfHeight - (2 * margin);
-                     let heightLeft = imgHeight;
-                     let position = margin;
+                        const imgData = canvas.toDataURL('image/png');
+                        pdf.addImage(imgData, 'PNG', imgX, position, imgWidth, imgHeight, null, null, sliceYPx, sliceHeightPx);
 
-                     const imgX = margin;
+                        heightLeft -= imgHeightPage;
+                        position = margin;
+                    }
 
-                     console.log(`[Debug] Original image height: ${imgHeight}mm, PDF page height: ${imgHeightPage}mm.`);
+                    const now = new Date();
+                    const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
+                    pdf.setFontSize(10);
+                    const lastPageHeight = pdf.internal.pageSize.getHeight();
+                    pdf.text(timestamp, margin, lastPageHeight - margin + 5);
 
+                    pdf.save('NextWordPL-alle-projekter.pdf');
 
-                     while (heightLeft > 0) {
-                          if (position !== margin) {
-                              pdf.addPage();
-                               console.log("[Debug] Tilføjede ny PDF side.");
-                          }
-
-                          // Beregn den del af billedet der skal på denne side
-                          const sliceHeightPx = Math.min(heightLeft / imgHeight * canvas.height, canvas.height);
-                          const sliceYPx = (imgHeight - heightLeft) / imgHeight * canvas.height;
-
-                           console.log(`[Debug] Tegner billede slice fra Y=${sliceYPx}px, højde=${sliceHeightPx}px`);
-
-                           // Tilføj billedet af den aktuelle del
-                          pdf.addImage(imgData, 'PNG', imgX, position, imgWidth, imgHeight, null, null, sliceYPx, sliceHeightPx);
-
-
-                          heightLeft -= imgHeightPage;
-                          position = margin;
-                     }
-
-
-                     const now = new Date();
-                     const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
-                     pdf.setFontSize(10);
-                      const lastPageHeight = pdf.internal.pageSize.getHeight();
-                      pdf.text(timestamp, margin, lastPageHeight - margin + 5);
-                      console.log("[Debug] Tidskode tilføjet til sidste side.");
-
-
-                     pdf.save('NextWordPL-alle-projekter.pdf');
-                     console.log("[Debug] PDF download startet.");
-
-
-                     pdfExportTempDiv.style.display = 'none';
-                     pdfExportTempDiv.innerHTML = '';
-                      console.log("[Debug] Midlertidig div skjult og ryddet.");
-                 }).catch(error => {
-                     console.error("[Debug] Fejl ved generering af samlet PDF:", error);
-                     alert("Der opstod en fejl under generering af den samlede PDF.");
-                     pdfExportTempDiv.style.display = 'none';
-                     pdfExportTempDiv.innerHTML = '';
-                      console.log("[Debug] Fejl under PDF generering, midlertidig div skjult.");
-                 });
+                    pdfExportTempDiv.style.display = 'none';
+                    pdfExportTempDiv.innerHTML = '';
+                }).catch(error => {
+                    console.error("Fejl ved generering af samlet PDF:", error);
+                    alert("Der opstod en fejl under generering af den samlede PDF.");
+                    pdfExportTempDiv.style.display = 'none';
+                    pdfExportTempDiv.innerHTML = '';
+                });
             }
 
-
-            // Funktion til at indsætte tekst ved markørposition (indsæt sidst)
             function insertTextAtCursor(text) {
-                console.log("[Debug] insertTextAtCursor kaldt.");
                 const editorSelection = window.getSelection();
                 const rangeAtEnd = document.createRange();
                 rangeAtEnd.selectNodeContents(editorDiv);
@@ -1028,16 +1013,10 @@
 
                 editorDiv.focus();
                 document.execCommand('insertText', false, text);
-                updateTextStats(); // Denne kalder updateTextStats
-                 console.log("[Debug] Tekst indsat sidst i editor.");
+                updateTextStats();
             }
 
-            console.log("[Debug] --- Function definitions completed. ---");
-
-
-            // Funktion til at opdatere ord- og tegntal
             function updateTextStats() {
-                console.log("[Debug] updateTextStats kaldt.");
                 const text = editorDiv.textContent;
 
                 const words = text.trim().split(/\s+/);
@@ -1046,147 +1025,112 @@
 
                 const charCount = text.length;
                 charCountDiv.textContent = `Tegn: ${charCount}`;
-
-                 console.log(`[Debug] Tællere opdateret: Ord: ${wordCount}, Tegn: ${charCount}`);
             }
 
-            console.log("[Debug] --- Attaching event listeners. ---");
-
-            // Lyt efter ændringer i "Ingen tekst" checkboks
             noTextCheckbox.addEventListener('change', function() {
                 initialTextArea.disabled = this.checked;
                 if (this.checked) {
                     initialTextArea.value = '';
                 }
-                 console.log("[Debug] 'Start uden tekst' checkbox changed.");
             });
 
-            // Start knap - skift til editor view
             startButton.addEventListener('click', function() {
-                console.log("--- Debug: Start button clicked! ---");
-                console.log("[Debug] Checking element references inside click handler:");
-                console.log("[Debug] startButton:", startButton);
-                console.log("[Debug] startScreen:", startScreen);
-                console.log("[Debug] editorScreen:", editorScreen);
-                console.log("[Debug] initialTextArea:", initialTextArea);
-                console.log("[Debug] importedTextDiv:", importedTextDiv);
-
-
                 let importedText = '';
                 if (!noTextCheckbox.checked) {
                     importedText = initialTextArea.value;
-                    console.log("[Debug] Imported text from textarea:", importedText.substring(0, Math.min(importedText.length, 50)) + '...');
-                } else {
-                     console.log("[Debug] Starting without text (checkbox checked).");
                 }
 
                 importedTextDiv.textContent = importedText;
-                console.log("[Debug] importedTextDiv updated.");
+                editorDiv.innerHTML = '';
 
-
-                console.log("[Debug] Attempting screen transition (hide start, show editor).");
                 startScreen.style.display = 'none';
                 editorScreen.style.display = 'flex';
-                console.log("[Debug] Display styles set.");
-                console.log("[Debug] Computed style for startScreen display:", window.getComputedStyle(startScreen).display);
-                console.log("[Debug] Computed style for editorScreen display:", window.getComputedStyle(editorScreen).display);
 
-
-                console.log("[Debug] Initializing text stats after transition.");
                 updateTextStats();
-                console.log("[Debug] Text stats initialized.");
 
-                console.log("--- Debug: Start button logic finished. ---");
+                currentLoadedProjectId = null;
+                renderProjectList();
             });
 
-            // Fold venstre sidepanel ind/ud
-             toggleLeftSidebarButton.addEventListener('click', function() {
-                 console.log("[Debug] Venstre sidebar toggle knap klikket.");
-                 leftSidebar.classList.toggle('collapsed');
+            toggleLeftSidebarButton.addEventListener('click', function() {
+                leftSidebar.classList.toggle('collapsed');
 
-                 const icon = this.querySelector('i');
-                 if (leftSidebar.classList.contains('collapsed')) {
-                      icon.classList.remove('fa-chevron-left');
-                      icon.classList.add('fa-chevron-right');
-                      console.log("[Debug] Venstre sidebar kollapset.");
-                 } else {
-                      icon.classList.remove('fa-chevron-right');
-                      icon.classList.add('fa-chevron-left');
-                      console.log("[Debug] Venstre sidebar udvidet.");
-                 }
-             });
-             console.log("[Debug] Venstre sidebar toggle listener attached.");
+                const icon = this.querySelector('i');
+                if (leftSidebar.classList.contains('collapsed')) {
+                    icon.classList.remove('fa-chevron-left');
+                    icon.classList.add('fa-chevron-right');
+                } else {
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-left');
+                }
+            });
 
+            editorDiv.addEventListener('copy', function(e) { e.preventDefault(); });
+            editorDiv.addEventListener('paste', function(e) { e.preventDefault(); });
+            editorDiv.addEventListener('cut', function(e) { e.preventDefault(); });
 
-            // Forhindre copy-paste i editor
-            editorDiv.addEventListener('copy', function(e) { e.preventDefault(); console.log("[Debug] Copy prevented."); });
-            editorDiv.addEventListener('paste', function(e) { e.preventDefault(); console.log("[Debug] Paste prevented."); });
-            editorDiv.addEventListener('cut', function(e) { e.preventDefault(); console.log("[Debug] Cut prevented."); });
-             console.log("[Debug] Copy/paste/cut listeners attached to editor.");
-
-
-            // Lyt efter input i editoren for at opdatere tællerne
             editorDiv.addEventListener('input', updateTextStats);
-             console.log("[Debug] Input listener attached to editor.");
 
-
-            // Overfør markeret tekst fra sidepanel (Indsæt sidst)
             importedTextDiv.addEventListener('mouseup', function() {
                 const selection = window.getSelection();
                 const selectedText = selection.toString();
 
                 if (selectedText.length > 0 && (importedTextDiv.contains(selection.anchorNode) || importedTextDiv.contains(selection.focusNode))) {
-                     console.log(`[Debug] Text selected in sidebar: "${selectedText.substring(0, Math.min(selectedText.length, 50))}..."`);
-                     insertTextAtCursor(selectedText);
+                    insertTextAtCursor(selectedText);
                 }
             });
-             console.log("[Debug] mouseup listener attached to importedTextDiv.");
 
-
-            // Tilbage knap
             backButton.addEventListener('click', function() {
-                 console.log("[Debug] Back button clicked.");
-                 const currentEditedText = editorDiv.innerHTML.trim();
-                 const currentImportedText = importedTextDiv.textContent.trim();
+                const currentEditedText = editorDiv.innerHTML.trim();
+                const currentImportedText = importedTextDiv.textContent.trim();
 
-                 if (currentEditedText !== '' || currentImportedText !== '') {
-                      const confirmDiscard = confirm("Du har ulagrede ændringer. Vil du forlade siden og miste dem?");
-                      if (!confirmDiscard) {
-                           console.log("[Debug] Back navigation cancelled by user.");
-                           return;
-                      }
-                 }
-                 console.log("[Debug] Navigating back to index.html.");
+                if (currentEditedText !== '' || currentImportedText !== '') {
+                    const confirmDiscard = confirm("Du har ulagrede ændringer. Vil du forlade siden og miste dem?");
+                    if (!confirmDiscard) {
+                        return;
+                    }
+                }
+
+                currentLoadedProjectId = null;
                 window.location.href = 'index.html';
             });
-             console.log("[Debug] Back button listener attached.");
 
-             // Gem projekt knap
-             saveProjectButton.addEventListener('click', saveCurrentProject);
-              console.log("[Debug] Save button listener attached.");
+            saveProjectButton.addEventListener('click', saveCurrentProject);
 
-             // Udskriv alle projekter knap
-             exportAllButton.addEventListener('click', exportAllProjects);
-              console.log("[Debug] Export all button listener attached.");
+            exportAllButton.addEventListener('click', exportAllProjects);
 
+            fontFamilySelect.addEventListener('change', function() {
+                const selectedFont = this.value;
+                editorDiv.style.fontFamily = selectedFont;
+                console.log(`[Debug] Font family changed to ${selectedFont} using CSS.`);
+            });
 
-            // Formattering funktioner (document.execCommand)
-            boldButton.addEventListener('click', function() { console.log("[Debug] Bold button clicked."); editorDiv.focus(); document.execCommand('bold', false, null); });
-            italicButton.addEventListener('click', function() { console.log("[Debug] Italic button clicked."); editorDiv.focus(); document.execCommand('italic', false, null); });
-            underlineButton.addEventListener('click', function() { console.log("[Debug] Underline button clicked."); editorDiv.focus(); document.execCommand('underline', false, null); });
-            fontFamilySelect.addEventListener('change', function() { console.log(`[Debug] Font family changed to ${this.value}.`); editorDiv.focus(); document.execCommand('fontName', false, this.value); });
-            fontSizeSelect.addEventListener('change', function() { console.log(`[Debug] Font size changed to ${this.value}.`); editorDiv.focus(); document.execCommand('fontSize', false, this.value); });
-            alignLeftButton.addEventListener('click', function() { console.log("[Debug] Align left button clicked."); editorDiv.focus(); document.execCommand('justifyLeft', false, null); });
-            alignCenterButton.addEventListener('click', function() { console.log("[Debug] Align center button clicked."); editorDiv.focus(); document.execCommand('justifyCenter', false, null); });
-            alignRightButton.addEventListener('click', function() { console.log("[Debug] Align right button clicked."); editorDiv.focus(); document.execCommand('justifyRight', false, null); });
-             console.log("[Debug] Formatting button listeners attached.");
+            fontSizeSelect.addEventListener('change', function() {
+                const selectedSize = this.value;
+                editorDiv.style.fontSize = selectedSize + 'px';
+                console.log(`[Debug] Font size changed to ${selectedSize}px using CSS.`);
+            });
 
+            boldButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('bold', false, null); });
+            italicButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('italic', false, null); });
+            underlineButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('underline', false, null); });
 
-            // Download som PDF (kun aktuelt projekt)
+            alignLeftButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyLeft', false, null); });
+            alignCenterButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyCenter', false, null); });
+            alignRightButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyRight', false, null); });
+
+            unorderedButton.addEventListener('click', function() {
+                editorDiv.focus();
+                document.execCommand('insertUnorderedList', false, null);
+            });
+
+            orderedButton.addEventListener('click', function() {
+                editorDiv.focus();
+                document.execCommand('insertOrderedList', false, null);
+            });
+
             downloadButton.addEventListener('click', function() {
-                console.log("[Debug] Download PDF button clicked (current project).");
-                 const { jsPDF } = window.jspdf;
-
+                const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
 
                 html2canvas(editorDiv, {
@@ -1194,7 +1138,6 @@
                     logging: false,
                     useCORS: true
                 }).then(canvas => {
-                    console.log("[Debug] html2canvas for current project done.");
                     const imgData = canvas.toDataURL('image/png');
 
                     const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -1209,16 +1152,13 @@
                     const availableHeight = pdfHeight - (2 * margin) - 10;
 
                     if (imgHeight > availableHeight) {
-                         const aspectRatio = canvas.width / canvas.height;
-                         imgHeight = availableHeight;
-                         imgWidth = imgHeight * aspectRatio;
-                         imgX = (pdfWidth - imgWidth) / 2;
-                         console.log("[Debug] Current project image scaled down for PDF.");
+                        const aspectRatio = canvas.width / canvas.height;
+                        imgHeight = availableHeight;
+                        imgWidth = imgHeight * aspectRatio;
+                        imgX = (pdfWidth - imgWidth) / 2;
                     }
 
                     pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
-                     console.log("[Debug] Current project image added to PDF.");
-
 
                     const now = new Date();
                     const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
@@ -1227,49 +1167,31 @@
                     const timestampX = margin;
                     const timestampY = pdfHeight - margin + 5;
 
-                     pdf.text(timestamp, timestampX, timestampY);
-                     console.log("[Debug] Timestamp added to PDF.");
-
+                    pdf.text(timestamp, timestampX, timestampY);
 
                     pdf.save('NextWordPL-dokument.pdf');
-                     console.log("[Debug] Current project PDF download started.");
 
                 }).catch(error => {
-                    console.error("[Debug] Fejl ved generering af PDF (aktuelt projekt):", error);
+                    console.error("Fejl ved generering af PDF (aktuelt projekt):", error);
                     alert("Der opstod en fejl under generering af PDF'en.");
                 });
             });
-             console.log("[Debug] Download button listener attached.");
 
-            // --- Fold/fold ud højre sidebar ---
-             toggleRightSidebarButton.addEventListener('click', function() {
-                 console.log("[Debug] Højre sidebar toggle knap klikket.");
-                 rightSidebar.classList.toggle('collapsed');
+            toggleRightSidebarButton.addEventListener('click', function() {
+                rightSidebar.classList.toggle('collapsed');
 
-                 const icon = this.querySelector('i');
-                 if (rightSidebar.classList.contains('collapsed')) {
-                      icon.classList.remove('fa-chevron-right');
-                      icon.classList.add('fa-chevron-left');
-                      console.log("[Debug] Højre sidebar kollapset.");
-                 } else {
-                      icon.classList.remove('fa-chevron-left');
-                      icon.classList.add('fa-chevron-right');
-                      console.log("[Debug] Højre sidebar udvidet.");
-                 }
-             });
-             console.log("[Debug] Højre sidebar toggle listener attached.");
+                const icon = this.querySelector('i');
+                if (rightSidebar.classList.contains('collapsed')) {
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-left');
+                } else {
+                    icon.classList.remove('fa-chevron-left');
+                    icon.classList.add('fa-chevron-right');
+                }
+            });
 
-
-            // --- Initialisering ---
-            console.log("[Debug] Initial rendering of project list.");
-            renderProjectList(); // Denne kalder renderProjectList, som kalder getProjectsFromStorage
-            console.log("[Debug] Initial rendering finished.");
-
-        }); // Slut på DOMContentLoaded listener
-
-        console.log("[Debug] Script file finished executing (outside DOMContentLoaded).");
-
-
+            renderProjectList();
+        });
     </script>
 </body>
 </html>
