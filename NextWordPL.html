@@ -38,27 +38,28 @@
         }
 
         .container {
-            max-width: 1400px; /* Øget maksimal bredde */
-            width: 98%; /* Fyld mere af siden på store skærme */
+            max-width: 1600px; /* Øget maksimal bredde for at gøre plads til ny sidebar */
+            width: 98%;
             margin: 0 auto;
             padding: 20px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 70px); /* Justeret højde baseret på ny header padding */
+            height: calc(100vh - 70px);
         }
 
         header {
-            background-color: #e0f7fa; /* Meget lys turkis baggrund, tæt på billedets header */
+            background-color: #e0f7fa; /* Meget lys turkis baggrund */
             color: var(--dark-grey);
-            padding: 25px 0; /* Øget padding i header */
+            padding: 25px 0;
             text-align: center;
             box-shadow: var(--box-shadow-medium);
+            flex-shrink: 0; /* Header skal ikke skrumpe */
         }
 
         h1 {
-            font-size: 32px; /* Større overskrift */
-            color: #004d40; /* Mørkere grønlig farve til overskrift */
+            font-size: 32px;
+            color: #004d40;
         }
 
         /* Startskærm */
@@ -68,22 +69,16 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            gap: 25px; /* Større gab */
+            gap: 25px;
             background-color: var(--white);
-            border-radius: 10px; /* Mere afrundede hjørner */
+            border-radius: 10px;
             box-shadow: var(--box-shadow-medium);
-            padding: 50px; /* Mere padding */
+            padding: 50px;
         }
 
         #welcome-message {
             text-align: center;
             max-width: 800px;
-        }
-
-        #welcome-message h2 {
-            color: var(--dark-grey);
-            margin-bottom: 15px;
-            font-size: 24px;
         }
 
         #welcome-message p {
@@ -93,12 +88,12 @@
 
         #text-input-container {
             width: 100%;
-            max-width: 900px; /* Større tekstfelt container */
+            max-width: 900px;
         }
 
         #initial-text {
             width: 100%;
-            height: 350px; /* Større textarea */
+            height: 350px;
             padding: 20px;
             border: 1px solid var(--medium-grey);
             border-radius: 8px;
@@ -129,8 +124,8 @@
         }
 
         #start-button:hover {
-            background-color: #0056b3; /* Mørkere blå */
-            transform: translateY(-2px); /* Løft mere */
+            background-color: #0056b3;
+            transform: translateY(-2px);
         }
 
         #start-button:active {
@@ -140,50 +135,56 @@
 
         /* Editor skærm */
         #editor-screen {
-            display: none; /* Hold denne som none for initial skjulning */
+            display: none; /* Skjult som standard */
             height: 100%;
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: var(--box-shadow-medium);
-            padding: 25px; /* Mere padding */
+            padding: 0;
             flex-direction: column;
-            gap: 25px; /* Større gab */
+            gap: 0;
         }
 
         .editor-container {
             display: flex;
             height: 100%;
-            gap: 25px; /* Større gab mellem sidebar og editor */
+            gap: 20px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow-medium);
+            padding: 20px;
         }
 
-        /* Sidepanel med importeret tekst */
+        /* Venstre Sidepanel (Importeret tekst) */
         .sidebar {
-            width: 400px; /* Øget standard bredde */
+            width: 350px;
             flex-shrink: 0;
             transition: width 0.3s ease, flex-shrink 0.3s ease;
-            background-color: var(--light-grey); /* Lys grå baggrund */
-            border-radius: 10px;
+            background-color: var(--light-grey);
+            border-radius: 8px;
             box-shadow: var(--box-shadow-light);
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Vigtigt: Skjuler indhold der overløber */
-            border: 1px solid var(--medium-grey); /* Let kant */
+            overflow: hidden;
+            border: 1px solid var(--medium-grey);
+             margin-left: -5px;
+             margin-top: -5px;
+             margin-bottom: -5px;
         }
 
         .sidebar.collapsed {
-            width: 70px; /* Lidt bredere kollapset */
+            width: 70px;
             flex-shrink: 0;
         }
 
         .sidebar-header {
             padding: 15px;
-            background-color: var(--medium-grey); /* Mørkere grå header baggrund */
+            background-color: var(--medium-grey);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            border-bottom: 1px solid var(--dark-grey); /* Tydeligere kant */
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom: 1px solid var(--dark-grey);
+            font-weight: bold;
+            color: var(--dark-grey);
             flex-shrink: 0;
         }
 
@@ -204,28 +205,28 @@
             width: 0;
         }
 
-        .toggle-sidebar {
+        .toggle-sidebar { /* Bruges af både venstre og højre sidebar */
             background: none;
-            color: var(--primary-color); /* Blå farve */
+            color: var(--primary-color);
             border: none;
             cursor: pointer;
-            font-size: 22px; /* Større ikon */
+            font-size: 22px;
             padding: 0;
             transition: color 0.2s ease, background-color 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 35px; /* Større område */
+            width: 35px;
             height: 35px;
             border-radius: 5px;
         }
 
         .toggle-sidebar:hover {
             color: var(--primary-color);
-            background-color: rgba(0, 123, 255, 0.1); /* Let blålig baggrund ved hover */
+            background-color: rgba(0, 123, 255, 0.1);
         }
 
-        .sidebar-content {
+        .sidebar-content { /* Bruges af både venstre og højre sidebar indhold */
             padding: 15px;
             flex-grow: 1;
             overflow-y: auto;
@@ -235,7 +236,8 @@
              pointer-events: auto;
         }
 
-        .sidebar.collapsed .sidebar-content {
+        .sidebar.collapsed .sidebar-content,
+        #saved-projects-sidebar.collapsed .sidebar-content { /* Skjul indhold når kollapset */
              opacity: 0;
              pointer-events: none;
              transition: opacity 0.1s ease;
@@ -243,10 +245,10 @@
 
         .imported-text {
             white-space: pre-wrap;
-            user-select: text; /* Tillad markering */
+            user-select: text;
             font-size: 16px;
             line-height: 1.7;
-            cursor: pointer; /* Vis at man kan interagerer ved at markere */
+            cursor: pointer;
         }
 
         /* Hovedredigeringsfelt */
@@ -254,8 +256,9 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             min-width: 0;
+             padding: 5px;
         }
 
         .toolbar {
@@ -302,14 +305,10 @@
 
         .content-editor {
             flex-grow: 1;
-            background-color: var(--white);
-            border-radius: 8px;
-            box-shadow: var(--box-shadow-light);
-            padding: 25px;
+            padding: 0;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            border: 1px solid var(--medium-grey);
         }
 
         #editor {
@@ -335,33 +334,35 @@
         /* Container til tællere */
         .count-container {
              display: flex;
-             justify-content: flex-end; /* Juster til højre */
-             gap: 15px; /* Mellemrum mellem tællere */
+             justify-content: flex-end;
+             gap: 15px;
              font-size: 14px;
              color: #555;
              margin-top: 10px;
-             padding: 0 10px; /* Padding for at matche editor-padding visuelt */
+             padding: 0 10px;
         }
 
         #word-count,
         #char-count {
-            /* Grundstil er i count-container, juster om nødvendigt */
+            /* Grundstil er i count-container */
         }
 
 
-        .actions {
+        .actions { /* Bruges for både hoved-actions og for gemte projekter knapper */
             display: flex;
             justify-content: flex-end;
             gap: 15px;
             margin-top: 20px;
             flex-shrink: 0;
+             padding: 0 15px 15px 15px; /* Tilføjet padding for bund-actions i sidebar */
         }
 
-        /* Stil til Tilbage-knap */
-        .back-button {
+        /* Stil til Gem/Tilbage/Download knapper */
+        .action-button,
+        .back-button,
+        .save-button,
+        .export-button {
              padding: 12px 25px;
-             background-color: var(--medium-grey); /* Grålig farve */
-             color: var(--dark-grey); /* Mørk tekst */
              border: none;
              border-radius: 5px;
              cursor: pointer;
@@ -370,36 +371,198 @@
              box-shadow: var(--box-shadow-light);
         }
 
+        .back-button {
+             background-color: var(--medium-grey);
+             color: var(--dark-grey);
+        }
          .back-button:hover {
-             background-color: #b9c2cb; /* Lidt mørkere grå */
+             background-color: #b9c2cb;
              transform: translateY(-1px);
          }
-
          .back-button:active {
              transform: translateY(0);
          }
 
-
-        .action-button { /* Download button */
-            padding: 12px 25px;
-            background-color: var(--secondary-color);
-            color: var(--white);
-            border: none;
-            border-radius: 5phx;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            box-shadow: var(--box-shadow-light);
+        .save-button {
+             background-color: var(--primary-color);
+             color: var(--white);
+        }
+         .save-button:hover {
+             background-color: #0056b3;
+             transform: translateY(-1px);
+         }
+         .save-button:active {
+             transform: translateY(0);
         }
 
+
+        .action-button {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
         .action-button:hover {
             background-color: #218838;
             transform: translateY(-1px);
         }
-
          .action-button:active {
              transform: translateY(0);
          }
+
+        .export-button {
+            background-color: var(--accent-color);
+            color: var(--white);
+        }
+         .export-button:hover {
+             background-color: #138496;
+             transform: translateY(-1px);
+         }
+         .export-button:active {
+             transform: translateY(0);
+         }
+
+
+        /* Højre Sidepanel (Gemte projekter) */
+        #saved-projects-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            transition: width 0.3s ease, flex-shrink 0.3s ease;
+            background-color: var(--light-grey);
+            border-radius: 8px;
+            box-shadow: var(--box-shadow-light);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--medium-grey);
+             margin-right: -5px;
+             margin-top: -5px;
+             margin-bottom: -5px;
+        }
+
+        #saved-projects-sidebar.collapsed {
+             width: 70px;
+             flex-shrink: 0;
+        }
+
+
+        .saved-projects-header {
+            padding: 15px;
+            background-color: var(--medium-grey);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom: 1px solid var(--dark-grey);
+            font-weight: bold;
+            color: var(--dark-grey);
+            flex-shrink: 0;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+        }
+
+         #saved-projects-sidebar.collapsed .saved-projects-header {
+             justify-content: center;
+         }
+
+         .saved-projects-header span {
+             transition: opacity 0.1s ease;
+             display: block;
+         }
+
+         #saved-projects-sidebar.collapsed .saved-projects-header span {
+             opacity: 0;
+             pointer-events: none;
+             width: 0;
+         }
+
+
+        .saved-projects-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 15px;
+            list-style: none;
+             opacity: 1;
+             transition: opacity 0.2s ease 0.1s;
+             pointer-events: auto;
+        }
+         #saved-projects-sidebar.collapsed .saved-projects-list {
+              opacity: 0;
+              pointer-events: none;
+              transition: opacity 0.1s ease;
+         }
+
+         /* TYDELIGERE HOVER EFFEKT PÅ LISTE ELEMENTER */
+         .saved-projects-list li {
+             padding: 10px;
+             border-bottom: 1px solid var(--light-grey);
+             cursor: pointer;
+             transition: background-color 0.2s ease, border-left-color 0.2s ease; /* Tilføjet border-left-color til transition */
+             font-size: 15px;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             border-left: 4px solid transparent; /* Start med transparent kant */
+         }
+
+        .saved-projects-list li:last-child {
+             border-bottom: none;
+        }
+
+        .saved-projects-list li:hover {
+             background-color: #d0d0d0; /* Lidt mørkere grå end før */
+             border-left-color: var(--primary-color); /* Blå kant ved hover */
+        }
+
+
+        .delete-project-button {
+             background: none;
+             border: none;
+             color: #dc3545;
+             cursor: pointer;
+             font-size: 14px;
+             transition: color 0.2s ease;
+             padding: 5px;
+             line-height: 1;
+        }
+
+        .delete-project-button:hover {
+             color: #c82333;
+        }
+
+        /* Midlertidig div til PDF-generering */
+        #pdf-export-temp-div {
+             position: absolute !important;
+             left: -9999px !important;
+             top: -9999px !important;
+             width: 210mm;
+             padding: 15mm;
+             background-color: white;
+        }
+
+         #pdf-export-temp-div h3 {
+             margin-top: 20px;
+             margin-bottom: 10px;
+             color: #004d40;
+         }
+
+         #pdf-export-temp-div .exported-project-content {
+             border: 1px solid #ddd;
+             padding: 15px;
+             margin-bottom: 20px;
+             border-radius: 5px;
+         }
+
+         #pdf-export-temp-div .imported-text-export {
+             font-style: italic;
+             color: #555;
+             margin-bottom: 15px;
+             padding-bottom: 15px;
+             border-bottom: 1px dashed #ccc;
+         }
+
+         #pdf-export-temp-div .edited-text-export {
+             /* Standard stil fra editor Div vil gælde her */
+             margin-bottom: 15px; /* Tilføj lidt mellemrum, da den nu kommer først */
+         }
+
 
     </style>
 </head>
@@ -411,7 +574,6 @@
     <div class="container">
         <div id="start-screen">
             <div id="welcome-message">
-                <h2>Velkommen til NextWordPL</h2>
                 <p>Indsæt din tekst nedenfor for at begynde at arbejde med den, eller vælg "Start uden tekst" for at starte fra bunden.</p>
             </div>
 
@@ -431,7 +593,7 @@
                 <div class="sidebar">
                     <div class="sidebar-header">
                         <span>Importeret tekst</span>
-                        <button class="toggle-sidebar" title="Fold sidepanel ind/ud"><i class="fas fa-chevron-left"></i></button>
+                        <button id="toggle-left-sidebar" class="toggle-sidebar" title="Fold sidepanel ind/ud"><i class="fas fa-chevron-left"></i></button>
                     </div>
                     <div class="sidebar-content">
                         <div class="imported-text"></div>
@@ -475,258 +637,639 @@
 
                      <div class="count-container">
                         <div id="word-count">Ord: 0</div>
-                        <div id="char-count">Tegn: 0</div> </div>
+                        <div id="char-count">Tegn: 0</div>
+                    </div>
 
 
                     <div class="actions">
                         <button id="back-button" class="back-button">Tilbage</button>
+                        <button id="save-project-button" class="save-button">Gem projekt</button>
                         <button id="download-button" class="action-button">Download som PDF</button>
+                    </div>
+                </div>
+
+                <div id="saved-projects-sidebar" class="saved-projects-sidebar">
+                    <div class="saved-projects-header">
+                         <span>Gemte projekter</span>
+                         <button id="toggle-right-sidebar" class="toggle-sidebar" title="Fold sidepanel ind/ud"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="sidebar-content">
+                        <ul id="saved-projects-list">
+                            </ul>
+                         <div class="actions" style="justify-content: center; padding: 15px; margin-top: 0;">
+                             <button id="export-all-button" class="export-button">Udskriv alle projekter</button>
+                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+     <div id="pdf-export-temp-div" style="display: none;"></div>
+
+
     <script>
-        // Variabler og DOM-elementer
-        const startScreen = document.getElementById('start-screen');
-        const editorScreen = document.getElementById('editor-screen');
-        const initialTextArea = document.getElementById('initial-text');
-        const noTextCheckbox = document.getElementById('no-text-checkbox');
-        const startButton = document.getElementById('start-button');
-        const importedTextDiv = document.querySelector('.imported-text');
-        const editorDiv = document.getElementById('editor');
-        const toggleSidebarButton = document.querySelector('.toggle-sidebar');
-        const sidebar = document.querySelector('.sidebar');
-        const downloadButton = document.getElementById('download-button');
-        const backButton = document.getElementById('back-button');
-        const toggleSidebarIcon = toggleSidebarButton.querySelector('i');
-        const wordCountDiv = document.getElementById('word-count');
-        const charCountDiv = document.getElementById('char-count'); // Hent tegn-tæller element
+        // Al kode inde i denne listener vil køre, når hele DOM'en er indlæst og parset
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("[Debug] DOMContentLoaded fired. Script execution started.");
 
-        // Formattering knapper
-        const fontFamilySelect = document.getElementById('font-family');
-        const fontSizeSelect = document.getElementById('font-size');
-        const boldButton = document.getElementById('bold-button');
-        const italicButton = document.getElementById('italic-button');
-        const underlineButton = document.getElementById('underline-button');
-        const alignLeftButton = document.getElementById('align-left');
-        const alignCenterButton = document.getElementById('align-center');
-        const alignRightButton = document.getElementById('align-right');
+            // Variabler og DOM-elementer
+            const startScreen = document.getElementById('start-screen');
+            const editorScreen = document.getElementById('editor-screen');
+            const initialTextArea = document.getElementById('initial-text');
+            const noTextCheckbox = document.getElementById('no-text-checkbox');
+            const startButton = document.getElementById('start-button');
+            const importedTextDiv = document.querySelector('.imported-text');
+            const editorDiv = document.getElementById('editor');
+            const toggleLeftSidebarButton = document.getElementById('toggle-left-sidebar');
+            const leftSidebar = document.querySelector('.sidebar');
+            const downloadButton = document.getElementById('download-button');
+            const backButton = document.getElementById('back-button');
+            const wordCountDiv = document.getElementById('word-count');
+            const charCountDiv = document.getElementById('char-count');
+            const saveProjectButton = document.getElementById('save-project-button');
+            const savedProjectsList = document.getElementById('saved-projects-list');
+            const exportAllButton = document.getElementById('export-all-button');
+            const pdfExportTempDiv = document.getElementById('pdf-export-temp-div');
 
-        // Funktion til at opdatere ord- og tegntal
-        function updateTextStats() {
-            const text = editorDiv.textContent; // Hent ren tekst fra editoren
-
-            // Tæl ord
-            const words = text.trim().split(/\s+/);
-            const wordCount = text.trim() === '' ? 0 : words.length;
-            wordCountDiv.textContent = `Ord: ${wordCount}`;
-
-            // Tæl tegn (inklusive mellemrum og linjeskift i textContent)
-            const charCount = text.length;
-            charCountDiv.textContent = `Tegn: ${charCount}`;
-
-             console.log(`Opdateret: Ord: ${wordCount}, Tegn: ${charCount}`); // Valgfrit: log til konsol
-        }
+            // Højre sidebar elementer
+            const rightSidebar = document.getElementById('saved-projects-sidebar');
+            const toggleRightSidebarButton = document.getElementById('toggle-right-sidebar');
 
 
-        // Lyt efter ændringer i "Ingen tekst" checkboks
-        noTextCheckbox.addEventListener('change', function() {
-            initialTextArea.disabled = this.checked;
-            if (this.checked) {
-                initialTextArea.value = '';
+            console.log("[Debug] All main elements referenced.");
+            console.log("[Debug] startButton element reference:", startButton);
+
+
+            // Formattering knapper
+            const fontFamilySelect = document.getElementById('font-family');
+            const fontSizeSelect = document.getElementById('font-size');
+            const boldButton = document.getElementById('bold-button');
+            const italicButton = document.getElementById('italic-button');
+            const underlineButton = document.getElementById('underline-button');
+            const alignLeftButton = document.getElementById('align-left');
+            const alignCenterButton = document.getElementById('align-center');
+            const alignRightButton = document.getElementById('align-right');
+
+            console.log("[Debug] Formatting buttons referenced.");
+
+            // localStorage nøgle
+            const STORAGE_KEY = 'nextwordpl_projects';
+
+            // --- localStorage Funktioner ---
+            function getProjectsFromStorage() {
+                try {
+                    const projectsJson = localStorage.getItem(STORAGE_KEY);
+                    return projectsJson ? JSON.parse(projectsJson) : [];
+                } catch (e) {
+                    console.error("[Debug] Fejl ved læsning fra localStorage:", e);
+                    return [];
+                }
             }
-        });
 
-        // Start knap - skift til editor view
-        startButton.addEventListener('click', function() {
-            let importedText = '';
-
-            if (!noTextCheckbox.checked) {
-                importedText = initialTextArea.value;
+            function saveProjectsToStorage(projects) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+                     console.log("[Debug] Projekter gemt til localStorage.");
+                } catch (e) {
+                    console.error("[Debug] Fejl ved skrivning til localStorage:", e);
+                    alert("Kunne ikke gemme projekt. Local storage er muligvis fuld eller utilgængelig.");
+                }
             }
 
-            // Vis importeret tekst i sidepanelet
-            importedTextDiv.textContent = importedText;
+            function renderProjectList() {
+                console.log("[Debug] renderProjectList kaldt.");
+                const projects = getProjectsFromStorage();
+                savedProjectsList.innerHTML = ''; // Ryd den nuværende liste
 
-            // Skift skærm
-            startScreen.style.display = 'none';
-            editorScreen.style.display = 'flex';
+                if (projects.length === 0) {
+                     const li = document.createElement('li');
+                     li.textContent = 'Ingen gemte projekter';
+                     li.style.fontStyle = 'italic';
+                     li.style.color = '#888';
+                     li.style.cursor = 'default';
+                     li.style.justifyContent = 'center';
+                     li.style.borderBottom = 'none';
+                     // Fjern hover-effekt for "ingen projekter" element
+                     li.style.backgroundColor = 'transparent';
+                     li.style.borderLeft = 'none';
 
-            // Initialiser tællerne, når editoren vises
-            updateTextStats();
-        });
-
-        // Fold sidepanel ind/ud
-        toggleSidebarButton.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-
-            // Skift ikon baseret på kollapset tilstand
-            if (sidebar.classList.contains('collapsed')) {
-                toggleSidebarIcon.classList.remove('fa-chevron-left');
-                toggleSidebarIcon.classList.add('fa-chevron-right');
-            } else {
-                toggleSidebarIcon.classList.remove('fa-chevron-right');
-                toggleSidebarIcon.classList.add('fa-chevron-left');
-            }
-        });
-
-        // Forhindre copy-paste i editor
-        editorDiv.addEventListener('copy', function(e) {
-            e.preventDefault();
-             console.log("Copy operation prevented in editor.");
-        });
-
-        editorDiv.addEventListener('paste', function(e) {
-            e.preventDefault();
-             console.log("Paste operation prevented in editor.");
-        });
-
-        editorDiv.addEventListener('cut', function(e) {
-            e.preventDefault();
-             console.log("Cut operation prevented in editor.");
-        });
-
-        // Lyt efter input i editoren for at opdatere tællerne
-        editorDiv.addEventListener('input', updateTextStats);
-
-
-        // Overfør markeret tekst fra sidepanel (Indsæt sidst)
-        importedTextDiv.addEventListener('mouseup', function() {
-            const selection = window.getSelection();
-            const selectedText = selection.toString();
-
-            // Tjek om der er markeret tekst, og om markeringen er inde i importedTextDiv
-            if (selectedText.length > 0 && (importedTextDiv.contains(selection.anchorNode) || importedTextDiv.contains(selection.focusNode))) {
-
-                // Få fat i den aktuelle markering i vinduet (den i editoren)
-                const editorSelection = window.getSelection();
-
-                // Opret en Range, der spænder over hele indholdet af editorDiv
-                const rangeAtEnd = document.createRange();
-                rangeAtEnd.selectNodeContents(editorDiv);
-
-                // Kollaps Rangen til dens slutpunkt - dette placerer markøren ved slutningen
-                rangeAtEnd.collapse(false);
-
-                // Fjern alle eksisterende Ranges fra den globale markering
-                editorSelection.removeAllRanges();
-
-                // Tilføj den nye Range (markøren ved slutningen) til markeringen
-                editorSelection.addRange(rangeAtEnd);
-
-                // Sæt fokus tilbage på editoren (sikrer at markøren er aktiv)
-                editorDiv.focus();
-
-                // Indsæt den markerede tekst fra sidepanelet ved den aktuelle markørposition (som nu er slutningen)
-                document.execCommand('insertText', false, selectedText);
-
-                // Opdater tællerne efter indsættelse
-                updateTextStats();
-
-                console.log("Tekst overført fra sidepanel og indsat sidst:", selectedText);
-            }
-        });
-
-
-        // Tilbage knap
-        backButton.addEventListener('click', function() {
-            // Naviger tilbage til index.html
-            window.location.href = 'index.html';
-        });
-
-
-        // Formattering funktioner (document.execCommand)
-        boldButton.addEventListener('click', function() {
-            document.execCommand('bold', false, null);
-            editorDiv.focus();
-        });
-
-        italicButton.addEventListener('click', function() {
-            document.execCommand('italic', false, null);
-             editorDiv.focus();
-        });
-
-        underlineButton.addEventListener('click', function() {
-            document.execCommand('underline', false, null);
-             editorDiv.focus();
-        });
-
-        fontFamilySelect.addEventListener('change', function() {
-            document.execCommand('fontName', false, this.value);
-             editorDiv.focus();
-        });
-
-        fontSizeSelect.addEventListener('change', function() {
-             document.execCommand('fontSize', false, this.value);
-             editorDiv.focus();
-        });
-
-        alignLeftButton.addEventListener('click', function() {
-            document.execCommand('justifyLeft', false, null);
-             editorDiv.focus();
-        });
-
-        alignCenterButton.addEventListener('click', function() {
-            document.execCommand('justifyCenter', false, null);
-             editorDiv.focus();
-        });
-
-        alignRightButton.addEventListener('click', function() {
-            document.execCommand('justifyRight', false, null);
-             editorDiv.focus();
-        });
-
-
-        // Download som PDF
-        downloadButton.addEventListener('click', function() {
-            const { jsPDF } = window.jspdf;
-
-            const pdf = new jsPDF('p', 'mm', 'a4');
-
-            html2canvas(editorDiv, {
-                scale: 2,
-                logging: false,
-                useCORS: true
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-                const margin = 15;
-
-                let imgWidth = pdfWidth - (2 * margin);
-                let imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let imgX = margin;
-                let imgY = margin;
-
-                const availableHeight = pdfHeight - (2 * margin) - 10;
-
-                if (imgHeight > availableHeight) {
-                     const aspectRatio = canvas.width / canvas.height;
-                     imgHeight = availableHeight;
-                     imgWidth = imgHeight * aspectRatio;
-                     imgX = (pdfWidth - imgWidth) / 2;
+                     savedProjectsList.appendChild(li);
+                     exportAllButton.disabled = true;
+                     exportAllButton.style.opacity = 0.5;
+                     exportAllButton.style.cursor = 'not-allowed';
+                     console.log("[Debug] Ingen gemte projekter fundet.");
+                     return;
                 }
 
-                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+                exportAllButton.disabled = false;
+                 exportAllButton.style.opacity = 1;
+                 exportAllButton.style.cursor = 'pointer';
 
-                const now = new Date();
-                const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
+                // Sorter projekter efter timestamp (nyeste først)
+                projects.sort((a, b) => b.timestamp - a.timestamp);
 
-                pdf.setFontSize(10);
-                const timestampX = margin;
-                const timestampY = pdfHeight - margin + 5;
+                console.log(`[Debug] Rendering ${projects.length} projekter.`);
 
-                 pdf.text(timestamp, timestampX, timestampY);
+                projects.forEach(project => {
+                    const li = document.createElement('li');
+                    const spanName = document.createElement('span');
+                    spanName.classList.add('saved-project-name');
+                    spanName.textContent = project.name || `Projekt uden navn (${new Date(project.timestamp).toLocaleDateString()})`;
+                    li.appendChild(spanName);
 
-                pdf.save('NextWordPL-dokument.pdf');
-            }).catch(error => {
-                console.error("Fejl ved generering af PDF:", error);
-                alert("Der opstod en fejl under generering af PDF'en.");
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('delete-project-button');
+                    deleteButton.innerHTML = '<i class="fas fa-times"></i>';
+                    deleteButton.title = 'Slet projekt';
+                    deleteButton.addEventListener('click', function(event) {
+                        event.stopPropagation();
+                        console.log(`[Debug] Slet knap klikket for projekt ID: ${project.id}`);
+                        deleteProject(project.id);
+                    });
+                     li.appendChild(deleteButton);
+
+
+                    li.addEventListener('click', function() {
+                         console.log(`[Debug] Projekt liste element klikket for ID: ${project.id}`);
+                        loadProject(project.id);
+                    });
+
+                    savedProjectsList.appendChild(li);
+                });
+                 console.log("[Debug] Projekt liste rendering færdig.");
+            }
+
+            function saveCurrentProject() {
+                console.log("[Debug] Gem projekt knap klikket.");
+                const projectName = prompt("Indtast et navn for dit projekt:");
+                if (!projectName || projectName.trim() === "") {
+                    alert("Projektet blev ikke gemt. Navn påkrævet.");
+                     console.log("[Debug] Gem afbrudt: Navn ikke indtastet.");
+                    return;
+                }
+
+                const projects = getProjectsFromStorage();
+                const timestamp = Date.now(); // Unik ID baseret på tid
+
+                const newProject = {
+                    id: timestamp,
+                    name: projectName.trim(),
+                    importedText: importedTextDiv.textContent,
+                    editedText: editorDiv.innerHTML, // Gem det redigerede HTML indhold
+                    timestamp: timestamp
+                };
+
+                projects.push(newProject);
+                saveProjectsToStorage(projects);
+                renderProjectList();
+
+                alert(`Projekt "${newProject.name}" gemt!`);
+                 console.log(`[Debug] Projekt "${newProject.name}" gemt med ID: ${newProject.id}`);
+            }
+
+            function loadProject(id) {
+                console.log(`[Debug] loadProject kaldt for ID: ${id}`);
+                const projects = getProjectsFromStorage();
+                const projectToLoad = projects.find(project => project.id === id);
+
+                if (projectToLoad) {
+                    console.log(`[Debug] Projekt fundet: "${projectToLoad.name}". Tjekker for ulagrede ændringer.`);
+                    // Tjek om der er ulagrede ændringer (simpelt tjek baseret på om editoren har indhold)
+                     const currentEditedText = editorDiv.innerHTML.trim();
+                     const currentImportedText = importedTextDiv.textContent.trim();
+
+                     if (currentEditedText !== '' || currentImportedText !== '') {
+                          const confirmLoad = confirm("Du har ulagrede ændringer i den aktuelle session. Vil du indlæse projektet alligevel? Dine nuværende ændringer vil gå tabt.");
+                          if (!confirmLoad) {
+                               console.log("[Debug] Indlæsning afbrudt af bruger.");
+                               return;
+                          }
+                          console.log("[Debug] Bruger bekræftede indlæsning trods ulagrede ændringer.");
+                     }
+
+                    importedTextDiv.textContent = projectToLoad.importedText;
+                    editorDiv.innerHTML = projectToLoad.editedText;
+
+                    // Opdater tællere efter indlæsning
+                    updateTextStats();
+                    console.log("[Debug] Tællere opdateret efter indlæsning.");
+
+                    // Fjernet alert("Projekt indlæst!") herfra
+                    console.log(`[Debug] Projekt "${projectToLoad.name}" indlæst uden alert.`);
+                } else {
+                    alert("Projektet blev ikke fundet.");
+                     console.warn(`[Debug] Projekt med ID ${id} blev ikke fundet under indlæsning.`);
+                }
+            }
+
+            function deleteProject(id) {
+                 console.log(`[Debug] deleteProject kaldt for ID: ${id}`);
+                 const confirmDelete = confirm("Er du sikker på, at du vil slette dette projekt?");
+                 if (!confirmDelete) {
+                      console.log("[Debug] Sletning afbrudt af bruger.");
+                      return;
+                 }
+
+                let projects = getProjectsFromStorage();
+                const projectToDelete = projects.find(project => project.id === id); // Find projektet FØR filtrering for indholdstjek
+                projects = projects.filter(project => project.id !== id);
+                saveProjectsToStorage(projects);
+                renderProjectList();
+
+                 // Tjek om det slettede projekt var det, der lige nu er indlæst, og ryd i så fald editoren
+                 const currentEditedText = editorDiv.innerHTML.trim();
+                 const currentImportedText = importedTextDiv.textContent.trim();
+
+                 if (projectToDelete && currentEditedText === projectToDelete.editedText.trim() && currentImportedText === projectToDelete.importedText.trim()) {
+                      editorDiv.innerHTML = ''; // Ryd editor
+                      importedTextDiv.textContent = ''; // Ryd imported text
+                      updateTextStats(); // Opdater tællere
+                      alert("Projekt slettet. Redigeringsfeltet er ryddet.");
+                      console.log(`[Debug] Projekt ID ${id} slettet, redigeringsfelt ryddet.`);
+                 } else {
+                     alert("Projekt slettet.");
+                     console.log(`[Debug] Projekt ID ${id} slettet.`);
+                 }
+            }
+
+            function exportAllProjects() {
+                 console.log("[Debug] Udskriv alle knap klikket.");
+                 const projects = getProjectsFromStorage();
+
+                 if (projects.length === 0) {
+                     alert("Der er ingen projekter at udskrive.");
+                      console.log("[Debug] Export afbrudt: Ingen projekter fundet.");
+                     return;
+                 }
+
+                 // Byg HTML til PDF-eksport
+                 let combinedHtml = '<h1>Samlet Rapport - NextWordPL Projekter</h1>';
+                 combinedHtml += `<p>Genereret: ${new Date().toLocaleDateString('da-DK')} ${new Date().toLocaleTimeString('da-DK')}</p><hr>`;
+
+
+                 projects.forEach(project => {
+                     combinedHtml += `<h3>${project.name || 'Projekt uden navn'}</h3>`;
+                     combinedHtml += `<div class="exported-project-content">`;
+
+                     // --- OPPDATERET RÆKKEFØLGE HER: Redigeret tekst FØRST ---
+                     // 1. Tilføj redigeret tekst
+                     if (project.editedText && project.editedText.trim() !== '') {
+                         combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>${project.editedText}</div>`;
+                     } else {
+                          combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>Ingen</div>`;
+                     }
+
+                     // 2. Tilføj importeret tekst
+                     if (project.importedText && project.importedText.trim() !== '') {
+                          // Sørg for at HTML-tags i importedText ikke fortolkes i den midlertidige div
+                          const safeImportedText = project.importedText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                          combinedHtml += `<div class="imported-text-export"><strong>Importeret tekst:</strong><br>${safeImportedText.replace(/\n/g, '<br>')}</div>`;
+                     } else {
+                          combinedHtml += `<div class="imported-text-export"><strong>Importeret tekst:</strong><br>Ingen</div>`;
+                     }
+                     // ---------------------------------------------------------
+
+
+                     combinedHtml += `</div><hr>`;
+                 });
+
+                 pdfExportTempDiv.innerHTML = combinedHtml;
+                 // Sæt dimensioner for at sikre korrekt rendering til html2canvas
+                 pdfExportTempDiv.style.width = '210mm'; // Standard A4 bredde
+                 pdfExportTempDiv.style.padding = '15mm'; // Match PDF margener
+                 pdfExportTempDiv.style.display = 'block'; // Gør midlertidigt synlig
+
+                 console.log("[Debug] Byggede HTML for eksport, kalder html2canvas...");
+
+                 // Brug html2canvas til at fange indholdet af den midlertidige div
+                 html2canvas(pdfExportTempDiv, {
+                     scale: 2, // Højere skala for bedre opløsning
+                     useCORS: true,
+                     logging: false
+                 }).then(canvas => {
+                     console.log("[Debug] html2canvas færdig, genererer PDF.");
+                     const imgData = canvas.toDataURL('image/png');
+                     const { jsPDF } = window.jspdf;
+                     const pdf = new jsPDF('p', 'mm', 'a4');
+
+                     const pdfWidth = pdf.internal.pageSize.getWidth();
+                     const pdfHeight = pdf.internal.pageSize.getHeight();
+                     const margin = 15;
+
+                     let imgWidth = pdfWidth - (2 * margin);
+                     let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                     const imgHeightPage = pdfHeight - (2 * margin);
+                     let heightLeft = imgHeight;
+                     let position = margin;
+
+                     const imgX = margin;
+
+                     console.log(`[Debug] Original image height: ${imgHeight}mm, PDF page height: ${imgHeightPage}mm.`);
+
+
+                     while (heightLeft > 0) {
+                          if (position !== margin) {
+                              pdf.addPage();
+                               console.log("[Debug] Tilføjede ny PDF side.");
+                          }
+
+                          // Beregn den del af billedet der skal på denne side
+                          const sliceHeightPx = Math.min(heightLeft / imgHeight * canvas.height, canvas.height);
+                          const sliceYPx = (imgHeight - heightLeft) / imgHeight * canvas.height;
+
+                           console.log(`[Debug] Tegner billede slice fra Y=${sliceYPx}px, højde=${sliceHeightPx}px`);
+
+                           // Tilføj billedet af den aktuelle del
+                          pdf.addImage(imgData, 'PNG', imgX, position, imgWidth, imgHeight, null, null, sliceYPx, sliceHeightPx);
+
+
+                          heightLeft -= imgHeightPage;
+                          position = margin;
+                     }
+
+
+                     const now = new Date();
+                     const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
+                     pdf.setFontSize(10);
+                      const lastPageHeight = pdf.internal.pageSize.getHeight();
+                      pdf.text(timestamp, margin, lastPageHeight - margin + 5);
+                      console.log("[Debug] Tidskode tilføjet til sidste side.");
+
+
+                     pdf.save('NextWordPL-alle-projekter.pdf');
+                     console.log("[Debug] PDF download startet.");
+
+
+                     pdfExportTempDiv.style.display = 'none';
+                     pdfExportTempDiv.innerHTML = '';
+                      console.log("[Debug] Midlertidig div skjult og ryddet.");
+                 }).catch(error => {
+                     console.error("[Debug] Fejl ved generering af samlet PDF:", error);
+                     alert("Der opstod en fejl under generering af den samlede PDF.");
+                     pdfExportTempDiv.style.display = 'none';
+                     pdfExportTempDiv.innerHTML = '';
+                      console.log("[Debug] Fejl under PDF generering, midlertidig div skjult.");
+                 });
+            }
+
+
+            // Funktion til at indsætte tekst ved markørposition (indsæt sidst)
+            function insertTextAtCursor(text) {
+                console.log("[Debug] insertTextAtCursor kaldt.");
+                const editorSelection = window.getSelection();
+                const rangeAtEnd = document.createRange();
+                rangeAtEnd.selectNodeContents(editorDiv);
+                rangeAtEnd.collapse(false);
+
+                editorSelection.removeAllRanges();
+                editorSelection.addRange(rangeAtEnd);
+
+                editorDiv.focus();
+                document.execCommand('insertText', false, text);
+                updateTextStats(); // Denne kalder updateTextStats
+                 console.log("[Debug] Tekst indsat sidst i editor.");
+            }
+
+            console.log("[Debug] --- Function definitions completed. ---");
+
+
+            // Funktion til at opdatere ord- og tegntal
+            function updateTextStats() {
+                console.log("[Debug] updateTextStats kaldt.");
+                const text = editorDiv.textContent;
+
+                const words = text.trim().split(/\s+/);
+                const wordCount = text.trim() === '' ? 0 : words.length;
+                wordCountDiv.textContent = `Ord: ${wordCount}`;
+
+                const charCount = text.length;
+                charCountDiv.textContent = `Tegn: ${charCount}`;
+
+                 console.log(`[Debug] Tællere opdateret: Ord: ${wordCount}, Tegn: ${charCount}`);
+            }
+
+            console.log("[Debug] --- Attaching event listeners. ---");
+
+            // Lyt efter ændringer i "Ingen tekst" checkboks
+            noTextCheckbox.addEventListener('change', function() {
+                initialTextArea.disabled = this.checked;
+                if (this.checked) {
+                    initialTextArea.value = '';
+                }
+                 console.log("[Debug] 'Start uden tekst' checkbox changed.");
             });
-        });
+
+            // Start knap - skift til editor view
+            startButton.addEventListener('click', function() {
+                console.log("--- Debug: Start button clicked! ---");
+                console.log("[Debug] Checking element references inside click handler:");
+                console.log("[Debug] startButton:", startButton);
+                console.log("[Debug] startScreen:", startScreen);
+                console.log("[Debug] editorScreen:", editorScreen);
+                console.log("[Debug] initialTextArea:", initialTextArea);
+                console.log("[Debug] importedTextDiv:", importedTextDiv);
+
+
+                let importedText = '';
+                if (!noTextCheckbox.checked) {
+                    importedText = initialTextArea.value;
+                    console.log("[Debug] Imported text from textarea:", importedText.substring(0, Math.min(importedText.length, 50)) + '...');
+                } else {
+                     console.log("[Debug] Starting without text (checkbox checked).");
+                }
+
+                importedTextDiv.textContent = importedText;
+                console.log("[Debug] importedTextDiv updated.");
+
+
+                console.log("[Debug] Attempting screen transition (hide start, show editor).");
+                startScreen.style.display = 'none';
+                editorScreen.style.display = 'flex';
+                console.log("[Debug] Display styles set.");
+                console.log("[Debug] Computed style for startScreen display:", window.getComputedStyle(startScreen).display);
+                console.log("[Debug] Computed style for editorScreen display:", window.getComputedStyle(editorScreen).display);
+
+
+                console.log("[Debug] Initializing text stats after transition.");
+                updateTextStats();
+                console.log("[Debug] Text stats initialized.");
+
+                console.log("--- Debug: Start button logic finished. ---");
+            });
+
+            // Fold venstre sidepanel ind/ud
+             toggleLeftSidebarButton.addEventListener('click', function() {
+                 console.log("[Debug] Venstre sidebar toggle knap klikket.");
+                 leftSidebar.classList.toggle('collapsed');
+
+                 const icon = this.querySelector('i');
+                 if (leftSidebar.classList.contains('collapsed')) {
+                      icon.classList.remove('fa-chevron-left');
+                      icon.classList.add('fa-chevron-right');
+                      console.log("[Debug] Venstre sidebar kollapset.");
+                 } else {
+                      icon.classList.remove('fa-chevron-right');
+                      icon.classList.add('fa-chevron-left');
+                      console.log("[Debug] Venstre sidebar udvidet.");
+                 }
+             });
+             console.log("[Debug] Venstre sidebar toggle listener attached.");
+
+
+            // Forhindre copy-paste i editor
+            editorDiv.addEventListener('copy', function(e) { e.preventDefault(); console.log("[Debug] Copy prevented."); });
+            editorDiv.addEventListener('paste', function(e) { e.preventDefault(); console.log("[Debug] Paste prevented."); });
+            editorDiv.addEventListener('cut', function(e) { e.preventDefault(); console.log("[Debug] Cut prevented."); });
+             console.log("[Debug] Copy/paste/cut listeners attached to editor.");
+
+
+            // Lyt efter input i editoren for at opdatere tællerne
+            editorDiv.addEventListener('input', updateTextStats);
+             console.log("[Debug] Input listener attached to editor.");
+
+
+            // Overfør markeret tekst fra sidepanel (Indsæt sidst)
+            importedTextDiv.addEventListener('mouseup', function() {
+                const selection = window.getSelection();
+                const selectedText = selection.toString();
+
+                if (selectedText.length > 0 && (importedTextDiv.contains(selection.anchorNode) || importedTextDiv.contains(selection.focusNode))) {
+                     console.log(`[Debug] Text selected in sidebar: "${selectedText.substring(0, Math.min(selectedText.length, 50))}..."`);
+                     insertTextAtCursor(selectedText);
+                }
+            });
+             console.log("[Debug] mouseup listener attached to importedTextDiv.");
+
+
+            // Tilbage knap
+            backButton.addEventListener('click', function() {
+                 console.log("[Debug] Back button clicked.");
+                 const currentEditedText = editorDiv.innerHTML.trim();
+                 const currentImportedText = importedTextDiv.textContent.trim();
+
+                 if (currentEditedText !== '' || currentImportedText !== '') {
+                      const confirmDiscard = confirm("Du har ulagrede ændringer. Vil du forlade siden og miste dem?");
+                      if (!confirmDiscard) {
+                           console.log("[Debug] Back navigation cancelled by user.");
+                           return;
+                      }
+                 }
+                 console.log("[Debug] Navigating back to index.html.");
+                window.location.href = 'index.html';
+            });
+             console.log("[Debug] Back button listener attached.");
+
+             // Gem projekt knap
+             saveProjectButton.addEventListener('click', saveCurrentProject);
+              console.log("[Debug] Save button listener attached.");
+
+             // Udskriv alle projekter knap
+             exportAllButton.addEventListener('click', exportAllProjects);
+              console.log("[Debug] Export all button listener attached.");
+
+
+            // Formattering funktioner (document.execCommand)
+            boldButton.addEventListener('click', function() { console.log("[Debug] Bold button clicked."); editorDiv.focus(); document.execCommand('bold', false, null); });
+            italicButton.addEventListener('click', function() { console.log("[Debug] Italic button clicked."); editorDiv.focus(); document.execCommand('italic', false, null); });
+            underlineButton.addEventListener('click', function() { console.log("[Debug] Underline button clicked."); editorDiv.focus(); document.execCommand('underline', false, null); });
+            fontFamilySelect.addEventListener('change', function() { console.log(`[Debug] Font family changed to ${this.value}.`); editorDiv.focus(); document.execCommand('fontName', false, this.value); });
+            fontSizeSelect.addEventListener('change', function() { console.log(`[Debug] Font size changed to ${this.value}.`); editorDiv.focus(); document.execCommand('fontSize', false, this.value); });
+            alignLeftButton.addEventListener('click', function() { console.log("[Debug] Align left button clicked."); editorDiv.focus(); document.execCommand('justifyLeft', false, null); });
+            alignCenterButton.addEventListener('click', function() { console.log("[Debug] Align center button clicked."); editorDiv.focus(); document.execCommand('justifyCenter', false, null); });
+            alignRightButton.addEventListener('click', function() { console.log("[Debug] Align right button clicked."); editorDiv.focus(); document.execCommand('justifyRight', false, null); });
+             console.log("[Debug] Formatting button listeners attached.");
+
+
+            // Download som PDF (kun aktuelt projekt)
+            downloadButton.addEventListener('click', function() {
+                console.log("[Debug] Download PDF button clicked (current project).");
+                 const { jsPDF } = window.jspdf;
+
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                html2canvas(editorDiv, {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true
+                }).then(canvas => {
+                    console.log("[Debug] html2canvas for current project done.");
+                    const imgData = canvas.toDataURL('image/png');
+
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+                    const margin = 15;
+
+                    let imgWidth = pdfWidth - (2 * margin);
+                    let imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    let imgX = margin;
+                    let imgY = margin;
+
+                    const availableHeight = pdfHeight - (2 * margin) - 10;
+
+                    if (imgHeight > availableHeight) {
+                         const aspectRatio = canvas.width / canvas.height;
+                         imgHeight = availableHeight;
+                         imgWidth = imgHeight * aspectRatio;
+                         imgX = (pdfWidth - imgWidth) / 2;
+                         console.log("[Debug] Current project image scaled down for PDF.");
+                    }
+
+                    pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+                     console.log("[Debug] Current project image added to PDF.");
+
+
+                    const now = new Date();
+                    const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
+
+                    pdf.setFontSize(10);
+                    const timestampX = margin;
+                    const timestampY = pdfHeight - margin + 5;
+
+                     pdf.text(timestamp, timestampX, timestampY);
+                     console.log("[Debug] Timestamp added to PDF.");
+
+
+                    pdf.save('NextWordPL-dokument.pdf');
+                     console.log("[Debug] Current project PDF download started.");
+
+                }).catch(error => {
+                    console.error("[Debug] Fejl ved generering af PDF (aktuelt projekt):", error);
+                    alert("Der opstod en fejl under generering af PDF'en.");
+                });
+            });
+             console.log("[Debug] Download button listener attached.");
+
+            // --- Fold/fold ud højre sidebar ---
+             toggleRightSidebarButton.addEventListener('click', function() {
+                 console.log("[Debug] Højre sidebar toggle knap klikket.");
+                 rightSidebar.classList.toggle('collapsed');
+
+                 const icon = this.querySelector('i');
+                 if (rightSidebar.classList.contains('collapsed')) {
+                      icon.classList.remove('fa-chevron-right');
+                      icon.classList.add('fa-chevron-left');
+                      console.log("[Debug] Højre sidebar kollapset.");
+                 } else {
+                      icon.classList.remove('fa-chevron-left');
+                      icon.classList.add('fa-chevron-right');
+                      console.log("[Debug] Højre sidebar udvidet.");
+                 }
+             });
+             console.log("[Debug] Højre sidebar toggle listener attached.");
+
+
+            // --- Initialisering ---
+            console.log("[Debug] Initial rendering of project list.");
+            renderProjectList(); // Denne kalder renderProjectList, som kalder getProjectsFromStorage
+            console.log("[Debug] Initial rendering finished.");
+
+        }); // Slut på DOMContentLoaded listener
+
+        console.log("[Debug] Script file finished executing (outside DOMContentLoaded).");
+
+
     </script>
 </body>
 </html>
