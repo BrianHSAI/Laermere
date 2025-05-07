@@ -317,20 +317,12 @@
             cursor: text;
         }
 
-        #editor p, #editor div, #editor h1, #editor h2, #editor h3, #editor h4, #editor h5, #editor h6, #editor ul, #editor ol, #editor blockquote {
+        #editor p, #editor div, #editor h1, #editor h2, #editor h3, #editor h4, #editor h5, #editor h6, #editor blockquote {
             margin-bottom: 1em;
         }
 
-        #editor p:last-child, #editor div:last-child, #editor h1:last-child, #editor h2:last-child, #editor h3:last-child, #editor h4:last-child, #editor h5:last-child, #editor h6:last-child, #editor ul:last-child, #editor ol:last-child, #editor blockquote:last-child {
+        #editor p:last-child, #editor div:last-child, #editor h1:last-child, #editor h2:last-child, #editor h3:last-child, #editor h4:last-child, #editor h5:last-child, #editor h6:last-child, #editor blockquote:last-child {
             margin-bottom: 0;
-        }
-
-        #editor ul, #editor ol {
-            padding-left: 20px;
-        }
-
-        #editor ul li, #editor ol li {
-            margin-bottom: 0.5em;
         }
 
         .count-container {
@@ -630,9 +622,6 @@
                         <button id="align-center" title="Centreret"><i class="fas fa-align-center"></i></button>
                         <button id="align-right" title="Højrejusteret"><i class="fas fa-align-right"></i></button>
 
-                        <button id="unordered-button" title="Punktopstilling"><i class="fas fa-list-ul"></i></button>
-                        <button id="ordered-button" title="Nummereret liste"><i class="fas fa-list-ol"></i></button>
-
                     </div>
 
                     <div class="content-editor">
@@ -701,8 +690,6 @@
             const alignLeftButton = document.getElementById('align-left');
             const alignCenterButton = document.getElementById('align-center');
             const alignRightButton = document.getElementById('align-right');
-            const unorderedButton = document.getElementById('unordered-button');
-            const orderedButton = document.getElementById('ordered-button');
 
             const STORAGE_KEY = 'nextwordpl_projects';
             let currentLoadedProjectId = null;
@@ -1106,9 +1093,10 @@
             });
 
             fontSizeSelect.addEventListener('change', function() {
-                const selectedSize = this.value;
-                editorDiv.style.fontSize = selectedSize + 'px';
-                console.log(`[Debug] Font size changed to ${selectedSize}px using CSS.`);
+                const selectedSize = parseInt(this.value, 10);
+                const fontSizes = [10, 12, 14, 16, 18, 24, 36];
+                editorDiv.style.fontSize = fontSizes[selectedSize - 1] + 'px';
+                console.log(`[Debug] Font size changed to ${fontSizes[selectedSize - 1]}px using CSS.`);
             });
 
             boldButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('bold', false, null); });
@@ -1118,16 +1106,6 @@
             alignLeftButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyLeft', false, null); });
             alignCenterButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyCenter', false, null); });
             alignRightButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyRight', false, null); });
-
-            unorderedButton.addEventListener('click', function() {
-                editorDiv.focus();
-                document.execCommand('insertUnorderedList', false, null);
-            });
-
-            orderedButton.addEventListener('click', function() {
-                editorDiv.focus();
-                document.execCommand('insertOrderedList', false, null);
-            });
 
             downloadButton.addEventListener('click', function() {
                 const { jsPDF } = window.jspdf;
