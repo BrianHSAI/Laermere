@@ -200,27 +200,6 @@
             width: 0;
         }
 
-        .toggle-sidebar {
-            background: none;
-            color: var(--primary-color);
-            border: none;
-            cursor: pointer;
-            font-size: 22px;
-            padding: 0;
-            transition: color 0.2s ease, background-color 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 35px;
-            height: 35px;
-            border-radius: 5px;
-        }
-
-        .toggle-sidebar:hover {
-            color: var(--primary-color);
-            background-color: rgba(0, 123, 255, 0.1);
-        }
-
         .sidebar-content {
             padding: 15px;
             flex-grow: 1;
@@ -545,13 +524,23 @@
             border-radius: 5px;
         }
 
-        .imported-text-export {
+        .imported-text-export-quote {
             font-style: italic;
             color: #555;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+         .imported-text-export {
+            white-space: pre-wrap;
+            font-size: 16px;
+            line-height: 1.7;
             margin-bottom: 15px;
             padding-bottom: 15px;
             border-bottom: 1px dashed #ccc;
+            color: #555; /* Match imported text color */
+            font-style: italic;
         }
+
 
         #pdf-export-temp-div .edited-text-export {
         }
@@ -649,7 +638,7 @@
                         <ul id="saved-projects-list">
                         </ul>
                         <div class="actions" style="justify-content: center; padding: 15px; margin-top: 0;">
-                            <button id="export-all-button" class="export-button">Udskriv alle projekter</button>
+                            <button id="export-all-button" class="export-button">Download alle projekter</button>
                         </div>
                     </div>
                 </div>
@@ -690,6 +679,7 @@
             const alignLeftButton = document.getElementById('align-left');
             const alignCenterButton = document.getElementById('align-center');
             const alignRightButton = document.getElementById('align-right');
+
 
             const STORAGE_KEY = 'nextwordpl_projects';
             let currentLoadedProjectId = null;
@@ -736,7 +726,6 @@
                 exportAllButton.style.cursor = 'pointer';
 
                 projects.sort((a, b) => b.timestamp - a.timestamp);
-
                 projects.forEach(project => {
                     const li = document.createElement('li');
                     const spanName = document.createElement('span');
@@ -763,7 +752,6 @@
                     li.addEventListener('click', function() {
                         loadProject(project.id);
                     });
-
                     savedProjectsList.appendChild(li);
                 });
             }
@@ -778,7 +766,6 @@
 
                     if (projectToOverwrite) {
                         const confirmOverwrite = confirm(`Projektet "${projectToOverwrite.name}" er allerede indlæst.\n\nVil du overskrive den eksisterende version med dine nuværende ændringer?\n\nTryk OK for at overskrive.\nTryk Annuller for at gemme som et nyt projekt.`);
-
                         if (confirmOverwrite) {
                             projectToOverwrite.editedText = currentEditedText;
                             projectToOverwrite.importedText = currentImportedText;
@@ -802,13 +789,11 @@
 
                 while (!nameIsValid) {
                     projectName = prompt("Indtast et navn for dit nye projekt:");
-
                     if (projectName === null) {
                         return;
                     }
 
                     projectName = projectName.trim();
-
                     if (projectName === "") {
                         alert("Navn påkrævet for at gemme projektet.");
                     } else if (isProjectNameTaken(projectName)) {
@@ -828,7 +813,6 @@
                     editedText: editorDiv.innerHTML,
                     timestamp: timestamp
                 };
-
                 projects.push(newProject);
                 saveProjectsToStorage(projects);
                 renderProjectList();
@@ -849,7 +833,6 @@
 
                     const isCurrentEditorNotEmpty = (currentEditedText !== '' || currentImportedText !== '');
                     const isLoadingSameProject = (currentLoadedProjectId === id);
-
                     if (isCurrentEditorNotEmpty && !isLoadingSameProject) {
                         const confirmLoad = confirm("Du har ulagrede ændringer i den aktuelle session. Vil du indlæse projektet alligevel? Dine nuværende ændringer vil gå tabt.");
                         if (!confirmLoad) {
@@ -890,7 +873,6 @@
                 const projectToDelete = projects.find(project => project.id === id);
                 projects = projects.filter(project => project.id !== id);
                 saveProjectsToStorage(projects);
-
                 if (currentLoadedProjectId !== null && currentLoadedProjectId === id) {
                     editorDiv.innerHTML = '';
                     importedTextDiv.textContent = '';
@@ -906,11 +888,34 @@
                 renderProjectList();
             }
 
+            function extractRandomQuote(text, maxWords = 100) {
+                if (!text || text.trim() === '') {
+                    return '';
+                }
+
+                // Split into sentences, or use full text if no punctuation
+                const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+                const nonEmptySentences = sentences.filter(s => s.trim() !== '');
+
+                if (nonEmptySentences.length === 0) {
+                    return '';
+                }
+
+                const randomSentence = nonEmptySentences[Math.floor(Math.random() * nonEmptySentences.length)].trim();
+                const words = randomSentence.split(/\s+/);
+
+                if (words.length <= maxWords) {
+                    return randomSentence;
+                } else {
+                    return words.slice(0, maxWords).join(' ') + '...';
+                }
+            }
+
+
             function exportAllProjects() {
                 const projects = getProjectsFromStorage();
-
                 if (projects.length === 0) {
-                    alert("Der er ingen projekter at udskrive.");
+                    alert("Der er ingen projekter at downloade.");
                     return;
                 }
 
@@ -927,14 +932,21 @@
                         combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>Ingen</div>`;
                     }
 
+                    // Add quote sentence if imported text exists, do NOT include the full imported text
+                    if (project.importedText && project.importedText.trim() !== '') {
+                         // Use 100 words for "Download alle projekter" as previously agreed
+                         const randomQuote = extractRandomQuote(project.importedText, 100);
+                          if (randomQuote) {
+                               combinedHtml += `<p class="imported-text-export-quote"><em>Til opgaven blev anvendt en importeret tekst med dette citat: "${randomQuote}"</em></p>`;
+                           }
+                    }
+
                     combinedHtml += `</div><hr>`;
                 });
-
                 pdfExportTempDiv.innerHTML = combinedHtml;
                 pdfExportTempDiv.style.width = '210mm';
                 pdfExportTempDiv.style.padding = '15mm';
                 pdfExportTempDiv.style.display = 'block';
-
                 html2canvas(pdfExportTempDiv, {
                     scale: 2,
                     useCORS: true,
@@ -978,7 +990,6 @@
                     pdf.text(timestamp, margin, lastPageHeight - margin + 5);
 
                     pdf.save('NextWordPL-alle-projekter.pdf');
-
                     pdfExportTempDiv.style.display = 'none';
                     pdfExportTempDiv.innerHTML = '';
                 }).catch(error => {
@@ -1005,11 +1016,9 @@
 
             function updateTextStats() {
                 const text = editorDiv.textContent;
-
                 const words = text.trim().split(/\s+/);
                 const wordCount = text.trim() === '' ? 0 : words.length;
                 wordCountDiv.textContent = `Ord: ${wordCount}`;
-
                 const charCount = text.length;
                 charCountDiv.textContent = `Tegn: ${charCount}`;
             }
@@ -1052,9 +1061,11 @@
                 }
             });
 
+            // Disable copy/paste/cut in the editor
             editorDiv.addEventListener('copy', function(e) { e.preventDefault(); });
             editorDiv.addEventListener('paste', function(e) { e.preventDefault(); });
             editorDiv.addEventListener('cut', function(e) { e.preventDefault(); });
+
 
             editorDiv.addEventListener('input', updateTextStats);
 
@@ -1079,12 +1090,13 @@
                 }
 
                 currentLoadedProjectId = null;
-                window.location.href = 'index.html';
+                window.location.href = 'index.html'; // Or appropriate path to your start page
             });
 
             saveProjectButton.addEventListener('click', saveCurrentProject);
 
             exportAllButton.addEventListener('click', exportAllProjects);
+
 
             fontFamilySelect.addEventListener('change', function() {
                 const selectedFont = this.value;
@@ -1102,16 +1114,42 @@
             boldButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('bold', false, null); });
             italicButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('italic', false, null); });
             underlineButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('underline', false, null); });
-
             alignLeftButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyLeft', false, null); });
             alignCenterButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyCenter', false, null); });
             alignRightButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('justifyRight', false, null); });
+
 
             downloadButton.addEventListener('click', function() {
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
 
-                html2canvas(editorDiv, {
+                // Create a temporary div with edited text and potentially the quote sentence
+                let tempContentHtml = '';
+                const importedText = importedTextDiv.textContent.trim();
+                const editedText = editorDiv.innerHTML.trim();
+
+                 if (editedText !== '') {
+                    tempContentHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>${editedText}</div>`;
+                } else {
+                     tempContentHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>Ingen</div>`;
+                }
+
+                // Add quote sentence if imported text exists (max 50 words for single download)
+                if (importedText !== '') {
+                     const randomQuote = extractRandomQuote(importedText, 50); // 50 words for single download
+                      if (randomQuote) {
+                           tempContentHtml += `<p class="imported-text-export-quote"><em>Til denne opgave blev brugt en importeret tekst med dette citat: "${randomQuote}"</em></p>`;
+                       }
+                }
+
+
+                pdfExportTempDiv.innerHTML = tempContentHtml;
+                pdfExportTempDiv.style.display = 'block'; // Make visible for html2canvas
+                pdfExportTempDiv.style.width = '210mm'; // Set explicit width for consistent rendering
+                pdfExportTempDiv.style.padding = '15mm'; // Add padding
+
+
+                html2canvas(pdfExportTempDiv, {
                     scale: 2,
                     logging: false,
                     useCORS: true
@@ -1124,17 +1162,21 @@
 
                     let imgWidth = pdfWidth - (2 * margin);
                     let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
                     let imgX = margin;
                     let imgY = margin;
 
-                    const availableHeight = pdfHeight - (2 * margin) - 10;
+                     // Check if image fits on one page
+                    if (imgHeight > pdfHeight - (2 * margin)) {
+                        // Calculate scaling to fit height
+                         const availableHeight = pdfHeight - (2 * margin);
+                         const aspectRatio = canvas.width / canvas.height;
+                         imgHeight = availableHeight;
+                         imgWidth = imgHeight * aspectRatio;
+                         imgX = (pdfWidth - imgWidth) / 2; // Center horizontally if scaled
+                         imgY = margin;
+                     }
 
-                    if (imgHeight > availableHeight) {
-                        const aspectRatio = canvas.width / canvas.height;
-                        imgHeight = availableHeight;
-                        imgWidth = imgHeight * aspectRatio;
-                        imgX = (pdfWidth - imgWidth) / 2;
-                    }
 
                     pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
 
@@ -1149,11 +1191,24 @@
 
                     pdf.save('NextWordPL-dokument.pdf');
 
+                    // Clean up temporary div
+                    pdfExportTempDiv.innerHTML = '';
+                    pdfExportTempDiv.style.display = 'none';
+                    pdfExportTempDiv.style.width = '';
+                    pdfExportTempDiv.style.padding = '';
+
+
                 }).catch(error => {
                     console.error("Fejl ved generering af PDF (aktuelt projekt):", error);
                     alert("Der opstod en fejl under generering af PDF'en.");
+                     // Clean up temporary div in case of error
+                    pdfExportTempDiv.innerHTML = '';
+                    pdfExportTempDiv.style.display = 'none';
+                    pdfExportTempDiv.style.width = '';
+                    pdfExportTempDiv.style.padding = '';
                 });
             });
+
 
             toggleRightSidebarButton.addEventListener('click', function() {
                 rightSidebar.classList.toggle('collapsed');
