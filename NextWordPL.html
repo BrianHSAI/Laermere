@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* CSS forbliver uændret */
         :root {
             --primary-color: #007bff;
             --secondary-color: #28a745;
@@ -509,9 +510,17 @@
             width: 210mm;
             padding: 15mm;
             background-color: white;
+            font-size: 12pt;
+            line-height: 1.5;
+        }
+
+        #pdf-export-temp-div h1 {
+            font-size: 18pt;
+            margin-bottom: 10mm;
         }
 
         #pdf-export-temp-div h3 {
+            font-size: 14pt;
             margin-top: 20px;
             margin-bottom: 10px;
             color: #004d40;
@@ -541,10 +550,8 @@
             font-style: italic;
         }
 
-
         #pdf-export-temp-div .edited-text-export {
         }
-
     </style>
 </head>
 <body>
@@ -833,6 +840,7 @@
 
                     const isCurrentEditorNotEmpty = (currentEditedText !== '' || currentImportedText !== '');
                     const isLoadingSameProject = (currentLoadedProjectId === id);
+                    
                     if (isCurrentEditorNotEmpty && !isLoadingSameProject) {
                         const confirmLoad = confirm("Du har ulagrede ændringer i den aktuelle session. Vil du indlæse projektet alligevel? Dine nuværende ændringer vil gå tabt.");
                         if (!confirmLoad) {
@@ -911,6 +919,269 @@
                 }
             }
 
+            // Ny tekstbaseret PDF-generering
+            function generatePDF(content, filename) {
+                // Initialiser jsPDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                
+                // A4 dimensioner
+                const pageWidth = 210;
+                const pageHeight = 297;
+                const margin = 20;
+                const contentWidth = pageWidth - (margin * 2);
+                const lineHeight = 7; // mm
+                
+                // Få den aktuelle dato til tidsstempel
+                const now = new Date();
+                const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
+                
+                // Funktion til at tilføje sidefod til hver side
+                function addFooter(pageNum) {
+                    pdf.setFontSize(9);
+                    pdf.setTextColor(100, 100, 100);
+                    pdf.text(timestamp, margin, pageHeight - 10);
+                    pdf.text(`Side ${pageNum}`, pageWidth - margin - 15, pageHeight - 10);
+                }
+                
+                // Funktion til at ekstrahere ren tekst fra HTML
+                function extractTextFromHTML(html) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    return tempDiv.textContent || tempDiv.innerText || '';
+                }
+                
+                // Funktion til at opdele tekst i afsnit
+                function splitTextIntoParagraphs(text) {
+                    // Fjern ekstra mellemrum og opdel ved dobbelte linjeskift
+                    return text.replace(/\s+/g, ' ')
+                        .split(/\n\s*\n/)
+                        .map(p => p.trim())
+                        .filter(p => p.length > 0);
+                }
+                
+                // Funktion til at opdele tekst i linjer der passer på siden
+                function splitTextIntoLines(text, fontSize, maxWidth) {
+                    pdf.setFontSize(fontSize);
+                    const words = text.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    
+                    for (let i = 0; i < words.length; i++) {
+                        const word = words[i];
+                        const testLine = currentLine + (currentLine ? ' ' : '') + word;
+                        const testWidth = pdf.getStringUnitWidth(testLine) * fontSize / pdf.internal.scaleFactor;
+                        
+                        if (testWidth > maxWidth) {
+                            lines.push(currentLine);
+                            currentLine = word;
+                        } else {
+                            currentLine = testLine;
+                        }
+                    }
+                    
+                    if (currentLine) {
+                        lines.push(currentLine);
+                    }
+                    
+                    return lines;
+                }
+                
+                // Funktion til at tilføje tekst med automatisk sideskift
+                function addTextWithPageBreaks(text, startY) {
+                    const paragraphs = splitTextIntoParagraphs(text);
+                    let currentY = startY;
+                    let pageNum = 1;
+                    
+                    // Tilføj titel på første side
+                    pdf.setFontSize(18);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.text('NextWordPL Dokument', margin, currentY);
+                    currentY += 15;
+                    
+                    // Tilføj sidefod på første side
+                    addFooter(pageNum);
+                    
+                    // Tilføj brødtekst
+                    pdf.setFontSize(12);
+                    pdf.setFont('helvetica', 'normal');
+                    
+                    for (let i = 0; i < paragraphs.length; i++) {
+                        const paragraph = paragraphs[i];
+                        const lines = splitTextIntoLines(paragraph, 12, contentWidth);
+                        
+                        // Tjek om der er plads til afsnittet på den aktuelle side
+                        const paragraphHeight = lines.length * lineHeight;
+                        
+                        if (currentY + paragraphHeight > pageHeight - margin - 15) {
+                            // Ikke nok plads, start en ny side
+                            pdf.addPage();
+                            pageNum++;
+                            currentY = margin + 10;
+                            
+                            // Tilføj "Fortsat" overskrift på den nye side
+                            pdf.setFontSize(14);
+                            pdf.setFont('helvetica', 'bold');
+                            pdf.text(`Fortsat - Side ${pageNum}`, margin, currentY);
+                            currentY += 10;
+                            
+                            // Nulstil til brødtekst
+                            pdf.setFontSize(12);
+                            pdf.setFont('helvetica', 'normal');
+                            
+                            // Tilføj sidefod på den nye side
+                            addFooter(pageNum);
+                        }
+                        
+                        // Tilføj linjerne i afsnittet
+                        for (let j = 0; j < lines.length; j++) {
+                            pdf.text(lines[j], margin, currentY);
+                            currentY += lineHeight;
+                            
+                            // Tjek om vi har nået bunden af siden
+                            if (currentY > pageHeight - margin - 15 && (j < lines.length - 1 || i < paragraphs.length - 1)) {
+                                // Ikke nok plads til næste linje, start en ny side
+                                pdf.addPage();
+                                pageNum++;
+                                currentY = margin + 10;
+                                
+                                // Tilføj "Fortsat" overskrift på den nye side
+                                pdf.setFontSize(14);
+                                pdf.setFont('helvetica', 'bold');
+                                pdf.text(`Fortsat - Side ${pageNum}`, margin, currentY);
+                                currentY += 10;
+                                
+                                // Nulstil til brødtekst
+                                pdf.setFontSize(12);
+                                pdf.setFont('helvetica', 'normal');
+                                
+                                // Tilføj sidefod på den nye side
+                                addFooter(pageNum);
+                            }
+                        }
+                        
+                        // Tilføj ekstra mellemrum mellem afsnit
+                        currentY += lineHeight / 2;
+                    }
+                    
+                    // Tilføj citat fra importeret tekst hvis tilgængelig
+                    const importedText = importedTextDiv.textContent.trim();
+                    if (importedText !== '') {
+                        const randomQuote = extractRandomQuote(importedText, 50);
+                        if (randomQuote) {
+                            // Tjek om der er plads til citatet på den aktuelle side
+                            const quoteLines = splitTextIntoLines(`Til denne opgave blev brugt en importeret tekst med dette citat: "${randomQuote}"`, 10, contentWidth);
+                            const quoteHeight = quoteLines.length * lineHeight + 10;
+                            
+                            if (currentY + quoteHeight > pageHeight - margin - 15) {
+                                // Ikke nok plads, start en ny side
+                                pdf.addPage();
+                                pageNum++;
+                                currentY = margin + 10;
+                                
+                                // Tilføj "Afsluttende bemærkninger" overskrift på den nye side
+                                pdf.setFontSize(14);
+                                pdf.setFont('helvetica', 'bold');
+                                pdf.text(`Afsluttende bemærkninger - Side ${pageNum}`, margin, currentY);
+                                currentY += 10;
+                                
+                                // Tilføj sidefod på den nye side
+                                addFooter(pageNum);
+                            }
+                            
+                            // Tilføj citatet
+                            pdf.setFontSize(10);
+                            pdf.setFont('helvetica', 'italic');
+                            
+                            for (let i = 0; i < quoteLines.length; i++) {
+                                pdf.text(quoteLines[i], margin, currentY);
+                                currentY += lineHeight;
+                            }
+                        }
+                    }
+                    
+                    return pageNum;
+                }
+                
+                // Ekstraher tekst fra HTML-indholdet
+                const plainText = extractTextFromHTML(content.innerHTML);
+                
+                // Tilføj tekst til PDF med automatisk sideskift
+                const pageCount = addTextWithPageBreaks(plainText, margin + 10);
+                
+                // Gem PDF'en
+                pdf.save(filename);
+            }
+
+            // Forbered indhold til eksport af enkelt projekt
+            function prepareSingleProjectContent() {
+                const container = document.createElement('div');
+                
+                // Tilføj redigeret tekst
+                const editedText = editorDiv.innerHTML.trim();
+                if (editedText !== '') {
+                    const editedTextDiv = document.createElement('div');
+                    editedTextDiv.innerHTML = editedText;
+                    container.appendChild(editedTextDiv);
+                } else {
+                    const noEditedTextDiv = document.createElement('div');
+                    noEditedTextDiv.innerHTML = `<p>Ingen redigeret tekst</p>`;
+                    container.appendChild(noEditedTextDiv);
+                }
+                
+                return container;
+            }
+
+            // Forbered indhold til eksport af alle projekter
+            function prepareAllProjectsContent() {
+                const projects = getProjectsFromStorage();
+                if (projects.length === 0) {
+                    return null;
+                }
+                
+                const container = document.createElement('div');
+                
+                // Tilføj hvert projekt
+                projects.forEach((project, index) => {
+                    // Projekttitel
+                    const projectTitle = document.createElement('h3');
+                    projectTitle.textContent = project.name || 'Projekt uden navn';
+                    container.appendChild(projectTitle);
+                    
+                    // Redigeret tekst
+                    if (project.editedText && project.editedText.trim() !== '') {
+                        const editedTextDiv = document.createElement('div');
+                        editedTextDiv.innerHTML = project.editedText;
+                        container.appendChild(editedTextDiv);
+                    } else {
+                        const noEditedTextDiv = document.createElement('div');
+                        noEditedTextDiv.innerHTML = `<p>Ingen redigeret tekst</p>`;
+                        container.appendChild(noEditedTextDiv);
+                    }
+                    
+                    // Citat fra importeret tekst
+                    if (project.importedText && project.importedText.trim() !== '') {
+                        const randomQuote = extractRandomQuote(project.importedText, 100);
+                        if (randomQuote) {
+                            const quoteDiv = document.createElement('p');
+                            quoteDiv.innerHTML = `Til opgaven blev anvendt en importeret tekst med dette citat: "${randomQuote}"`;
+                            container.appendChild(quoteDiv);
+                        }
+                    }
+                    
+                    // Tilføj separator mellem projekter
+                    if (index < projects.length - 1) {
+                        const separator = document.createElement('hr');
+                        container.appendChild(separator);
+                    }
+                });
+                
+                return container;
+            }
 
             function exportAllProjects() {
                 const projects = getProjectsFromStorage();
@@ -918,86 +1189,13 @@
                     alert("Der er ingen projekter at downloade.");
                     return;
                 }
-
-                let combinedHtml = '<h1>Samlet Rapport - NextWordPL Projekter</h1>';
-                combinedHtml += `<p>Genereret: ${new Date().toLocaleDateString('da-DK')} ${new Date().toLocaleTimeString('da-DK')}</p><hr>`;
-
-                projects.forEach(project => {
-                    combinedHtml += `<h3>${project.name || 'Projekt uden navn'}</h3>`;
-                    combinedHtml += `<div class="exported-project-content">`;
-
-                    if (project.editedText && project.editedText.trim() !== '') {
-                        combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>${project.editedText}</div>`;
-                    } else {
-                        combinedHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>Ingen</div>`;
-                    }
-
-                    // Add quote sentence if imported text exists, do NOT include the full imported text
-                    if (project.importedText && project.importedText.trim() !== '') {
-                         // Use 100 words for "Download alle projekter" as previously agreed
-                         const randomQuote = extractRandomQuote(project.importedText, 100);
-                          if (randomQuote) {
-                               combinedHtml += `<p class="imported-text-export-quote"><em>Til opgaven blev anvendt en importeret tekst med dette citat: "${randomQuote}"</em></p>`;
-                           }
-                    }
-
-                    combinedHtml += `</div><hr>`;
-                });
-                pdfExportTempDiv.innerHTML = combinedHtml;
-                pdfExportTempDiv.style.width = '210mm';
-                pdfExportTempDiv.style.padding = '15mm';
-                pdfExportTempDiv.style.display = 'block';
-                html2canvas(pdfExportTempDiv, {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false
-                }).then(canvas => {
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = pdf.internal.pageSize.getHeight();
-                    const margin = 15;
-
-                    let imgWidth = pdfWidth - (2 * margin);
-                    let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                    const imgHeightPage = pdfHeight - (2 * margin);
-                    let heightLeft = imgHeight;
-                    let position = margin;
-
-                    const imgX = margin;
-
-                    while (heightLeft > 0) {
-                        if (position !== margin) {
-                            pdf.addPage();
-                        }
-
-                        const sliceHeightPx = Math.min(heightLeft / imgHeight * canvas.height, canvas.height);
-                        const sliceYPx = (imgHeight - heightLeft) / imgHeight * canvas.height;
-
-                        const imgData = canvas.toDataURL('image/png');
-                        pdf.addImage(imgData, 'PNG', imgX, position, imgWidth, imgHeight, null, null, sliceYPx, sliceHeightPx);
-
-                        heightLeft -= imgHeightPage;
-                        position = margin;
-                    }
-
-                    const now = new Date();
-                    const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
-                    pdf.setFontSize(10);
-                    const lastPageHeight = pdf.internal.pageSize.getHeight();
-                    pdf.text(timestamp, margin, lastPageHeight - margin + 5);
-
-                    pdf.save('NextWordPL-alle-projekter.pdf');
-                    pdfExportTempDiv.style.display = 'none';
-                    pdfExportTempDiv.innerHTML = '';
-                }).catch(error => {
-                    console.error("Fejl ved generering af samlet PDF:", error);
-                    alert("Der opstod en fejl under generering af den samlede PDF.");
-                    pdfExportTempDiv.style.display = 'none';
-                    pdfExportTempDiv.innerHTML = '';
-                });
+                
+                const content = prepareAllProjectsContent();
+                if (content) {
+                    generatePDF(content, 'NextWordPL-alle-projekter.pdf');
+                } else {
+                    alert("Der opstod en fejl ved forberedelse af projekterne til eksport.");
+                }
             }
 
             function insertTextAtCursor(text) {
@@ -1120,95 +1318,9 @@
 
 
             downloadButton.addEventListener('click', function() {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-
-                // Create a temporary div with edited text and potentially the quote sentence
-                let tempContentHtml = '';
-                const importedText = importedTextDiv.textContent.trim();
-                const editedText = editorDiv.innerHTML.trim();
-
-                 if (editedText !== '') {
-                    tempContentHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>${editedText}</div>`;
-                } else {
-                     tempContentHtml += `<div class="edited-text-export"><strong>Redigeret tekst:</strong><br>Ingen</div>`;
-                }
-
-                // Add quote sentence if imported text exists (max 50 words for single download)
-                if (importedText !== '') {
-                     const randomQuote = extractRandomQuote(importedText, 50); // 50 words for single download
-                      if (randomQuote) {
-                           tempContentHtml += `<p class="imported-text-export-quote"><em>Til denne opgave blev brugt en importeret tekst med dette citat: "${randomQuote}"</em></p>`;
-                       }
-                }
-
-
-                pdfExportTempDiv.innerHTML = tempContentHtml;
-                pdfExportTempDiv.style.display = 'block'; // Make visible for html2canvas
-                pdfExportTempDiv.style.width = '210mm'; // Set explicit width for consistent rendering
-                pdfExportTempDiv.style.padding = '15mm'; // Add padding
-
-
-                html2canvas(pdfExportTempDiv, {
-                    scale: 2,
-                    logging: false,
-                    useCORS: true
-                }).then(canvas => {
-                    const imgData = canvas.toDataURL('image/png');
-
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = pdf.internal.pageSize.getHeight();
-                    const margin = 15;
-
-                    let imgWidth = pdfWidth - (2 * margin);
-                    let imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                    let imgX = margin;
-                    let imgY = margin;
-
-                     // Check if image fits on one page
-                    if (imgHeight > pdfHeight - (2 * margin)) {
-                        // Calculate scaling to fit height
-                         const availableHeight = pdfHeight - (2 * margin);
-                         const aspectRatio = canvas.width / canvas.height;
-                         imgHeight = availableHeight;
-                         imgWidth = imgHeight * aspectRatio;
-                         imgX = (pdfWidth - imgWidth) / 2; // Center horizontally if scaled
-                         imgY = margin;
-                     }
-
-
-                    pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
-
-                    const now = new Date();
-                    const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
-
-                    pdf.setFontSize(10);
-                    const timestampX = margin;
-                    const timestampY = pdfHeight - margin + 5;
-
-                    pdf.text(timestamp, timestampX, timestampY);
-
-                    pdf.save('NextWordPL-dokument.pdf');
-
-                    // Clean up temporary div
-                    pdfExportTempDiv.innerHTML = '';
-                    pdfExportTempDiv.style.display = 'none';
-                    pdfExportTempDiv.style.width = '';
-                    pdfExportTempDiv.style.padding = '';
-
-
-                }).catch(error => {
-                    console.error("Fejl ved generering af PDF (aktuelt projekt):", error);
-                    alert("Der opstod en fejl under generering af PDF'en.");
-                     // Clean up temporary div in case of error
-                    pdfExportTempDiv.innerHTML = '';
-                    pdfExportTempDiv.style.display = 'none';
-                    pdfExportTempDiv.style.width = '';
-                    pdfExportTempDiv.style.padding = '';
-                });
+                const content = prepareSingleProjectContent();
+                generatePDF(content, 'NextWordPL-dokument.pdf');
             });
-
 
             toggleRightSidebarButton.addEventListener('click', function() {
                 rightSidebar.classList.toggle('collapsed');
