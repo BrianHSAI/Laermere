@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextWordPL</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* CSS forbliver uændret */
@@ -305,6 +304,16 @@
             margin-bottom: 0;
         }
 
+        #print-timestamp {
+            display: none; /* Hidden by default */
+            text-align: right;
+            font-size: 9pt;
+            color: #555;
+            margin-top: 10px;
+            padding: 0 10px; /* Adjust padding if needed to align with #editor's content */
+        }
+
+
         .count-container {
             display: flex;
             justify-content: flex-end;
@@ -331,7 +340,7 @@
         .action-button,
         .back-button,
         .save-button,
-        .export-button {
+        .export-button { /* Keep .export-button for styling if not changing its core look */
             padding: 12px 25px;
             border: none;
             border-radius: 5px;
@@ -383,8 +392,8 @@
             transform: translateY(0);
         }
 
-        .export-button {
-            background-color: var(--accent-color);
+        .export-button { /* This will be for "Indlæs alle projekter i editor" */
+            background-color: var(--accent-color); /* Keep the accent color for this new functionality */
             color: var(--white);
         }
 
@@ -396,6 +405,7 @@
         .export-button:active {
             transform: translateY(0);
         }
+
 
         #saved-projects-sidebar {
             width: 300px;
@@ -503,54 +513,87 @@
             color: #c82333;
         }
 
-        #pdf-export-temp-div {
-            position: absolute !important;
-            left: -9999px !important;
-            top: -9999px !important;
-            width: 210mm;
-            padding: 15mm;
-            background-color: white;
-            font-size: 12pt;
-            line-height: 1.5;
-        }
+        /* --- PRINT STYLES --- */
+        @media print {
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important; /* Prevent scrollbars in print */
+            }
 
-        #pdf-export-temp-div h1 {
-            font-size: 18pt;
-            margin-bottom: 10mm;
-        }
+            /* Hide all direct children of body by default */
+            body > * {
+                display: none !important;
+            }
 
-        #pdf-export-temp-div h3 {
-            font-size: 14pt;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: #004d40;
-        }
+            /* Explicitly display the editor-screen and its necessary ancestors */
+            .container,
+            #editor-screen,
+            .editor-container,
+            .editor-main,
+            .content-editor {
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                background-color: white !important;
+                position: relative !important; /* Ensure proper positioning */
+                overflow: visible !important; /* Ensure content is not cut off */
+            }
 
-        #pdf-export-temp-div .exported-project-content {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
+            /* The editor itself */
+            #editor {
+                display: block !important; /* Ensure it's a block element */
+                width: 100% !important;
+                height: auto !important;
+                min-height: unset !important; /* Allow it to expand */
+                padding: 20mm !important; /* Standard A4 margins */
+                border: none !important;
+                background-color: white !important;
+                color: black !important;
+                line-height: 1.5 !important;
+                font-size: 12pt !important;
+                box-shadow: none !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
 
-        .imported-text-export-quote {
-            font-style: italic;
-            color: #555;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-         .imported-text-export {
-            white-space: pre-wrap;
-            font-size: 16px;
-            line-height: 1.7;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed #ccc;
-            color: #555; /* Match imported text color */
-            font-style: italic;
-        }
+            /* Specific elements to always hide */
+            .sidebar,
+            .toolbar,
+            .count-container,
+            .actions,
+            header,
+            #start-screen,
+            #saved-projects-sidebar {
+                display: none !important;
+            }
 
-        #pdf-export-temp-div .edited-text-export {
+            /* Ensure basic formatting like paragraphs, etc. have some margin */
+            #editor p, #editor div, #editor h1, #editor h2, #editor h3, #editor h4, #editor h5, #editor h6, #editor blockquote {
+                margin-bottom: 1em !important; /* Maintain some spacing */
+            }
+            #editor blockquote {
+                border-left: 2px solid #ccc !important;
+                padding-left: 1em !important;
+                margin-left: 1em !important;
+            }
+
+            /* Timestamp for print */
+            #print-timestamp {
+                display: block !important; /* Make it visible during print */
+                text-align: right !important;
+                font-size: 9pt !important;
+                color: #555 !important;
+                margin-top: 10mm !important; /* Space above timestamp */
+                padding: 0 20mm !important; /* Align with editor's padding */
+                box-sizing: border-box !important; /* Include padding in width */
+            }
+            @page {
+                margin: 0; /* Browser dependent for removing headers/footers */
+            }
         }
     </style>
 </head>
@@ -562,7 +605,8 @@
     <div class="container">
         <div id="start-screen">
             <div id="welcome-message">
-                <p>Indsæt din tekst nedenfor for at begynde at arbejde med den, eller vælg "Start uden tekst" for at starte fra bunden.</p>
+                <p>Indsæt din tekst nedenfor for at begynde at arbejde med den, eller vælg "Start uden tekst" for at starte
+fra bunden.</p>
             </div>
 
             <div id="text-input-container">
@@ -592,7 +636,8 @@
                     <div class="toolbar">
                         <select id="font-family" title="Skrifttype">
                             <option value="Arial, sans-serif">Arial</option>
-                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option
+value="'Times New Roman', serif">Times New Roman</option>
                             <option value="Georgia, serif">Georgia</option>
                             <option value="'Courier New', monospace">Courier New</option>
                             <option value="Verdana, sans-serif">Verdana</option>
@@ -603,7 +648,8 @@
                         <select id="font-size" title="Skriftstørrelse">
                             <option value="1">10px</option>
                             <option value="2">12px</option>
-                            <option value="3" selected>14px</option>
+                            <option
+value="3" selected>14px</option>
                             <option value="4">16px</option>
                             <option value="5">18px</option>
                             <option value="6">24px</option>
@@ -622,7 +668,7 @@
 
                     <div class="content-editor">
                         <div id="editor" contenteditable="true"></div>
-                    </div>
+                        <div id="print-timestamp"></div> </div>
 
                     <div class="count-container">
                         <div id="word-count">Ord: 0</div>
@@ -632,7 +678,7 @@
                     <div class="actions">
                         <button id="back-button" class="back-button">Tilbage</button>
                         <button id="save-project-button" class="save-button">Gem projekt</button>
-                        <button id="download-button" class="action-button">Download som PDF</button>
+                        <button id="download-button" class="action-button">Udskriv / Gem som PDF</button>
                     </div>
                 </div>
 
@@ -643,24 +689,26 @@
                     </div>
                     <div class="sidebar-content">
                         <ul id="saved-projects-list">
+
                         </ul>
-                        <div class="actions" style="justify-content: center; padding: 15px; margin-top: 0;">
-                            <button id="export-all-button" class="export-button">Download alle projekter</button>
+                        <div class="actions" style="justify-content: center;
+padding: 15px; margin-top: 0;">
+                            <button id="export-all-button" class="export-button">Indlæs alle projekter i editor</button>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
-
-    <div id="pdf-export-temp-div" style="display: none;"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const startScreen = document.getElementById('start-screen');
             const editorScreen = document.getElementById('editor-screen');
             const initialTextArea = document.getElementById('initial-text');
-            const noTextCheckbox = document.getElementById('no-text-checkbox');
+            const noTextCheckbox
+= document.getElementById('no-text-checkbox');
             const startButton = document.getElementById('start-button');
             const importedTextDiv = document.querySelector('.imported-text');
             const editorDiv = document.getElementById('editor');
@@ -672,8 +720,8 @@
             const charCountDiv = document.getElementById('char-count');
             const saveProjectButton = document.getElementById('save-project-button');
             const savedProjectsList = document.getElementById('saved-projects-list');
-            const exportAllButton = document.getElementById('export-all-button');
-            const pdfExportTempDiv = document.getElementById('pdf-export-temp-div');
+            const exportAllButton = document.getElementById('export-all-button'); // Now for loading all projects
+            const printTimestampDiv = document.getElementById('print-timestamp');
 
             const rightSidebar = document.getElementById('saved-projects-sidebar');
             const toggleRightSidebarButton = document.getElementById('toggle-right-sidebar');
@@ -840,7 +888,6 @@
 
                     const isCurrentEditorNotEmpty = (currentEditedText !== '' || currentImportedText !== '');
                     const isLoadingSameProject = (currentLoadedProjectId === id);
-                    
                     if (isCurrentEditorNotEmpty && !isLoadingSameProject) {
                         const confirmLoad = confirm("Du har ulagrede ændringer i den aktuelle session. Vil du indlæse projektet alligevel? Dine nuværende ændringer vil gå tabt.");
                         if (!confirmLoad) {
@@ -848,7 +895,8 @@
                         }
                     } else if (isCurrentEditorNotEmpty && isLoadingSameProject) {
                         if (currentEditedText !== projectToLoad.editedText.trim() || currentImportedText !== projectToLoad.importedText.trim()) {
-                            const confirmRevert = confirm(`Du har ulagrede ændringer til projektet "${projectToLoad.name}".\n\nVil du forkaste dine ændringer og genindlæse den senest gemte version?`);
+                            const confirmRevert = confirm(`Du har ulagrede ændringer til projektet "${projectToLoad.name}".\n\nVil du forkaste dine ændringer
+og genindlæse den senest gemte version?`);
                             if (!confirmRevert) {
                                 return;
                             }
@@ -902,7 +950,8 @@
                 }
 
                 // Split into sentences, or use full text if no punctuation
-                const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+                const sentences = text.match(/[^.!?]+[.!?]+/g) ||
+                [text];
                 const nonEmptySentences = sentences.filter(s => s.trim() !== '');
 
                 if (nonEmptySentences.length === 0) {
@@ -919,284 +968,50 @@
                 }
             }
 
-            // Ny tekstbaseret PDF-generering
-            function generatePDF(content, filename) {
-                // Initialiser jsPDF
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
-                
-                // A4 dimensioner
-                const pageWidth = 210;
-                const pageHeight = 297;
-                const margin = 20;
-                const contentWidth = pageWidth - (margin * 2);
-                const lineHeight = 7; // mm
-                
-                // Få den aktuelle dato til tidsstempel
-                const now = new Date();
-                const timestamp = `Genereret: ${now.toLocaleDateString('da-DK')} ${now.toLocaleTimeString('da-DK')}`;
-                
-                // Funktion til at tilføje sidefod til hver side
-                function addFooter(pageNum) {
-                    pdf.setFontSize(9);
-                    pdf.setTextColor(100, 100, 100);
-                    pdf.text(timestamp, margin, pageHeight - 10);
-                    pdf.text(`Side ${pageNum}`, pageWidth - margin - 15, pageHeight - 10);
-                }
-                
-                // Funktion til at ekstrahere ren tekst fra HTML
-                function extractTextFromHTML(html) {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = html;
-                    return tempDiv.textContent || tempDiv.innerText || '';
-                }
-                
-                // Funktion til at opdele tekst i afsnit
-                function splitTextIntoParagraphs(text) {
-                    // Fjern ekstra mellemrum og opdel ved dobbelte linjeskift
-                    return text.replace(/\s+/g, ' ')
-                        .split(/\n\s*\n/)
-                        .map(p => p.trim())
-                        .filter(p => p.length > 0);
-                }
-                
-                // Funktion til at opdele tekst i linjer der passer på siden
-                function splitTextIntoLines(text, fontSize, maxWidth) {
-                    pdf.setFontSize(fontSize);
-                    const words = text.split(' ');
-                    const lines = [];
-                    let currentLine = '';
-                    
-                    for (let i = 0; i < words.length; i++) {
-                        const word = words[i];
-                        const testLine = currentLine + (currentLine ? ' ' : '') + word;
-                        const testWidth = pdf.getStringUnitWidth(testLine) * fontSize / pdf.internal.scaleFactor;
-                        
-                        if (testWidth > maxWidth) {
-                            lines.push(currentLine);
-                            currentLine = word;
-                        } else {
-                            currentLine = testLine;
-                        }
-                    }
-                    
-                    if (currentLine) {
-                        lines.push(currentLine);
-                    }
-                    
-                    return lines;
-                }
-                
-                // Funktion til at tilføje tekst med automatisk sideskift
-                function addTextWithPageBreaks(text, startY) {
-                    const paragraphs = splitTextIntoParagraphs(text);
-                    let currentY = startY;
-                    let pageNum = 1;
-                    
-                    // Tilføj titel på første side
-                    pdf.setFontSize(18);
-                    pdf.setFont('helvetica', 'bold');
-                    pdf.text('NextWordPL Dokument', margin, currentY);
-                    currentY += 15;
-                    
-                    // Tilføj sidefod på første side
-                    addFooter(pageNum);
-                    
-                    // Tilføj brødtekst
-                    pdf.setFontSize(12);
-                    pdf.setFont('helvetica', 'normal');
-                    
-                    for (let i = 0; i < paragraphs.length; i++) {
-                        const paragraph = paragraphs[i];
-                        const lines = splitTextIntoLines(paragraph, 12, contentWidth);
-                        
-                        // Tjek om der er plads til afsnittet på den aktuelle side
-                        const paragraphHeight = lines.length * lineHeight;
-                        
-                        if (currentY + paragraphHeight > pageHeight - margin - 15) {
-                            // Ikke nok plads, start en ny side
-                            pdf.addPage();
-                            pageNum++;
-                            currentY = margin + 10;
-                            
-                            // Tilføj "Fortsat" overskrift på den nye side
-                            pdf.setFontSize(14);
-                            pdf.setFont('helvetica', 'bold');
-                            pdf.text(`Fortsat - Side ${pageNum}`, margin, currentY);
-                            currentY += 10;
-                            
-                            // Nulstil til brødtekst
-                            pdf.setFontSize(12);
-                            pdf.setFont('helvetica', 'normal');
-                            
-                            // Tilføj sidefod på den nye side
-                            addFooter(pageNum);
-                        }
-                        
-                        // Tilføj linjerne i afsnittet
-                        for (let j = 0; j < lines.length; j++) {
-                            pdf.text(lines[j], margin, currentY);
-                            currentY += lineHeight;
-                            
-                            // Tjek om vi har nået bunden af siden
-                            if (currentY > pageHeight - margin - 15 && (j < lines.length - 1 || i < paragraphs.length - 1)) {
-                                // Ikke nok plads til næste linje, start en ny side
-                                pdf.addPage();
-                                pageNum++;
-                                currentY = margin + 10;
-                                
-                                // Tilføj "Fortsat" overskrift på den nye side
-                                pdf.setFontSize(14);
-                                pdf.setFont('helvetica', 'bold');
-                                pdf.text(`Fortsat - Side ${pageNum}`, margin, currentY);
-                                currentY += 10;
-                                
-                                // Nulstil til brødtekst
-                                pdf.setFontSize(12);
-                                pdf.setFont('helvetica', 'normal');
-                                
-                                // Tilføj sidefod på den nye side
-                                addFooter(pageNum);
-                            }
-                        }
-                        
-                        // Tilføj ekstra mellemrum mellem afsnit
-                        currentY += lineHeight / 2;
-                    }
-                    
-                    // Tilføj citat fra importeret tekst hvis tilgængelig
-                    const importedText = importedTextDiv.textContent.trim();
-                    if (importedText !== '') {
-                        const randomQuote = extractRandomQuote(importedText, 50);
-                        if (randomQuote) {
-                            // Tjek om der er plads til citatet på den aktuelle side
-                            const quoteLines = splitTextIntoLines(`Til denne opgave blev brugt en importeret tekst med dette citat: "${randomQuote}"`, 10, contentWidth);
-                            const quoteHeight = quoteLines.length * lineHeight + 10;
-                            
-                            if (currentY + quoteHeight > pageHeight - margin - 15) {
-                                // Ikke nok plads, start en ny side
-                                pdf.addPage();
-                                pageNum++;
-                                currentY = margin + 10;
-                                
-                                // Tilføj "Afsluttende bemærkninger" overskrift på den nye side
-                                pdf.setFontSize(14);
-                                pdf.setFont('helvetica', 'bold');
-                                pdf.text(`Afsluttende bemærkninger - Side ${pageNum}`, margin, currentY);
-                                currentY += 10;
-                                
-                                // Tilføj sidefod på den nye side
-                                addFooter(pageNum);
-                            }
-                            
-                            // Tilføj citatet
-                            pdf.setFontSize(10);
-                            pdf.setFont('helvetica', 'italic');
-                            
-                            for (let i = 0; i < quoteLines.length; i++) {
-                                pdf.text(quoteLines[i], margin, currentY);
-                                currentY += lineHeight;
-                            }
-                        }
-                    }
-                    
-                    return pageNum;
-                }
-                
-                // Ekstraher tekst fra HTML-indholdet
-                const plainText = extractTextFromHTML(content.innerHTML);
-                
-                // Tilføj tekst til PDF med automatisk sideskift
-                const pageCount = addTextWithPageBreaks(plainText, margin + 10);
-                
-                // Gem PDF'en
-                pdf.save(filename);
-            }
-
-            // Forbered indhold til eksport af enkelt projekt
-            function prepareSingleProjectContent() {
-                const container = document.createElement('div');
-                
-                // Tilføj redigeret tekst
-                const editedText = editorDiv.innerHTML.trim();
-                if (editedText !== '') {
-                    const editedTextDiv = document.createElement('div');
-                    editedTextDiv.innerHTML = editedText;
-                    container.appendChild(editedTextDiv);
-                } else {
-                    const noEditedTextDiv = document.createElement('div');
-                    noEditedTextDiv.innerHTML = `<p>Ingen redigeret tekst</p>`;
-                    container.appendChild(noEditedTextDiv);
-                }
-                
-                return container;
-            }
-
-            // Forbered indhold til eksport af alle projekter
-            function prepareAllProjectsContent() {
+            // NEW FUNCTION: Combine all projects into a single HTML string for editor display
+            function combineAllProjectsAsHtml() {
                 const projects = getProjectsFromStorage();
                 if (projects.length === 0) {
-                    return null;
+                    return ''; // Return empty string if no projects
                 }
-                
-                const container = document.createElement('div');
-                
-                // Tilføj hvert projekt
+
+                let combinedHtml = '';
+                projects.sort((a, b) => b.timestamp - a.timestamp); // Sort by latest first
+
                 projects.forEach((project, index) => {
-                    // Projekttitel
-                    const projectTitle = document.createElement('h3');
-                    projectTitle.textContent = project.name || 'Projekt uden navn';
-                    container.appendChild(projectTitle);
-                    
-                    // Redigeret tekst
+                    const projectTitle = project.name || `Projekt uden navn`;
+                    const projectSaveTimestamp = `Gemt: ${new Date(project.timestamp).toLocaleDateString('da-DK', { day: '2-digit', month: '2-digit', year: 'numeric' })} ${new Date(project.timestamp).toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' })}`;
+                    const currentExportTimestamp = `Indlæst (nu): ${new Date().toLocaleDateString('da-DK', { day: '2-digit', month: '2-digit', year: 'numeric' })} ${new Date().toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' })}`;
+
+                    combinedHtml += `<h2 style="margin-top: 2em; margin-bottom: 0.5em; color: #004d40;">${projectTitle}</h2>`;
+                    combinedHtml += `<p style="font-size: 0.9em; color: #555; margin-bottom: 0.2em;">${projectSaveTimestamp}</p>`;
+                    combinedHtml += `<p style="font-size: 0.9em; color: #555; margin-bottom: 1em;">${currentExportTimestamp}</p>`;
+
                     if (project.editedText && project.editedText.trim() !== '') {
-                        const editedTextDiv = document.createElement('div');
-                        editedTextDiv.innerHTML = project.editedText;
-                        container.appendChild(editedTextDiv);
+                        combinedHtml += `<div style="margin-top: 1.5em;">${project.editedText}</div>`; // Insert raw HTML
                     } else {
-                        const noEditedTextDiv = document.createElement('div');
-                        noEditedTextDiv.innerHTML = `<p>Ingen redigeret tekst</p>`;
-                        container.appendChild(noEditedTextDiv);
+                        combinedHtml += `<p style="font-style: italic; color: #888; margin-top: 1em;">Ingen redigeret tekst tilgængelig for dette projekt.</p>`;
                     }
-                    
-                    // Citat fra importeret tekst
+
                     if (project.importedText && project.importedText.trim() !== '') {
                         const randomQuote = extractRandomQuote(project.importedText, 100);
                         if (randomQuote) {
-                            const quoteDiv = document.createElement('p');
-                            quoteDiv.innerHTML = `Til opgaven blev anvendt en importeret tekst med dette citat: "${randomQuote}"`;
-                            container.appendChild(quoteDiv);
+                            combinedHtml += `<div style="font-size: 0.9em; margin-top: 1.5em; padding: 0.5em 1em; border-left: 3px solid #ccc; background-color: #f9f9f9; color: #666;">`;
+                            combinedHtml += `Original tekst anvendt til opgaven: "${randomQuote}"</div>`;
                         }
                     }
-                    
-                    // Tilføj separator mellem projekter
+
+                    // Add a clear HTML separator between projects if not the last one
                     if (index < projects.length - 1) {
-                        const separator = document.createElement('hr');
-                        container.appendChild(separator);
+                        combinedHtml += `<div style="margin-top: 3em; margin-bottom: 3em; text-align: center; border-top: 1px dashed #aaa; padding-top: 2em;">`;
+                        combinedHtml += `<span style="font-style: italic; color: #777; font-size: 0.9em;">--- Næste Projekt ---</span>`;
+                        combinedHtml += `<div style="border-bottom: 1px dashed #aaa; padding-bottom: 2em;"></div></div>`;
                     }
                 });
-                
-                return container;
+
+                return combinedHtml;
             }
 
-            function exportAllProjects() {
-                const projects = getProjectsFromStorage();
-                if (projects.length === 0) {
-                    alert("Der er ingen projekter at downloade.");
-                    return;
-                }
-                
-                const content = prepareAllProjectsContent();
-                if (content) {
-                    generatePDF(content, 'NextWordPL-alle-projekter.pdf');
-                } else {
-                    alert("Der opstod en fejl ved forberedelse af projekterne til eksport.");
-                }
-            }
 
             function insertTextAtCursor(text) {
                 const editorSelection = window.getSelection();
@@ -1245,7 +1060,6 @@
                 currentLoadedProjectId = null;
                 renderProjectList();
             });
-
             toggleLeftSidebarButton.addEventListener('click', function() {
                 leftSidebar.classList.toggle('collapsed');
 
@@ -1258,7 +1072,6 @@
                     icon.classList.add('fa-chevron-left');
                 }
             });
-
             // Disable copy/paste/cut in the editor
             editorDiv.addEventListener('copy', function(e) { e.preventDefault(); });
             editorDiv.addEventListener('paste', function(e) { e.preventDefault(); });
@@ -1266,7 +1079,6 @@
 
 
             editorDiv.addEventListener('input', updateTextStats);
-
             importedTextDiv.addEventListener('mouseup', function() {
                 const selection = window.getSelection();
                 const selectedText = selection.toString();
@@ -1275,7 +1087,6 @@
                     insertTextAtCursor(selectedText);
                 }
             });
-
             backButton.addEventListener('click', function() {
                 const currentEditedText = editorDiv.innerHTML.trim();
                 const currentImportedText = importedTextDiv.textContent.trim();
@@ -1290,23 +1101,48 @@
                 currentLoadedProjectId = null;
                 window.location.href = 'index.html'; // Or appropriate path to your start page
             });
-
             saveProjectButton.addEventListener('click', saveCurrentProject);
 
-            exportAllButton.addEventListener('click', exportAllProjects);
+            // Modified exportAllButton listener
+            exportAllButton.addEventListener('click', function() {
+                const projects = getProjectsFromStorage();
+                if (projects.length === 0) {
+                    alert("Der er ingen gemte projekter at indlæse.");
+                    return;
+                }
 
+                const confirmLoadAll = confirm("Dette vil indlæse alle dine gemte projekter som en samlet tekst i redigeringsfeltet. Eventuelle ulagrede ændringer i redigeringsfeltet vil gå tabt. Vil du fortsætte?");
+                if (!confirmLoadAll) {
+                    return;
+                }
+
+                const combinedHtml = combineAllProjectsAsHtml();
+                editorDiv.innerHTML = combinedHtml;
+                importedTextDiv.textContent = ''; // Clear the imported text sidebar as it's not relevant for combined projects
+                updateTextStats();
+                currentLoadedProjectId = null; // No single project is loaded
+                renderProjectList(); // Update UI to show no project is selected
+
+                // Scroll editor to top after loading all projects
+                editorDiv.scrollTop = 0;
+
+                alert("Alle gemte projekter er nu indlæst i redigeringsfeltet. Du kan nu udskrive dem via 'Udskriv / Gem som PDF' knappen.");
+            });
+
+            // Update the button text for clarity
+            exportAllButton.textContent = 'Indlæs alle projekter i editor';
+            // Ensure it has the correct styling class if it was 'export-button' before
+            exportAllButton.classList.remove('export-button');
+            exportAllButton.classList.add('action-button'); // Use a general action button style or keep export-button if preferred
 
             fontFamilySelect.addEventListener('change', function() {
                 const selectedFont = this.value;
                 editorDiv.style.fontFamily = selectedFont;
-                console.log(`[Debug] Font family changed to ${selectedFont} using CSS.`);
             });
-
             fontSizeSelect.addEventListener('change', function() {
                 const selectedSize = parseInt(this.value, 10);
                 const fontSizes = [10, 12, 14, 16, 18, 24, 36];
                 editorDiv.style.fontSize = fontSizes[selectedSize - 1] + 'px';
-                console.log(`[Debug] Font size changed to ${fontSizes[selectedSize - 1]}px using CSS.`);
             });
 
             boldButton.addEventListener('click', function() { editorDiv.focus(); document.execCommand('bold', false, null); });
@@ -1318,8 +1154,20 @@
 
 
             downloadButton.addEventListener('click', function() {
-                const content = prepareSingleProjectContent();
-                generatePDF(content, 'NextWordPL-dokument.pdf');
+                // Set and show the timestamp before printing
+                const now = new Date();
+                // Format the date and time as desired (e.g., "DD-MM-YYYY HH:MM")
+                const timestampString = `Udskrevet: ${now.toLocaleDateString('da-DK', { day: '2-digit', month: '2-digit', year: 'numeric' })} ${now.toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' })}`;
+                printTimestampDiv.textContent = timestampString;
+                printTimestampDiv.style.display = 'block'; // Make it visible for printing
+
+                window.print();
+            });
+
+            // Hide the timestamp after the print dialog is closed
+            window.addEventListener('afterprint', () => {
+                printTimestampDiv.style.display = 'none'; // Hide it again
+                printTimestampDiv.textContent = ''; // Clear content
             });
 
             toggleRightSidebarButton.addEventListener('click', function() {
@@ -1334,7 +1182,6 @@
                     icon.classList.add('fa-chevron-right');
                 }
             });
-
             renderProjectList();
         });
     </script>
