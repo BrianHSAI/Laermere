@@ -58,19 +58,53 @@
         .tool-button:hover {
             background-color: #229954; /* Darker green on hover */
         }
+
+        /* Hide content by default */
+        #pageContent {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="intro-text">
-            Alle de gode redskaber, som er lavet til lærerne
-        </div>
-        <h1>Lærerens lounge</h1>
 
-        <p>Her finder du redskaber, der kan hjælpe dig i din undervisning og administrative opgaver.</p>
+    <div id="pageContent">
+        <div class="container">
+            <div class="intro-text">
+                Alle de gode redskaber, som er lavet til lærerne
+            </div>
+            <h1>Lærerens lounge</h1>
 
-        <a href="https://v0-merge-pdf-files-pi.vercel.app/" class="tool-button">Merge PDF</a>
+            <p>Her finder du redskaber, der kan hjælpe dig i din undervisning og administrative opgaver.</p>
 
-        </div>
+            <a href="https://v0-merge-pdf-files-pi.vercel.app/" class="tool-button">Merge PDF</a>
+
+            </div>
+    </div>
+
+    <script>
+        // ** IMPORTANT SECURITY NOTE: **
+        // This password protection is done using client-side JavaScript and is NOT secure.
+        // The password is in the source code and can be easily bypassed.
+        // Use this only for very basic gating, not for sensitive information.
+
+        const correctPassword = "eksHelp";
+        let enteredPassword = prompt("Indtast kodeord for at få adgang til Lærerens lounge:");
+
+        if (enteredPassword === correctPassword) {
+            // Show the page content if the password is correct
+            document.getElementById('pageContent').style.display = 'flex'; /* Use flex or block depending on container display */
+             // Adjust display based on your .container's display property.
+             // If .container is block-based, use 'block'. If flex, use 'flex'.
+             // Looking at your CSS, .container is inside #pageContent which we set to display:none.
+             // The body is flex, centering content. Let's set pageContent to block
+             document.getElementById('pageContent').style.display = 'block';
+        } else {
+            // Alert and keep content hidden if the password is incorrect
+            alert("Forkert kodeord!");
+            // You could optionally redirect the user here, e.g.:
+            // window.location.href = "index.html";
+        }
+    </script>
+
 </body>
 </html>
