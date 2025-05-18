@@ -10,7 +10,7 @@
         body {
             font-family: 'Nunito', sans-serif;
             margin: 0;
-            background-color: #f8f8f8; /* Light grey background */
+            background-color: #eef2f7; /* Slightly more engaging light blue-grey background */
             color: #333; /* Dark grey text */
             line-height: 1.6;
             padding: 20px;
@@ -22,9 +22,9 @@
 
         .container {
             background-color: #fff; /* White background for content */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            padding: 40px; /* Increased padding for more breathing room */
+            border-radius: 12px; /* Slightly more rounded corners */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* More pronounced, softer shadow */
             max-width: 800px; /* Max width for readability */
             width: 100%;
             text-align: center; /* Center content */
@@ -32,32 +32,43 @@
 
         h1 {
             color: #1A5276; /* A professional blue */
-            font-size: 2em;
-            margin-bottom: 10px;
+            font-size: 2.5em; /* Larger heading */
+            margin-bottom: 15px; /* Increased space below heading */
+            font-weight: 700; /* Make heading bolder */
         }
 
         .intro-text {
-            font-size: 1.1em;
-            margin-bottom: 30px;
+            font-size: 1.2em; /* Slightly larger intro text */
+            margin-bottom: 40px; /* More space below intro text */
             color: #555;
+        }
+
+        .button-container {
+            margin-top: 30px; /* Space above button container */
         }
 
         .tool-button {
             display: inline-block; /* Make the button inline-block */
             background-color: #27AE60; /* A friendly green */
             color: white;
-            padding: 12px 25px;
+            padding: 15px 30px; /* Increased padding for larger buttons */
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
             font-size: 1.1em;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for subtle press effect */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin: 10px; /* Added margin to separate buttons */
         }
 
         .tool-button:hover {
             background-color: #229954; /* Darker green on hover */
         }
+
+        .tool-button:active {
+            transform: scale(0.98); /* Slightly shrink button when clicked */
+        }
+
 
         /* Hide content by default */
         #pageContent {
@@ -69,14 +80,18 @@
 
     <div id="pageContent">
         <div class="container">
-            <div class="intro-text">
+            <h1>Lærerens lounge</h1>
+             <div class="intro-text">
                 Alle de gode redskaber, som er lavet til lærerne
             </div>
-            <h1>Lærerens lounge</h1>
+
 
             <p>Her finder du redskaber, der kan hjælpe dig i din undervisning og administrative opgaver.</p>
 
-            <a href="https://v0-merge-pdf-files-pi.vercel.app/" class="tool-button">Merge PDF</a>
+            <div class="button-container">
+                <a href="https://v0-merge-pdf-files-pi.vercel.app/" class="tool-button">Merge PDF</a>
+                <a href="https://study-stack-scribe-time.lovable.app/" class="tool-button">StudyS.T.A.Q</a>
+            </div>
 
             </div>
     </div>
@@ -92,12 +107,7 @@
 
         if (enteredPassword === correctPassword) {
             // Show the page content if the password is correct
-            document.getElementById('pageContent').style.display = 'flex'; /* Use flex or block depending on container display */
-             // Adjust display based on your .container's display property.
-             // If .container is block-based, use 'block'. If flex, use 'flex'.
-             // Looking at your CSS, .container is inside #pageContent which we set to display:none.
-             // The body is flex, centering content. Let's set pageContent to block
-             document.getElementById('pageContent').style.display = 'block';
+            document.getElementById('pageContent').style.display = 'block';
         } else {
             // Alert and keep content hidden if the password is incorrect
             alert("Forkert kodeord!");
