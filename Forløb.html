@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undervisningsforløbsbygger</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #4285F4; /* En friskere blå, tættere på Google-blå */
+            --primary-blue-dark: #3367D6; /* Mørkere til hover/aktive stater */
+            --secondary-bg: #f8f9fa; /* Meget lys grå baggrund for sektioner */
+            --border-color: #dadce0; /* Blødere grænsefarve */
+            --text-color: #202124; /* Mørkegrå tekstfarve */
+            --light-text: #5f6368; /* Lysere tekst til sekundær info */
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1); /* Subtil skygge */
+            --border-radius: 8px; /* Ensartet afrunding */
+            --spacing-unit: 16px; /* Standard afstandsenhed */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-bg); /* Lettere baggrund */
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--primary-blue); /* Behold den primære blå her */
+            color: var(--white);
+            text-align: center;
+            padding: calc(2 * var(--spacing-unit));
+            box-sizing: border-box;
+        }
+
+        .start-form {
+            background-color: rgba(255, 255, 255, 0.9); /* Let gennemsigtig hvid */
+            padding: calc(2 * var(--spacing-unit));
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 8px var(--shadow); /* Let skygge */
+            color: var(--text-color); /* Tekstfarve inden i formen */
+        }
+
+        .cover-page h1 {
+            color: var(--text-color); /* Overskrift farve i formen */
+        }
+
+        .cover-page input {
+            margin: var(--spacing-unit) 0;
+            padding: var(--spacing-unit);
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 4px; /* Mindre afrunding på input */
+            box-sizing: border-box;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .cover-page button, .btn-primary {
+            margin-top: calc(1.5 * var(--spacing-unit));
+            padding: var(--spacing-unit) calc(1.5 * var(--spacing-unit));
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 4px; /* Mindre afrunding på knapper */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            width: 100%; /* Fuld bredde i cover page */
+            text-transform: uppercase; /* Lettere at se som knap */
+            font-weight: 500;
+        }
+
+        .cover-page button:hover, .btn-primary:hover {
+            background-color: var(--primary-blue-dark);
+        }
+
+        .btn-small {
+            padding: calc(0.5 * var(--spacing-unit)) var(--spacing-unit);
+            margin: calc(0.25 * var(--spacing-unit));
+            width: auto; /* Small buttons shouldn't be full width */
+            text-transform: none; /* Ikke uppercase for små knapper */
+            font-weight: 400;
+        }
+
+         /* --- Planner Page Styles --- */
+        .header {
+            text-align: center;
+            margin-bottom: calc(2 * var(--spacing-unit));
+            padding: calc(2 * var(--spacing-unit));
+            background-color: var(--primary-blue); /* Primær farve i header */
+            color: var(--white);
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+
+        .header h1 {
+             margin-top: 0;
+             margin-bottom: calc(0.5 * var(--spacing-unit));
+             color: var(--white); /* Hvid tekst i header */
+        }
+         .header h2 {
+             margin-top: 0;
+             color: rgba(255, 255, 255, 0.8); /* Let gennemsigtig hvid */
+             font-weight: 400;
+             font-size: 1.2rem;
+         }
+
+
+        .back-btn {
+            position: absolute;
+            top: var(--spacing-unit);
+            left: var(--spacing-unit);
+            padding: calc(0.5 * var(--spacing-unit)) var(--spacing-unit);
+            background-color: rgba(255, 255, 255, 0.2); /* Let gennemsigtig hvid */
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+             z-index: 10; /* Ensure it's above other content */
+        }
+         .back-btn:hover {
+             background-color: rgba(255, 255, 255, 0.4);
+         }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: calc(2 * var(--spacing-unit));
+            background-color: var(--white); /* Hvid baggrund for tabel */
+            border-radius: var(--border-radius);
+            overflow: hidden; /* Sørg for border-radius virker */
+            box-shadow: 0 2px 4px var(--shadow); /* Let skygge */
+        }
+         table th:first-child { border-top-left-radius: var(--border-radius); }
+         table th:last-child { border-top-right-radius: var(--border-radius); }
+
+        /* Style for the auto-generated number column */
+        #modules th:first-child,
+        #modules td:first-child {
+            width: 5%; /* Justeret bredde */
+            text-align: center; /* Centrer nummeret */
+             font-weight: 500;
+             color: var(--light-text);
+             background-color: #f1f3f4; /* Lys grå baggrund */
+        }
+         #modules th:first-child {
+             background-color: var(--primary-blue); /* Primær farve for header */
+             color: var(--white);
+              font-weight: 500;
+         }
+
+
+         /* Style for the Tema column */
+        #modules th:nth-child(2),
+        #modules td:nth-child(2) {
+             width: 15%; /* Justeret bredde for Tema */
+         }
+
+        th, td {
+            border: 1px solid var(--border-color); /* Blødere grænser */
+            padding: var(--spacing-unit);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: var(--primary-blue); /* Primær farve for th */
+            color: var(--white);
+            font-weight: 500;
+        }
+         td {
+             color: var(--text-color);
+         }
+
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: calc(0.75 * var(--spacing-unit));
+            box-sizing: border-box;
+            min-height: 80px; /* Lidt højere textareas */
+            resize: vertical;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            color: var(--text-color);
+            background-color: var(--white);
+             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+         input[type="text"] { min-height: auto; height: calc(2.5 * var(--spacing-unit)); } /* Input felt højde */
+
+         textarea:focus, input[type="text"]:focus {
+             outline: none;
+             border-color: var(--primary-blue);
+             box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2); /* Let blå "glød" ved focus */
+         }
+
+
+        button {
+            margin-top: var(--spacing-unit);
+            padding: var(--spacing-unit) calc(1.5 * var(--spacing-unit));
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: var(--spacing-unit);
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+             text-transform: uppercase;
+             font-weight: 500;
+        }
+         button:last-child { margin-right: 0; }
+         button:hover { background-color: var(--primary-blue-dark); }
+         button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Drag-and-drop styles */
+        .modules-table-body tr {
+            cursor: grab; /* Feedback for draggable item */
+             transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; /* Smooth movement */
+        }
+
+        .modules-table-body tr:active {
+             cursor: grabbing; /* Feedback when dragging */
+        }
+
+        .dragging {
+            opacity: 0.5; /* Make dragged item semi-transparent */
+             transform: scale(1.02); /* Slightly enlarge dragged item */
+        }
+
+        .drop-target {
+             border-top: 2px dashed var(--primary-blue); /* Indicate drop position */
+        }
+         /* Style for the drop target when dragging over the first row */
+        .modules-table-body tr:first-child.drop-target {
+             border-top: none; /* No top border if dropping before the first row */
+             /* Maybe add a top border to the tbody or first td instead */
+         }
+         .modules-table-body.dragging-over-empty {
+             border: 2px dashed var(--primary-blue); /* Indicate drop zone if empty */
+         }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: calc(2 * var(--spacing-unit));
+        }
+
+        .goals, .core-content {
+            margin-top: calc(3 * var(--spacing-unit)); /* Mere afstand */
+            padding: calc(2 * var(--spacing-unit));
+            background-color: var(--white); /* Hvid baggrund */
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px var(--shadow); /* Let skygge */
+        }
+        .goals h3, .core-content h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+            margin-bottom: var(--spacing-unit);
+            font-weight: 500;
+        }
+
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: calc(2 * var(--spacing-unit));
+            margin-top: calc(2 * var(--spacing-unit));
+        }
+
+        .project-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: calc(1.5 * var(--spacing-unit));
+            box-shadow: 0 2px 8px var(--shadow);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color); /* Let grænse */
+        }
+        .project-card h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+            margin-bottom: calc(0.5 * var(--spacing-unit));
+            font-weight: 500;
+        }
+        .project-card p {
+            margin: calc(0.25 * var(--spacing-unit)) 0;
+            color: var(--light-text); /* Lysere tekst for info */
+            font-size: 0.9rem;
+        }
+         .project-card p:last-of-type { margin-bottom: var(--spacing-unit); } /* Lidt mere plads før knapper */
+
+        .card-actions {
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end; /* Knapper til højre */
+             gap: calc(0.5 * var(--spacing-unit)); /* Mellemrum mellem knapper */
+        }
+        .card-actions button {
+             margin-top: var(--spacing-unit);
+             margin-right: 0; /* Fjern højre margin fra knapper */
+             text-transform: none; /* Ikke uppercase */
+             font-weight: 400;
+             padding: calc(0.5 * var(--spacing-unit)) var(--spacing-unit); /* Mindre padding */
+        }
+
+
+        .file-upload {
+            margin-top: calc(3 * var(--spacing-unit));
+            padding-top: calc(2 * var(--spacing-unit));
+            border-top: 1px solid var(--border-color); /* Linje over upload sektion */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+         .file-upload h3 {
+             color: var(--text-color);
+             margin-top: 0;
+             margin-bottom: var(--spacing-unit);
+         }
+        .file-upload input[type="file"] {
+            margin-bottom: var(--spacing-unit);
+            padding: var(--spacing-unit); /* Give input file lidt padding */
+            border: 1px solid var(--border-color); /* Give input file en grænse */
+            border-radius: 4px;
+            background-color: var(--white);
+            width: auto; /* Lad fil input tage naturlig bredde */
+            cursor: pointer;
+        }
+         .file-upload button {
+             width: auto; /* Upload knap skal ikke være full width */
+              margin-top: 0;
+         }
+
+        #uploadMsg {
+            color: var(--primary-blue-dark); /* Mørkere blå for besked */
+            margin-top: var(--spacing-unit);
+            font-weight: 500;
+        }
+
+        /* Print specific styles - Updated for 5 columns */
+        @media print {
+            body {
+                visibility: hidden; /* Skjul alt som standard */
+                print-color-adjust: exact; /* Prøv at printe farver mere præcist */
+                -webkit-print-color-adjust: exact; /* For Webkit browsere */
+                font-size: 10pt; /* Mindre font for print */
+                margin: 10mm; /* Printer margin */
+                background-color: none; /* Fjern baggrund på print */
+                color: #000; /* Sort tekst på print */
+            }
+
+            #plannerPage, #plannerPage * {
+                visibility: visible; /* Gør kun plannerPage og dens indhold synligt */
+                 box-shadow: none !important; /* Fjern skygger på print */
+                 background-color: none !important; /* Fjern baggrundsfarver på print */
+                 color: #000 !important; /* Sikrer sort tekst */
+            }
+
+            #coverPage, .back-btn, button, .card-actions, .file-upload, input[type="file"], #uploadMsg {
+                display: none !important; /* Skjul UI-elementer på print */
+            }
+
+            #plannerPage {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0; /* Fjern padding for at spare plads */
+                margin: 0; /* Fjern margin */
+                box-sizing: border-box;
+            }
+
+            .container {
+                 padding: 0 20px; /* Bevar lidt padding indeni containeren */
+            }
+
+            .header {
+                background-color: #eee !important; /* Lys grå baggrund i stedet for blå */
+                color: #000 !important;
+                padding: 10px 20px; /* Mindre padding i header */
+                margin-bottom: 10px; /* Mindre margin */
+                border-radius: 0 !important; /* Fjern afrunding på print */
+            }
+
+            h1, h2, h3 {
+                color: #000 !important; /* Sort tekst for overskrifter */
+                margin-top: 15px !important;
+                 margin-bottom: 5px !important;
+            }
+             h1 { margin-top: 0 !important; }
+
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 10px 0; /* Mindre margin */
+                background-color: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                 overflow: visible !important;
+            }
+
+            th, td {
+                border: 1px solid #000 !important; /* Sorte grænser på tabel */
+                padding: 8px !important; /* Mindre padding i celler */
+                text-align: left;
+                vertical-align: top;
+                word-wrap: break-word; /* Bryd lange ord */
+                overflow-wrap: break-word; /* Bryd lange ord */
+                font-size: 10pt; /* Mindre fontstørrelse i tabel */
+                color: #000 !important;
+                 background-color: none !important;
+            }
+
+            th {
+                background-color: #eee !important; /* Lys grå baggrund for th */
+                font-weight: bold !important;
+            }
+             /* Print styles for the new number column */
+            #modules th:first-child,
+            #modules td:first-child {
+                 text-align: center !important;
+                 background-color: #eee !important; /* Match th background */
+                 font-weight: bold !important; /* Match th font-weight */
+                 width: 5%; /* Keep print width consistent */
+            }
+             /* Print styles for the Tema column */
+            #modules th:nth-child(2),
+            #modules td:nth-child(2) {
+                 width: 15%; /* Keep print width consistent */
+             }
+
+
+            textarea, input[type="text"] {
+                /* Hide the actual input fields and show their values */
+                display: none !important;
+            }
+
+             /* Create generated content from the values for printing */
+             td::before {
+                 content: attr(data-value); /* This attribute is set by JS */
+                 display: block !important;
+                 white-space: pre-wrap; /* Bevar linjeskift */
+                 word-wrap: break-word; /* Bryd lange ord */
+                 font-size: 10pt;
+                 color: #000;
+             }
+             /* Exception for the number column, which has its content directly in TD */
+             td:first-child::before {
+                 content: attr(data-value); /* Still use data-value if set */
+                 display: block !important;
+                 white-space: normal; /* No wrapping needed for number */
+                 word-wrap: normal;
+                 font-size: 10pt;
+                 color: #000;
+             }
+
+
+            .goals, .core-content {
+                margin-top: 15px; /* Mindre margin */
+                padding: 15px; /* Mindre padding */
+                background-color: none !important;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important; /* Let grænse */
+            }
+             .goals p, .core-content p {
+                margin: 0;
+                padding: 0;
+                white-space: pre-wrap; /* Bevar linjeskift */
+                word-wrap: break-word; /* Bryd lange ord */
+                font-size: 10pt;
+                color: #000 !important;
+             }
+
+
+            /* Page break handling */
+            table { page-break-after: avoid !important; } /* Undgå sidebrud lige efter tabel */
+            tr { page-break-inside: avoid !important; page-break-after: auto !important; } /* Undgå sidebrud inde i rækker, tillad efter række */
+            td { page-break-inside: unset !important; } /* Tillad sidebrud inde i celler, hvis nødvendigt */
+            thead { display: table-header-group !important; } /* Gentag tabelhoved på hver side */
+            tfoot { display: table-footer-group !important; } /* Gentag tabelfod */
+            section { page-break-before: avoid !important; page-break-inside: avoid !important; page-break-after: avoid !important; } /* Prøv at holde sektioner samlet */
+            .goals, .core-content { page-break-inside: avoid !important; } /* Prøv at holde mål/kernestof samlet */
+            h2 { page-break-before: avoid !important; }
+
+
+        }
+         /* End Print styles */
+    </style>
+</head>
+<body>
+    <div class="cover-page" id="coverPage">
+        <div class="start-form">
+            <h1>Undervisningsforløbsbygger</h1>
+            <div id="startOptions">
+                <button onclick="showNewProjectForm()">Nyt Forløb</button>
+                <button onclick="showProjectList()">Se Projekter</button>
+                <div class="file-upload">
+                    <h3>Upload Projekt Fil (.json)</h3>
+                    <input type="file" id="projectUpload" accept=".json">
+                    <button onclick="handleFileUpload()">Upload</button>
+                    <p id="uploadMsg"></p>
+                </div>
+            </div>
+
+            <div id="newProjectForm" style="display: none;">
+                <h2>Nyt Forløb</h2>
+                <input type="text" id="title" placeholder="Forløbstitel" required>
+                <input type="text" id="class" placeholder="Klasse" required>
+                <input type="text" id="subject" placeholder="Fag" required>
+                <button onclick="startPlanner()">Start Planlægning</button>
+                <button onclick="showStartOptions()" class="btn-small">Tilbage</button>
+            </div>
+
+            <div id="projectListView" style="display: none;">
+                <h2>Dine Projekter</h2>
+                <div id="projectList" class="project-list">
+                    </div>
+                <button onclick="showStartOptions()" class="btn-small">Tilbage</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="plannerPage" style="display: none;">
+        <button class="back-btn" onclick="goToMainMenu()">Tilbage til Menu</button>
+        <div class="container">
+            <div class="header">
+                <h1 id="courseTitle">Forløbstitel</h1>
+                <h2 id="courseSubtitle">Klasse og Fag</h2>
+            </div>
+
+            <table id="modules">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Nr.</th> <th style="width: 15%;">Tema</th> <th style="width: 25%;">Materiale</th>
+                        <th style="width: 25%;">Sekvensinddeling</th>
+                        <th style="width: 25%;">Mål og Evaluering</th>
+                    </tr>
+                </thead>
+                <tbody class="modules-table-body"> </tbody>
+            </table>
+
+            <button onclick="addModule()">Tilføj Modul</button>
+            <button id="saveButton" onclick="saveProject()">Gem projekt</button>
+            <button onclick="saveProjectToFile()">Gem som fil</button> <button onclick="openGeneratedHTML()">Udskriv eller download</button> <div class="goals">
+                <h3>Faglige mål</h3>
+                <textarea id="learningGoals"></textarea>
+            </div>
+
+            <div class="core-content">
+                <h3>Kernestof</h3>
+                <textarea id="coreContent"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentProjectId = null;
+        const titleInput = document.getElementById('title');
+        const classInput = document.getElementById('class');
+        const subjectInput = document.getElementById('subject');
+        const courseTitleHeader = document.getElementById('courseTitle');
+        const courseSubtitleHeader = document.getElementById('courseSubtitle');
+        const modulesTableBody = document.querySelector('#modules tbody');
+        const learningGoalsTextarea = document.getElementById('learningGoals');
+        const coreContentTextarea = document.getElementById('coreContent');
+
+        let draggedRow = null; // Global variable to keep track of the row being dragged
+
+        // --- Helper Functions ---
+
+        // Generate a unique ID for projects
+        function generateUniqueId() {
+            return 'project_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Update the module numbers in the first column
+        function updateModuleNumbers() {
+            const rows = modulesTableBody.querySelectorAll('tr');
+            rows.forEach((row, index) => {
+                // Ensure the first cell exists before trying to set textContent
+                const numberCell = row.querySelector('td:first-child');
+                if (numberCell) {
+                    numberCell.textContent = index + 1;
+                     numberCell.setAttribute('data-value', index + 1); // Update data-value for print CSS
+                }
+            });
+        }
+
+        // Get current project data from the form
+        function getCurrentProjectData() {
+             // Get the modules data
+            const modulesData = [];
+            modulesTableBody.querySelectorAll('tr').forEach(row => {
+                const rowData = [];
+                 // Collect data from the 2nd to 5th cell (Tema, Materiale, Sekvens, Mål/Eval)
+                row.querySelectorAll('td:nth-child(n+2)').forEach(cell => { // Start from the 2nd child
+                    const input = cell.querySelector('input[type="text"]');
+                    const textarea = cell.querySelector('textarea');
+                    if (input) {
+                        rowData.push(input.value);
+                    } else if (textarea) {
+                        rowData.push(textarea.value);
+                    } else {
+                        rowData.push(''); // Fallback for empty cell
+                    }
+                });
+                modulesData.push(rowData);
+            });
+
+            // Split subtitle to get class and subject
+            const subtitle = courseSubtitleHeader.textContent || '';
+            const subtitleParts = subtitle.split(' - ');
+            const className = subtitleParts[0] ? subtitleParts[0].trim() : '';
+            const subject = subtitleParts[1] ? subtitleParts[1].trim() : '';
+
+            // Create the project data object
+            const projectData = {
+                title: courseTitleHeader.textContent || 'Unavngivet forløb',
+                className: className,
+                subject: subject,
+                modules: modulesData, // This array now contains [tema, materiale, sekvens, mål] for each row
+                learningGoals: learningGoalsTextarea.value,
+                coreContent: coreContentTextarea.value,
+                lastModified: Date.now()
+            };
+            return projectData;
+        }
+
+        // Set form data from a project data object
+        function setFormWithProjectData(projectData) {
+            courseTitleHeader.textContent = projectData.title || 'Unavngivet forløb';
+            courseSubtitleHeader.textContent = `${projectData.className || ''} - ${projectData.subject || ''}`;
+
+            // Clear existing modules
+            modulesTableBody.innerHTML = '';
+
+            // Add modules from the project data
+            if (projectData.modules && projectData.modules.length > 0) {
+                projectData.modules.forEach(rowData => {
+                    const newRow = document.createElement('tr');
+                    newRow.setAttribute('draggable', true); // Make row draggable
+
+                    // Ensure rowData has at least 4 elements (tema, materiale, sekvens, mål)
+                    const moduleData = rowData.length === 4 ? rowData : ['', '', '', ''];
+
+                    // Create the 5 cells: Number (auto), Tema, Materiale, Sekvens, Mål/Eval
+                    newRow.innerHTML = `
+                        <td></td> <td><input type="text" class="module-input" value="${moduleData[0].replace(/"/g, '&quot;') || ''}" placeholder="Tema"></td>
+                        <td><textarea class="module-textarea" placeholder="Materialer...">${moduleData[1] || ''}</textarea></td>
+                        <td><textarea class="module-textarea" placeholder="Aktiviteter og tid...">${moduleData[2] || ''}</textarea></td>
+                        <td><textarea class="module-textarea" placeholder="Mål og evalueringsformer...">${moduleData[3] || ''}</textarea></td>
+                    `;
+                    modulesTableBody.appendChild(newRow);
+                    addEventListenersToModule(newRow);
+                    addDragDropListenersToRow(newRow); // Add drag/drop listeners
+                });
+            } else {
+                // Add a default module if none exists
+                addModule();
+            }
+
+            // Update numbers after adding rows
+            updateModuleNumbers();
+
+            // Set learning goals and core content
+            learningGoalsTextarea.value = projectData.learningGoals || '';
+            coreContentTextarea.value = projectData.coreContent || '';
+        }
+
+
+        // Add event listeners to a module row for auto-saving
+        function addEventListenersToModule(row) {
+            // Listen on the input and textarea elements within the row
+            row.querySelectorAll('input[type="text"], textarea').forEach(field => {
+                field.addEventListener('input', function() {
+                    if (currentProjectId) {
+                        saveProject(); // Auto-save on input
+                    }
+                });
+            });
+        }
+
+         // Add event listeners to main textareas for auto-saving
+        function addEventListenersToMainFields() {
+            learningGoalsTextarea.addEventListener('input', function() {
+                if (currentProjectId) {
+                    saveProject(); // Auto-save on input
+                }
+            });
+
+            coreContentTextarea.addEventListener('input', function() {
+                if (currentProjectId) {
+                    saveProject(); // Auto-save on input
+                }
+            });
+        }
+
+
+        // --- Navigation Functions ---
+
+        // Load projects list from local storage
+        function loadProjectsList() {
+            const projectsListContainer = document.getElementById('projectList');
+            projectsListContainer.innerHTML = ''; // Clear existing list
+
+            // Get all items from localStorage
+            const projects = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('project_')) {
+                    try {
+                        const projectData = JSON.parse(localStorage.getItem(key));
+                        // Basic validation
+                         if (typeof projectData !== 'object' || !projectData.title) {
+                             console.error('Skipping corrupted project data:', key);
+                             // Optionally, remove corrupted item: localStorage.removeItem(key);
+                             continue;
+                         }
+                        projects.push({
+                            id: key,
+                            title: projectData.title || 'Unavngivet projekt',
+                            className: projectData.className || '',
+                            subject: projectData.subject || '',
+                            lastModified: projectData.lastModified || Date.now()
+                        });
+                    } catch (e) {
+                        console.error('Error parsing project data from localStorage:', key, e);
+                        // Optionally, remove corrupted item
+                        // localStorage.removeItem(key);
+                    }
+                }
+            }
+
+            // Sort projects by last modified date (newest first)
+            projects.sort((a, b) => b.lastModified - a.lastModified);
+
+            // Display projects or a message if none
+            if (projects.length === 0) {
+                projectsListContainer.innerHTML = '<p>Ingen projekter fundet i browserens lager.</p>';
+                return;
+            }
+
+            // Create a card for each project
+            projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+
+                const lastModifiedDate = new Date(project.lastModified);
+                const formattedDate = lastModifiedDate.toLocaleString('da-DK');
+
+                projectCard.innerHTML = `
+                    <h3>${project.title}</h3>
+                    <p>${project.className} - ${project.subject}</p>
+                    <p>Sidst ændret: ${formattedDate}</p>
+                    <div class="card-actions">
+                        <button onclick="openProject('${project.id}')" class="btn-small">Åbn</button>
+                        <button onclick="deleteProject('${project.id}')" class="btn-small">Slet</button>
+                    </div>
+                `;
+
+                projectsListContainer.appendChild(projectCard);
+            });
+        }
+
+
+        // Show new project form
+        function showNewProjectForm() {
+            document.getElementById('startOptions').style.display = 'none';
+            document.getElementById('newProjectForm').style.display = 'block';
+            document.getElementById('projectListView').style.display = 'none';
+             // Clear fields when showing new project form
+            titleInput.value = '';
+            classInput.value = '';
+            subjectInput.value = '';
+        }
+
+        // Show project list
+        function showProjectList() {
+            document.getElementById('startOptions').style.display = 'none';
+            document.getElementById('newProjectForm').style.display = 'none';
+            document.getElementById('projectListView').style.display = 'block';
+            loadProjectsList();
+        }
+
+        // Show start options
+        function showStartOptions() {
+            document.getElementById('startOptions').style.display = 'block';
+            document.getElementById('newProjectForm').style.display = 'none';
+            document.getElementById('projectListView').style.display = 'none';
+        }
+
+         // Go back to main menu
+        function goToMainMenu() {
+            document.getElementById('plannerPage').style.display = 'none';
+            document.getElementById('coverPage').style.display = 'flex'; // Use flex as per CSS
+            showStartOptions();
+            currentProjectId = null; // Clear current project context
+             // Clear planner fields? Optional.
+        }
+
+        // --- Project Management Functions ---
+
+        // Start planner with a new project
+        function startPlanner() {
+            const title = titleInput.value.trim();
+            const className = classInput.value.trim();
+            const subject = subjectInput.value.trim();
+
+            if (!title || !className || !subject) {
+                alert('Udfyld venligst alle felter.');
+                return;
+            }
+
+            // Create initial project data
+             const projectData = {
+                title: title,
+                className: className,
+                subject: subject,
+                modules: [], // Start with empty modules [tema, materiale, sekvens, mål]
+                learningGoals: '',
+                coreContent: '',
+                lastModified: Date.now()
+            };
+
+            // Create a new project ID and set it as current
+            currentProjectId = generateUniqueId();
+
+            // Save the initial state to localStorage
+            localStorage.setItem(currentProjectId, JSON.stringify(projectData));
+
+            // Set the form fields and show the planner
+            setFormWithProjectData(projectData); // This will also call addModule and update numbers
+
+            document.getElementById('coverPage').style.display = 'none';
+            document.getElementById('plannerPage').style.display = 'block';
+
+            // addModule() is called inside setFormWithProjectData if modules list is empty
+        }
+
+        // Open an existing project from localStorage
+        function openProject(projectId) {
+            try {
+                const projectData = JSON.parse(localStorage.getItem(projectId));
+
+                 if (!projectData) {
+                    alert('Projektdata blev ikke fundet.');
+                    loadProjectsList(); // Refresh list
+                    return;
+                }
+
+                // Set the current project ID
+                currentProjectId = projectId;
+
+                // Set form fields with the loaded data
+                setFormWithProjectData(projectData); // This will update numbers and add listeners
+
+                // Show the planner page
+                document.getElementById('coverPage').style.display = 'none';
+                document.getElementById('plannerPage').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error opening project:', error);
+                alert('Der opstod en fejl ved åbning af projektet.');
+                 loadProjectsList(); // Refresh list in case of corruption
+            }
+        }
+
+        // Delete a project from localStorage
+        function deleteProject(projectId) {
+            if (confirm('Er du sikker på, at du vil slette dette projekt? Denne handling kan ikke fortrydes.')) {
+                localStorage.removeItem(projectId);
+                 // If the deleted project was the currently open one, go back to the menu
+                if (currentProjectId === projectId) {
+                    goToMainMenu();
+                } else {
+                    loadProjectsList(); // Refresh the projects list
+                }
+            }
+        }
+
+         // Save the current project to localStorage (Auto-save)
+        function saveProject() {
+             if (!currentProjectId) {
+                 console.warn("Attempted to auto-save without a current project ID.");
+                 return; // Cannot save if no project is active
+             }
+
+             const projectData = getCurrentProjectData();
+             localStorage.setItem(currentProjectId, JSON.stringify(projectData));
+
+             // Update last modified time in the list view if visible
+             // Find the card associated with the current project ID
+             const projectCardButton = document.querySelector(`#projectList button[onclick="openProject('${currentProjectId}')"]`);
+             if (projectCardButton) {
+                 // Navigate up to the project-card div
+                 let projectCard = projectCardButton.closest('.project-card');
+                 if (projectCard) {
+                     // Find the last modified paragraph
+                     const lastModifiedElement = projectCard.querySelector('p:nth-last-child(2)'); // Assuming last modified is the second to last p
+                     if (lastModifiedElement) {
+                         const now = new Date();
+                         lastModifiedElement.textContent = `Sidst ændret: ${now.toLocaleString('da-DK')}`;
+                     }
+                 }
+             }
+
+
+            // Show brief save confirmation on the button
+            const saveBtn = document.getElementById('saveButton');
+            if (saveBtn) {
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = 'Gemt!'; // Renamed text
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                }, 2000);
+            }
+        }
+
+        // Save the current project data as a JSON file after showing a message and prompting for name
+        function saveProjectToFile() {
+            if (!currentProjectId) {
+                 alert('Gem venligst projektet i browseren først (klik "Gem projekt").');
+                 return;
+             }
+
+            // Show the recommended save location message
+            alert("Det anbefales, at du gemmer denne fil i en mappe, som du kan tilgå fra flere computere - eksempelvis i OneDrive eller Google Drive");
+
+            const projectData = getCurrentProjectData();
+
+            // Suggest a default filename based on title and date
+            const suggestedName = projectData.title.replace(/[^a-z0-9ÆØÅæøå]/gi, '_').toLowerCase() || 'forloeb'; // Include ÆØÅ
+            const date = new Date().toISOString().split('T')[0];
+            const defaultFileName = `${suggestedName}_${date}.json`;
+
+
+            // Prompt the user for a filename
+            let fileName = prompt("Indtast filnavn for projektdata:", defaultFileName);
+
+            // If the user cancels the prompt or enters an empty name, stop.
+            if (fileName === null || fileName.trim() === '') {
+                alert("Fil blev ikke gemt.");
+                return;
+            }
+
+            // Ensure the filename ends with .json
+            if (!fileName.toLowerCase().endsWith('.json')) {
+                fileName += '.json';
+            }
+
+            // Proceed with file download
+            const jsonData = JSON.stringify(projectData, null, 2); // Add spacing for readability
+
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName; // Use the filename provided by the user
+
+            document.body.appendChild(a); // Append to body is necessary for Firefox
+            a.click();
+
+            document.body.removeChild(a); // Clean up
+            URL.revokeObjectURL(url); // Free up memory
+        }
+
+         // Handle file upload (expecting JSON format)
+        function handleFileUpload() {
+            const fileInput = document.getElementById('projectUpload');
+            const uploadMsg = document.getElementById('uploadMsg');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                uploadMsg.textContent = 'Vælg venligst en fil først.';
+                return;
+            }
+
+            const file = fileInput.files[0];
+             if (file.type !== 'application/json' && !file.name.endsWith('.json')) {
+                uploadMsg.textContent = 'Kun JSON-filer (.json) er understøttet til upload.';
+                return;
+            }
+
+            uploadMsg.textContent = 'Indlæser fil...';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const projectData = JSON.parse(e.target.result);
+
+                     // Basic validation of the imported data structure
+                     // Check for required properties and module structure consistency
+                     if (typeof projectData !== 'object' || !projectData.title || !Array.isArray(projectData.modules) ||
+                         (projectData.modules.length > 0 && !Array.isArray(projectData.modules[0]) || (projectData.modules.length > 0 && projectData.modules[0].length !== 4))) {
+                           throw new Error('Invalid project file structure.');
+                     }
+
+                    // Create a new project ID (imported files get a new ID in localStorage)
+                    const projectId = generateUniqueId();
+
+                    // Save the imported data to localStorage
+                    localStorage.setItem(projectId, JSON.stringify(projectData));
+                    uploadMsg.textContent = 'Projekt uploadet med succes!';
+
+                    // Automatically open the imported project after a short delay
+                    setTimeout(() => {
+                        openProject(projectId); // This will call setFormWithProjectData and update numbers
+                        fileInput.value = ''; // Clear file input
+                         uploadMsg.textContent = ''; // Clear message
+                    }, 1000);
+
+                } catch (error) {
+                    console.error('Error processing file:', error);
+                    uploadMsg.textContent = 'Fejl ved behandling af filen. Kontroller at det er en gyldig projekt JSON-fil.';
+                    fileInput.value = ''; // Clear file input on error
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        // --- Module Management ---
+
+        // Add a new module row
+        function addModule() {
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('draggable', true); // Make row draggable
+            // Create the 5 cells: Number (auto), Tema, Materiale, Sekvens, Mål/Eval
+            newRow.innerHTML = `
+                <td></td> <td><input type="text" class="module-input" placeholder="Tema"></td>
+                <td><textarea class="module-textarea" placeholder="Materialer..."></textarea></td>
+                <td><textarea class="module-textarea" placeholder="Aktiviteter og tid..."></textarea></td>
+                <td><textarea class="module-textarea" placeholder="Mål og evalueringsformer..."></textarea></td>
+            `;
+            modulesTableBody.appendChild(newRow);
+
+            // Add listeners and update numbers
+            addEventListenersToModule(newRow);
+            addDragDropListenersToRow(newRow); // Add drag/drop listeners to the new row
+            updateModuleNumbers(); // Renumber all modules
+
+            // Save the state after adding a module
+            if (currentProjectId) {
+                saveProject(); // Auto-save
+            }
+        }
+
+        // --- Drag and Drop Functionality ---
+
+        function addDragDropListenersToRow(row) {
+            row.addEventListener('dragstart', handleDragStart);
+            row.addEventListener('dragover', handleDragOver);
+            row.addEventListener('dragleave', handleDragLeave);
+            row.addEventListener('drop', handleDrop);
+            row.addEventListener('dragend', handleDragEnd);
+        }
+
+        function handleDragStart(event) {
+            // Set the data to be transferred (e.g., the index or ID of the row)
+            // Using the current row's index is simple for this context
+            event.dataTransfer.setData('text/plain', event.target.rowIndex);
+            event.dataTransfer.effectAllowed = 'move';
+
+            // Store a reference to the dragged row globally
+            draggedRow = event.target;
+
+            // Add CSS class for visual feedback
+            setTimeout(() => { // Use timeout to allow the browser to capture the element image first
+                draggedRow.classList.add('dragging');
+            }, 0);
+
+             // Remove drop target class from all rows when dragging starts
+            modulesTableBody.querySelectorAll('tr').forEach(r => r.classList.remove('drop-target'));
+             modulesTableBody.classList.remove('dragging-over-empty');
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault(); // Necessary to allow dropping
+            event.dataTransfer.dropEffect = 'move'; // Indicate that moving is possible
+
+            const targetRow = event.target.closest('tr');
+
+            // Remove previous drop target indicators
+            modulesTableBody.querySelectorAll('tr').forEach(r => r.classList.remove('drop-target'));
+             modulesTableBody.classList.classList.remove('dragging-over-empty'); // Remove class from tbody
+
+
+            if (targetRow && targetRow !== draggedRow) {
+                // Determine if dropping before or after the target row
+                const rect = targetRow.getBoundingClientRect();
+                // Check if the drag is over the upper half of the target row
+                if (event.clientY < rect.top + rect.height / 2) {
+                    targetRow.classList.add('drop-target'); // Add class to indicate drop BEFORE
+                } else {
+                     // Add class to indicate drop AFTER (might need a placeholder row approach for better visual)
+                     // For simplicity, let's just indicate the row being hovered over
+                     targetRow.classList.add('drop-target');
+                }
+            } else if (!targetRow && modulesTableBody.children.length === 0) {
+                 // Handle dropping into an empty table body
+                 modulesTableBody.classList.add('dragging-over-empty');
+             } else if (!targetRow && draggedRow && modulesTableBody.contains(draggedRow)) {
+                  // Handle dragging outside table but within drop zone parent? Or dragging over whitespace in tbody
+                  // Find the last row and potentially add a drop target there
+                  const lastRow = modulesTableBody.lastElementChild;
+                  if(lastRow && lastRow !== draggedRow) {
+                       lastRow.classList.add('drop-target'); // Indicate dropping after the last row
+                  }
+             }
+        }
+
+        function handleDragLeave(event) {
+             // Remove drop target class when leaving a row or the tbody
+             if (event.target.closest('tbody') !== modulesTableBody) {
+                  modulesTableBody.querySelectorAll('tr').forEach(r => r.classList.remove('drop-target'));
+                  modulesTableBody.classList.remove('dragging-over-empty');
+             } else {
+                 const row = event.target.closest('tr');
+                 if (row) {
+                     row.classList.remove('drop-target');
+                 }
+             }
+        }
+
+
+        function handleDrop(event) {
+            event.preventDefault(); // Necessary to allow dropping
+
+            // Remove visual feedback classes
+            modulesTableBody.querySelectorAll('tr').forEach(r => r.classList.remove('drop-target'));
+            modulesTableBody.classList.remove('dragging-over-empty');
+
+
+            if (!draggedRow) {
+                 return; // Nothing was being dragged or it was not a valid row
+            }
+
+            const targetRow = event.target.closest('tr');
+            let dropIndex = -1; // Where to drop
+
+            // Determine the drop position
+            if (targetRow && targetRow !== draggedRow) {
+                const rect = targetRow.getBoundingClientRect();
+                const targetIndex = targetRow.rowIndex - 1; // Get index relative to tbody
+                // Check if dropping before or after the target row
+                if (event.clientY < rect.top + rect.height / 2) {
+                    dropIndex = targetIndex; // Drop before targetRow
+                } else {
+                    dropIndex = targetIndex + 1; // Drop after targetRow
+                }
+            } else if (!targetRow && modulesTableBody.children.length > 0) {
+                 // Dropped in the empty space below the last row
+                 dropIndex = modulesTableBody.children.length;
+             } else if (!targetRow && modulesTableBody.children.length === 0) {
+                 // Dropped in an empty table
+                 dropIndex = 0;
+             } else if (targetRow === draggedRow) {
+                 // Dropped on the same row, no change needed
+                 draggedRow.classList.remove('dragging');
+                 draggedRow = null;
+                 return;
+             }
+
+
+            // Get the dragged row's current index
+            const originalIndex = draggedRow.rowIndex - 1; // Get index relative to tbody
+
+             // If the drop position is the same as the original position, do nothing
+            if (dropIndex === originalIndex || (dropIndex === originalIndex + 1 && originalIndex === modulesTableBody.children.length -1)) {
+                 draggedRow.classList.remove('dragging');
+                 draggedRow = null;
+                 return;
+            }
+
+            // Perform the DOM manipulation to move the row
+            if (dropIndex >= 0 && dropIndex <= modulesTableBody.children.length) {
+                if (dropIndex < modulesTableBody.children.length) {
+                    // Insert before the row currently at dropIndex
+                    modulesTableBody.insertBefore(draggedRow, modulesTableBody.children[dropIndex]);
+                } else {
+                    // Append to the end
+                    modulesTableBody.appendChild(draggedRow);
+                }
+
+                 // Update the underlying data structure and save
+                 updateDataAfterDrop(originalIndex, dropIndex > originalIndex ? dropIndex -1 : dropIndex); // Pass *final* index after removal/insert
+            }
+
+
+            // Clean up
+            draggedRow.classList.remove('dragging');
+            draggedRow = null;
+        }
+
+        function handleDragEnd(event) {
+            // Clean up regardless of drop success or failure
+            if (draggedRow) {
+                draggedRow.classList.remove('dragging');
+            }
+            modulesTableBody.querySelectorAll('tr').forEach(r => r.classList.remove('drop-target'));
+             modulesTableBody.classList.remove('dragging-over-empty');
+            draggedRow = null;
+        }
+
+         // Update the internal projectData array after a successful drop
+         function updateDataAfterDrop(originalIndex, newIndex) {
+             const projectData = getCurrentProjectData(); // Get current data based on UI state
+             const modules = projectData.modules;
+
+             // Remove the item from its original position
+             const [movedModule] = modules.splice(originalIndex, 1);
+
+             // Insert the item at the new position
+             modules.splice(newIndex, 0, movedModule);
+
+             // Update the projectData object
+             projectData.modules = modules;
+             projectData.lastModified = Date.now(); // Update modified timestamp
+
+             // Save the updated data to localStorage
+             localStorage.setItem(currentProjectId, JSON.stringify(projectData));
+
+             // Update module numbers in the UI
+             updateModuleNumbers();
+
+             // Optional: Show a brief save confirmation if needed, though auto-save on input handles saves.
+             // saveProject(); // This would save based on UI state *after* drop, which is redundant if data was just updated
+         }
+
+
+        // --- Output Function (opens in new tab) ---
+
+         // Generate HTML content for opening in a new tab / download
+        function generateHTML() {
+            const projectData = getCurrentProjectData();
+
+             // Get the modules HTML
+            let modulesHTML = '';
+             if (projectData.modules && projectData.modules.length > 0) {
+                projectData.modules.forEach((rowData, index) => {
+                    // Ensure rowData has 4 elements (tema, materiale, sekvens, mål)
+                    const moduleData = rowData.length === 4 ? rowData : ['', '', '', ''];
+                    const moduleNumber = index + 1; // Auto-generate number for output
+
+                    modulesHTML += '<tr>';
+                     // Cell 1: Number (generated)
+                    modulesHTML += `<td>${moduleNumber}</td>`;
+                     // Cells 2-5: User data (tema, materiale, sekvens, mål) with newlines as <br>
+                    modulesHTML += `<td>${(moduleData[0] || '').replace(/\n/g, '<br>')}</td>`; // Tema
+                    modulesHTML += `<td>${(moduleData[1] || '').replace(/\n/g, '<br>')}</td>`; // Materiale
+                    modulesHTML += `<td>${(moduleData[2] || '').replace(/\n/g, '<br>')}</td>`; // Sekvens
+                    modulesHTML += `<td>${(moduleData[3] || '').replace(/\n/g, '<br>')}</td>`; // Mål/Eval
+                    modulesHTML += '</tr>';
+                });
+            } else {
+                 modulesHTML = '<tr><td colspan="5">Ingen moduler er tilføjet.</td></tr>'; // colspan is now 5
+            }
+
+
+            // Create the HTML content with embedded styles
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html lang="da">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${projectData.title || 'Undervisningsforløb'}</title>
+                    <style>
+                         body {
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            margin: 20px;
+                            color: #333;
+                        }
+                        h1, h2, h3 {
+                            color: #0078d7;
+                            margin-top: 20px;
+                        }
+                         h1 { margin-top: 0; }
+
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin: 20px 0;
+                        }
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 12px;
+                            text-align: left;
+                            vertical-align: top; /* Juster for indhold med linjeskift */
+                        }
+                        th {
+                            background-color: #0078d7;
+                            color: white;
+                        }
+                        section {
+                            margin: 30px 0;
+                        }
+                         p { white-space: pre-wrap; word-wrap: break-word; } /* Bevar linjeskift i p tags */
+
+                         /* Styles for table columns in generated HTML */
+                         table th:first-child, table td:first-child { width: 5%; text-align: center; font-weight: bold; }
+                         table th:nth-child(2), table td:nth-child(2) { width: 15%; }
+                         table th:nth-child(3), table td:nth-child(3) { width: 25%; }
+                         table th:nth-child(4), table td:nth-child(4) { width: 25%; }
+                         table th:nth-child(5), table td:nth-child(5) { width: 25%; }
+
+
+                        /* Styles specifically for printing the generated HTML */
+                        @media print {
+                            body {
+                                font-size: 10pt; /* Mindre font for print */
+                                margin: 10mm; /* Printer margin */
+                            }
+                             h1, h2, h3 { color: #000 !important; } /* Sort tekst på print */
+                             th { background-color: #eee !important; color: #000 !important; } /* Grå th baggrund på print */
+                             table, th, td { border: 1px solid #000 !important; } /* Sorte kanter på print */
+                             table { page-break-after: avoid !important; }
+                             tr { page-break-inside: avoid !important; page-break-after: auto !important; }
+                             td { page-break-inside: unset !important; }
+                             thead { display: table-header-group !important; }
+                             tfoot { display: table-footer-group !important; }
+                             section { page-break-before: avoid !important; page-break-inside: avoid !important; page-break-after: avoid !important; }
+                             .goals, .core-content { page-break-inside: avoid !important; }
+                             h2 { page-break-before: avoid !important; }
+
+                            /* Print styles for generated HTML columns */
+                            table th:first-child, table td:first-child { width: 5% !important; text-align: center !important; font-weight: bold !important; background-color: #eee !important;}
+                            table th:nth-child(2), table td:nth-child(2) { width: 15% !important; }
+                            table th:nth-child(3), table td:nth-child(3) { width: 25% !important; }
+                            table th:nth-child(4), table td:nth-child(4) { width: 25% !important; }
+                            table th:nth-child(5), table td:nth-child(5) { width: 25% !important; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${projectData.title || 'Undervisningsforløb'}</h1>
+                    <h2>${projectData.className || ''} - ${projectData.subject || ''}</h2>
+
+                    <section>
+                        <h2>Moduler</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">Nr.</th>
+                                    <th style="width: 15%;">Tema</th>
+                                    <th style="width: 25%;">Materiale</th>
+                                    <th style="width: 25%;">Sekvensinddeling</th>
+                                    <th style="width: 25%;">Mål og Evaluering</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${modulesHTML}
+                            </tbody>
+                        </table>
+                    </section>
+
+                    <section>
+                        <h2>Faglige mål</h2>
+                        <p>${(projectData.learningGoals || '').replace(/\n/g, '<br>')}</p>
+                    </section>
+
+                    <section>
+                        <h2>Kernestof</h2>
+                        <p>${(projectData.coreContent || '').replace(/\n/g, '<br>')}</p>
+                    </section>
+                </body>
+                </html>
+            `;
+
+            return htmlContent;
+        }
+
+        // Open the generated HTML content in a new tab/window
+        function openGeneratedHTML() {
+             if (!currentProjectId) {
+                alert('Gem venligst projektet i browseren først (klik "Gem projekt").');
+                return;
+            }
+            const htmlContent = generateHTML();
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+
+            // Open in a new window/tab
+            const newWindow = window.open(url, '_blank');
+
+            // Clean up the object URL when the new window loads or if it fails to open
+            if (newWindow) {
+                 // Add an event listener to revoke the URL when the new window is unloaded
+                 // This is more reliable than onload for Blob URLs in some browsers
+                 const revokeUrl = () => URL.revokeObjectURL(url);
+                 newWindow.addEventListener('unload', revokeUrl);
+
+                 // Fallback cleanup just in case (e.g., tab closed immediately)
+                 setTimeout(revokeUrl, 5000); // Revoke after 5 seconds as a safeguard
+
+            } else {
+                // Fallback or message if the popup was blocked
+                alert("Popup blokeret. Tillad venligst popups for at åbne forløbet i en ny fane.");
+                 URL.revokeObjectURL(url); // Clean up immediately if window doesn't open
+            }
+        }
+
+
+        // Initialize event listeners on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            addEventListenersToMainFields(); // Add listeners for auto-saving main fields
+            loadProjectsList(); // Load projects on startup
+
+             // Add drag/drop listeners and input listeners to any rows loaded initially (e.g., from localStorage or import)
+             modulesTableBody.querySelectorAll('tr').forEach(row => {
+                 addEventListenersToModule(row); // Add input listeners
+                 addDragDropListenersToRow(row); // Add drag/drop listeners
+             });
+
+            // Initial numbering if any modules were loaded
+            updateModuleNumbers();
+        });
+
+        // Listen for beforeunload to prompt user if there are unsaved changes (optional but good practice)
+        /*
+        window.addEventListener('beforeunload', function (e) {
+             // Implement logic to check for unsaved changes if needed
+             // e.preventDefault(); // Cancel the event
+             // e.returnValue = ''; // Chrome requires returnValue to be set
+        });
+        */
+
+    </script>
+</body>
+</html>
