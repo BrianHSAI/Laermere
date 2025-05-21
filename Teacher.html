@@ -4,71 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lærerens lounge</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Basic styling to make it look professional and inviting */
+        /* Mørkt Tema Styling */
         body {
             font-family: 'Nunito', sans-serif;
             margin: 0;
-            background-color: #eef2f7; /* Slightly more engaging light blue-grey background */
-            color: #333; /* Dark grey text */
+            background-color: #121212; /* Meget mørk grå - Næsten sort */
+            color: #e0e0e0; /* Lys grå til tekst */
             line-height: 1.6;
             padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
         }
 
         .container {
-            background-color: #fff; /* White background for content */
-            padding: 40px; /* Increased padding for more breathing room */
-            border-radius: 12px; /* Slightly more rounded corners */
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* More pronounced, softer shadow */
-            max-width: 800px; /* Max width for readability */
+            background-color: #1e1e1e; /* Lidt lysere mørk grå til container */
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Lettere skygge */
+            max-width: 800px;
             width: 100%;
-            text-align: center; /* Center content */
+            text-align: center;
         }
 
         h1 {
-            color: #1A5276; /* A professional blue */
-            font-size: 2.5em; /* Larger heading */
-            margin-bottom: 15px; /* Increased space below heading */
-            font-weight: 700; /* Make heading bolder */
+            color: #ffffff; /* Hvid til overskrift */
+            font-size: 2.25em;
+            margin-bottom: 16px;
+            font-weight: 600;
         }
 
         .intro-text {
-            font-size: 1.2em; /* Slightly larger intro text */
-            margin-bottom: 40px; /* More space below intro text */
-            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 32px;
+            color: #9e9e9e; /* Mellemgrå til introduktion */
         }
 
         .button-container {
-            margin-top: 30px; /* Space above button container */
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .tool-button {
-            display: inline-block; /* Make the button inline-block */
-            background-color: #27AE60; /* A friendly green */
-            color: white;
-            padding: 15px 30px; /* Increased padding for larger buttons */
-            border-radius: 5px;
+            display: inline-block;
+            background-color: #37474f; /* Mørk blågrå til knapper */
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 4px;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for subtle press effect */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            margin: 10px; /* Added margin to separate buttons */
+            font-weight: 500;
+            font-size: 1em;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Lettere skygge */
+            margin: 8px;
         }
 
         .tool-button:hover {
-            background-color: #229954; /* Darker green on hover */
+            background-color: #546e7a; /* Lysere blågrå ved hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Stærkere skygge ved hover */
         }
 
         .tool-button:active {
-            transform: scale(0.98); /* Slightly shrink button when clicked */
+            background-color: #546e7a;
+            box-shadow: none;
+            transform: translateY(1px);
         }
 
+        /* MyNotery Button - Specific Style */
+        .mynotery-button {
+            background-color: #2979ff; /* Lysere blå for fremhævelse */
+        }
+
+        .mynotery-button:hover {
+            background-color: #53a2ff;
+        }
 
         /* Hide content by default */
         #pageContent {
@@ -81,21 +95,21 @@
     <div id="pageContent">
         <div class="container">
             <h1>Lærerens lounge</h1>
-             <div class="intro-text">
-                Alle de gode redskaber, som er lavet til lærerne
+            <div class="intro-text">
+                Dyk ned i en samling af effektive værktøjer, skræddersyet til den moderne underviser.
             </div>
 
-
-            <p>Her finder du redskaber, der kan hjælpe dig i din undervisning og administrative opgaver.</p>
+            <p>Optimer din undervisning og administrative opgaver med disse ressourcer.</p>
 
             <div class="button-container">
                 <a href="https://v0-merge-pdf-files-pi.vercel.app/" class="tool-button">Merge PDF</a>
                 <a href="https://study-stack-scribe-time.lovable.app/" class="tool-button">StudyS.T.A.Q</a>
                 <a href="Gruppe-generator.html" class="tool-button">Gruppe-generator</a>
                 <a href="Forløb.html" class="tool-button">Forløbsplanlægger</a>
+                <a href="https://mynotery.netlify.app/" class="tool-button mynotery-button">MyNotery</a>
             </div>
 
-            </div>
+        </div>
     </div>
 
     <script>
