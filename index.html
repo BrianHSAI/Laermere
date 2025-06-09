@@ -3,449 +3,624 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lærmere.nu - Din vej til sjov læring!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Lærmere.nu - Din vej til smart læring!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Legende farver baseret på logoet og suppleret med venlige nuancer */
-        :root {
-            --primary-blue: #5DADE2;
-            --primary-green: #82E0AA;
-            --primary-orange: #F5B041;
-            --dark-teal: #1ABC9C;
-            --text-color: #2C3E50;
-            --background-color: #EBF5FB;
-            --sidebar-bg: #D6EAF8;
-            --menu-link-hover: #A9CCE3;
-            --box-shadow-color: rgba(44, 62, 80, 0.2);
-            --cookie-banner-bg: #2C3E50;
-            --cookie-banner-text: #ECF0F1;
-            --cookie-button-bg: #1ABC9C;
-            --cookie-button-hover: #16A085;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            margin: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            padding-bottom: 60px;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #e0e7ff 100%);
             min-height: 100vh;
+            color: #334155;
+            line-height: 1.6;
         }
 
-        .content-area {
-            display: flex;
-            flex-grow: 1;
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            padding: 20px;
-            box-shadow: 2px 0 10px var(--box-shadow-color);
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .sidebar::after {
-            content: '';
-            display: block;
-            width: 80%;
-            height: 6px;
-            background: linear-gradient(to right, var(--primary-orange), var(--primary-green), var(--primary-blue));
-            margin: 20px auto 0 auto;
-            border-radius: 3px;
-        }
-
-        .sidebar nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar nav ul li {
-            margin-bottom: 12px;
-        }
-
-        .sidebar nav ul li a {
-            text-decoration: none;
-            color: var(--dark-teal);
-            font-weight: 700;
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
             display: flex;
             align-items: center;
-            padding: 12px 15px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 2px 5px var(--box-shadow-color);
+            justify-content: space-between;
         }
 
-        .sidebar nav ul li a i {
-            margin-right: 10px;
-            color: var(--primary-orange);
-            font-size: 1.3em;
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .teacher-button {
+            background: linear-gradient(135deg, #f97316, #ec4899);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .teacher-button:hover {
+            background: linear-gradient(135deg, #ea580c, #db2777);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        /* Navigation Sidebar */
+        .sidebar {
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .sidebar h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item a:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            color: #1e293b;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
             transition: transform 0.3s ease;
         }
 
-        .sidebar nav ul li a:hover i {
-            transform: scale(1.2) rotate(5deg);
-            color: var(--primary-blue);
+        .nav-item a:hover .nav-icon {
+            transform: scale(1.1);
         }
 
-        .sidebar nav ul li a:hover {
-            background-color: var(--menu-link-hover);
-            color: var(--primary-blue);
-            transform: translateX(5px);
-            box-shadow: 0 4px 8px var(--box-shadow-color);
-        }
+        /* Gradient backgrounds for icons */
+        .nav-item:nth-child(1) .nav-icon { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+        .nav-item:nth-child(2) .nav-icon { background: linear-gradient(135deg, #2563eb, #06b6d4); }
+        .nav-item:nth-child(3) .nav-icon { background: linear-gradient(135deg, #059669, #10b981); }
+        .nav-item:nth-child(4) .nav-icon { background: linear-gradient(135deg, #f97316, #ef4444); }
+        .nav-item:nth-child(5) .nav-icon { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+        .nav-item:nth-child(6) .nav-icon { background: linear-gradient(135deg, #0d9488, #059669); }
+        .nav-item:nth-child(7) .nav-icon { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+        .nav-item:nth-child(8) .nav-icon { background: linear-gradient(135deg, #eab308, #f97316); }
+        .nav-item:nth-child(9) .nav-icon { background: linear-gradient(135deg, #06b6d4, #2563eb); }
+        .nav-item:nth-child(10) .nav-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .nav-item:nth-child(11) .nav-icon { background: linear-gradient(135deg, #10b981, #0d9488); }
+        .nav-item:nth-child(12) .nav-icon { background: linear-gradient(135deg, #f43f5e, #ec4899); }
+        .nav-item:nth-child(13) .nav-icon { background: linear-gradient(135deg, #f59e0b, #eab308); }
 
+        /* Main Content */
         .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #fff;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px var(--box-shadow-color);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
 
-        header {
-            position: relative; /* Added for button positioning */
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px dashed var(--primary-green);
-            padding-top: 30px; /* Added padding to make space for the button */
-        }
-
-        .logo {
-            max-width: 350px;
-            height: auto;
-            display: block;
-            margin: 0 auto 20px auto;
-        }
-
-        h1 {
-            color: var(--primary-blue);
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px var(--primary-orange);
-        }
-
-        h2 {
-            color: var(--dark-teal);
-            font-size: 1.8em;
-            border-bottom: 2px solid var(--primary-orange);
-            display: inline-block;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 1.1em;
-            color: var(--text-color);
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: var(--dark-teal);
+        /* Welcome Section */
+        .welcome-card {
+            background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899);
             color: white;
-            width: 100%;
-            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .welcome-card h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-card p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Activities Section */
+        .activities-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .activities-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .activities-header i {
+            color: #2563eb;
+            font-size: 1.5rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #dbeafe, #ede9fe);
+            border-radius: 12px;
+            border: 1px solid #bfdbfe;
+            margin-bottom: 1rem;
+        }
+
+        .activity-dot {
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 50%;
+            margin-top: 0.5rem;
             flex-shrink: 0;
         }
 
-        footer p {
-            color: white;
-            margin: 0;
+        .activity-content h3 {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
         }
 
+        .activity-content p {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-time {
+            color: #94a3b8;
+            font-size: 0.75rem;
+        }
+
+        .no-activities {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .no-activities i {
+            font-size: 4rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .no-activities p {
+            color: #64748b;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-activities .subtitle {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* About Section */
+        .about-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-section p {
+            font-size: 1.125rem;
+            color: #475569;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .about-section p:last-child {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            color: #cbd5e1;
+        }
+
+        /* Cookie Banner */
         .cookie-banner {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            background-color: var(--cookie-banner-bg);
-            color: var(--cookie-banner-text);
-            padding: 15px 20px;
-            text-align: center;
-            font-size: 0.9em;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             display: none;
-            justify-content: center;
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
             flex-wrap: wrap;
         }
 
-        .cookie-banner p {
-            margin: 0 20px 0 0;
-            color: var(--cookie-banner-text);
+        .cookie-text {
+            flex: 1;
+            font-size: 0.875rem;
         }
 
-        .cookie-banner button {
-            background-color: var(--cookie-button-bg);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: background-color 0.3s ease;
-            margin-top: 5px;
-        }
-
-        .cookie-banner button:hover {
-            background-color: var(--cookie-button-hover);
-        }
-
-        .todays-info-section {
-            margin-bottom: 40px;
-        }
-
-        .info-box {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px var(--box-shadow-color);
-            padding: 15px;
-            margin-bottom: 20px;
-            min-height: 120px;
-            border-left: 5px solid var(--primary-blue);
-        }
-
-        #todayCalendar {
-            border-left-color: var(--primary-green);
-        }
-
-        .info-box h3 {
-            color: var(--dark-teal);
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .info-item {
+        .cookie-actions {
             display: flex;
-            align-items: flex-start;
-            padding: 8px 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-item i {
-            color: var(--primary-orange);
-            margin-right: 10px;
-            margin-top: 3px;
-            width: 20px;
-            text-align: center;
-        }
-
-        #todayCalendar .info-item i {
-            color: var(--primary-green);
-        }
-
-        .info-item .calendar-details {
-            flex-grow: 1;
-        }
-
-        .info-item .subject {
-            font-weight: bold;
-            color: var(--dark-teal);
-        }
-
-        .info-item .description {
-            font-size: 0.9em;
-            margin-top: 3px;
-        }
-
-        .info-item .date {
-            font-size: 0.8em;
-            color: #777;
-        }
-
-        .no-data-message {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100px;
-            color: #999;
-            text-align: center;
+            gap: 0.75rem;
         }
 
-        .no-data-message i {
-            font-size: 2em;
-            margin-bottom: 10px;
-            color: var(--primary-blue);
-        }
-
-        #todayCalendar .no-data-message i {
-            color: var(--primary-green);
-        }
-
-        /* Nye styles til ugeoversigt */
-        .day-header {
-            color: var(--dark-teal);
-            font-size: 1.1em;
-            margin: 15px 0 5px 0;
-            padding-bottom: 3px;
-            border-bottom: 1px dashed var(--primary-green);
-        }
-
-        .week-header {
-            color: var(--primary-blue);
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        /* Style for the new button */
-        .teacher-lounge-button {
-            position: absolute;
-            top: 10px; /* Adjust as needed for spacing */
-            left: 10px; /* Adjust as needed for spacing */
-            background-color: var(--primary-orange); /* Example color, can be adjusted */
+        .cookie-accept {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 2px 2px 5px var(--box-shadow-color);
-            transition: background-color 0.3s ease;
-            z-index: 10; /* Ensure it's above other elements */
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .teacher-lounge-button:hover {
-            background-color: var(--dark-teal); /* Example hover color */
+        .cookie-accept:hover {
+            background: linear-gradient(135deg, #1d4ed8, #6d28d9);
         }
 
+        .cookie-close {
+            background: none;
+            border: none;
+            color: #cbd5e1;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: color 0.3s ease;
+        }
 
-        @media (max-width: 600px) {
-            .cookie-banner {
-                flex-direction: column;
-            }
+        .cookie-close:hover {
+            color: white;
+        }
 
-            .cookie-banner p {
-                margin: 0 0 10px 0;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
             }
 
             .sidebar {
-                width: 100%;
-                height: auto;
-                padding: 10px;
-                box-shadow: 0 2px 10px var(--box-shadow-color);
+                position: static;
+                order: 2;
             }
 
-            .sidebar nav ul {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
+            .nav-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 0.5rem;
             }
 
-            .sidebar nav ul li {
-                margin: 5px 10px;
-            }
-
-            .sidebar nav ul li a {
-                padding: 8px 10px;
-                font-size: 0.9em;
+            .nav-item a {
                 flex-direction: column;
-                align-items: center;
+                text-align: center;
+                padding: 1rem 0.5rem;
             }
 
-            .sidebar nav ul li a i {
-                margin: 0 0 5px 0;
+            .nav-icon {
+                margin-bottom: 0.5rem;
             }
 
-            .main-content {
-                margin: 10px;
+            .welcome-card h1 {
+                font-size: 2rem;
             }
 
-            .logo {
-                max-width: 250px;
+            .welcome-card p {
+                font-size: 1rem;
             }
 
-            h1 {
-                font-size: 1.8em;
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
             }
 
-            h2 {
-                font-size: 1.4em;
-            }
-
-            footer {
-                padding: 10px;
-            }
-             .teacher-lounge-button {
-                position: static; /* Adjust positioning for smaller screens if needed */
-                margin-bottom: 10px; /* Add space below the button */
+            .cookie-content {
+                flex-direction: column;
                 text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="content-area">
-            <aside class="sidebar">
-                <nav>
-                    <ul>
-                        <li><a href="Oplæser.html"><i class="fas fa-volume-up"></i> Tekst til tale</a></li>
-                        <li><a href="Tale-til-tekst.html"><i class="fas fa-microphone"></i> Tale til tekst</a></li>
-                        <li><a href="Matematik.html"><i class="fas fa-calculator"></i> Formelsamling</a></li>
-                        <li><a href="Grammatik-landing.html"><i class="fas fa-spell-check"></i> Grammatikhjælp</a></li>
-                        <li><a href="Læsetræner.html"><i class="fas fa-book-reader"></i> Læsetræning</a></li>
-                        <li><a href="Læseplanlægger.html"><i class="fas fa-calendar-alt"></i> Læseplanlægning</a></li>
-                        <li><a href="Elevkalender.html"><i class="fas fa-calendar-check"></i> Elevkalender</a></li>
-                        <li><a href="Lektiekalender.html"><i class="fas fa-clipboard-list"></i> Lektiekalender</a></li>
-                        <li><a href="Opgaveplanlægger.html"><i class="fas fa-tasks"></i> Opgaveplanlægger</a></li>
-                        <li><a href="Pomodoro.html"><i class="fas fa-clock"></i> Fokushjælper</a></li>
-                        <li><a href="Note.html"><i class="fas fa-pencil-alt"></i> Mine Noter</a></li>
-                        <li><a href="Nextwordpl.html"><i class="fas fa-file-alt"></i> NextWordPL</a></li>
-                        <li><a href="MinPrompt.html"><i class="fas fa-lightbulb"></i> MinPrompt</a></li>
-                    </ul>
-                </nav>
-            </aside>
-            <main class="main-content">
-                <header>
-                    <a href="Teacher.html" class="teacher-lounge-button">Lærerens lounge</a> <img src="LærMere.Nu-logo.png" alt="Lærmere.nu Logo" class="logo">
-                    <h1>Velkommen til Lærmere.nu</h1>
-                    <p>Din platform for at forbedre dine læringsfærdigheder og organisere din studiehverdag.</p>
-                </header>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Lærmere.nu</h1>
+                    <p>Din vej til smart læring</p>
+                </div>
+            </div>
+            <a href="Teacher.html" class="teacher-button">Lærerens Lounge</a>
+        </div>
+    </header>
 
-                <section class="todays-info-section">
-                    <h2>Dagens aktiviteter</h2>
-                    <div class="info-box" id="todayCalendar">
-                        <div class="no-data-message">
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <aside class="sidebar">
+            <div class="card">
+                <div class="card-content">
+                    <h2>Værktøjer</h2>
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a href="Oplæser.html">
+                                <div class="nav-icon"><i class="fas fa-volume-up"></i></div>
+                                <span>Tekst til tale</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Tale-til-tekst.html">
+                                <div class="nav-icon"><i class="fas fa-microphone"></i></div>
+                                <span>Tale til tekst</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Matematik.html">
+                                <div class="nav-icon"><i class="fas fa-calculator"></i></div>
+                                <span>Formelsamling</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Grammatik-landing.html">
+                                <div class="nav-icon"><i class="fas fa-spell-check"></i></div>
+                                <span>Grammatikhjælp</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Læsetræner.html">
+                                <div class="nav-icon"><i class="fas fa-book-reader"></i></div>
+                                <span>Læsetræning</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Læseplanlægger.html">
+                                <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
+                                <span>Læseplanlægning</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Elevkalender.html">
+                                <div class="nav-icon"><i class="fas fa-calendar-check"></i></div>
+                                <span>Elevkalender</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Lektiekalender.html">
+                                <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+                                <span>Lektiekalender</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Opgaveplanlægger.html">
+                                <div class="nav-icon"><i class="fas fa-tasks"></i></div>
+                                <span>Opgaveplanlægger</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Pomodoro.html">
+                                <div class="nav-icon"><i class="fas fa-clock"></i></div>
+                                <span>Fokushjælper</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Note.html">
+                                <div class="nav-icon"><i class="fas fa-pencil-alt"></i></div>
+                                <span>Mine Noter</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Nextwordpl.html">
+                                <div class="nav-icon"><i class="fas fa-file-alt"></i></div>
+                                <span>NextWordPL</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="MinPrompt.html">
+                                <div class="nav-icon"><i class="fas fa-lightbulb"></i></div>
+                                <span>MinPrompt</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <div class="card welcome-card">
+                <div class="card-content">
+                    <h1>Velkommen til Lærmere.nu</h1>
+                    <p>Din moderne platform for at forbedre dine læringsfærdigheder og organisere din studiehverdag med stil.</p>
+                    <span class="badge">🚀 Ny og forbedret oplevelse</span>
+                </div>
+            </div>
+
+            <!-- Today's Activities -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="activities-header">
+                        <i class="fas fa-calendar-day"></i>
+                        <h2>Dagens aktiviteter</h2>
+                    </div>
+                    
+                    <div id="todaysActivities">
+                        <div class="no-activities">
                             <i class="fas fa-calendar-day"></i>
-                            <p>Ingen aktiviteter for i dag.</p>
+                            <p>Ingen aktiviteter for i dag</p>
+                            <p class="subtitle">Nyd din frie dag! 🌟</p>
                         </div>
                     </div>
-                </section>
+                </div>
+            </div>
 
-                <section class="intro-text">
+            <!-- About Section -->
+            <div class="card">
+                <div class="card-content about-section">
                     <h2>Hvad finder du på Lærmere.nu?</h2>
-                    <p>Vi har samlet en række smarte værktøjer, der kan gøre din hverdag som elev sjovere og mere overskuelig. Fra at få tekst læst højt til at planlægge dine lektier – vi hjælper dig godt på vej!</p>
-                    <p>Udforsk menuen til venstre for at se alle mulighederne.</p>
-                </section>
-            </main>
-        </div>
-        <footer>
-            <p>© 2025 Lærmere.nu - Lær mere, leg mere!</p>
-        </footer>
+                    <p>Vi har samlet en række <strong>smarte værktøjer</strong>, der kan gøre din hverdag som elev sjovere og mere overskuelig. Fra at få tekst læst højt til at planlægge dine lektier – vi hjælper dig godt på vej!</p>
+                    <p>Udforsk værktøjsmenuen til venstre for at se alle mulighederne. Hver funktion er designet til at gøre læring mere effektivt og engagerende.</p>
+                </div>
+            </div>
+        </main>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Lærmere.nu - Lær mere, leg mere! ✨</p>
+    </footer>
+
+    <!-- Cookie Banner -->
     <div class="cookie-banner" id="cookieBanner">
-        <p>Vi bruger cookies for at sikre, at du får den bedste oplevelse på vores side. Ved at fortsætte, accepterer du vores brug af cookies.</p>
-        <button id="acceptCookies">Det er okay!</button>
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <p>Vi bruger cookies for at sikre, at du får den bedste oplevelse på vores side. Ved at fortsætte, accepterer du vores brug af cookies.</p>
+            </div>
+            <div class="cookie-actions">
+                <button class="cookie-accept" id="acceptCookies">Det er okay! 👍</button>
+                <button class="cookie-close" id="closeCookies">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -464,44 +639,6 @@
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
-        }
-
-        // Funktion til at vise data
-        function displayItems(elementId, items, type) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
-
-            const noDataIcon = element.querySelector('.no-data-message i')?.className || 'fas fa-question-circle';
-            const noDataText = element.querySelector('.no-data-message p')?.textContent || 'Ingen data fundet.';
-            if (items && items.length > 0) {
-                element.innerHTML = '';
-                items.forEach(item => {
-                    let detailsHtml = '';
-                    let iconClass = 'fas fa-info-circle';
-
-                    if (type === 'calendar') {
-                        iconClass = 'fas fa-calendar-day';
-                        detailsHtml = `
-                            <div class="calendar-details">
-                                <div class="subject">${item.title || 'Ukendt titel'}</div>
-                                ${item.description ? `<div class="description">${item.description}</div>` : ''}
-                                ${item.time ? `<div class="date">${item.time}</div>` : ''}
-                            </div>`;
-                    }
-
-                    element.innerHTML += `
-                        <div class="info-item">
-                            <i class="${iconClass}"></i>
-                            ${detailsHtml}
-                        </div>`;
-                });
-            } else {
-                element.innerHTML = `
-                    <div class="no-data-message">
-                        <i class="${noDataIcon}"></i>
-                        <p>${noDataText}</p>
-                    </div>`;
-            }
         }
 
         // Hovedfunktion når DOM er indlæst
@@ -526,17 +663,15 @@
                 if (!item.date) return false;
 
                 try {
-                    // Prøv at parse datoen i forskellige formater
                     let dateObj;
                     if (item.date.includes('/')) {
                         const parts = item.date.split('/');
-                        if (parts[0].length === 4) { //YYYY/MM/DD format
+                        if (parts[0].length === 4) {
                             dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
-                        } else { // DD/MM/YYYY format
+                        } else {
                             dateObj = new Date(parts[2], parts[1] - 1, parts[0]);
                         }
                     } else {
-                        // Prøv at parse som ISO-dato
                         dateObj = new Date(item.date);
                     }
 
@@ -547,6 +682,7 @@
                     return false;
                 }
             });
+
             // Sorter aktiviteter efter tid
             todaysActivities.sort((a, b) => {
                 if (a.time && b.time) {
@@ -554,44 +690,44 @@
                 }
                 return 0;
             });
-            // Vis dagens aktiviteter
-            const todayElement = document.getElementById('todayCalendar');
-            if (todaysActivities.length > 0) {
-                todayElement.innerHTML = '';
-                // Tilføj dagsoverskrift
-                const dayHeader = document.createElement('h3');
-                dayHeader.className = 'day-header';
-                dayHeader.textContent = `Aktiviteter for ${formatDate(today)}`;
-                todayElement.appendChild(dayHeader);
 
-                // Tilføj aktiviteter
+            // Vis dagens aktiviteter
+            const activitiesContainer = document.getElementById('todaysActivities');
+            if (todaysActivities.length > 0) {
+                activitiesContainer.innerHTML = '';
                 todaysActivities.forEach(activity => {
                     const activityElement = document.createElement('div');
-                    activityElement.className = 'info-item';
+                    activityElement.className = 'activity-item';
                     activityElement.innerHTML = `
-                        <i class="fas fa-calendar-day"></i>
-                        <div class="calendar-details">
-                            <div class="subject">${activity.title || 'Ukendt titel'}</div>
-                            ${activity.description ? `<div class="description">${activity.description}</div>` : ''}
-                            ${activity.time ? `<div class="date">${activity.time}</div>` : ''}
+                        <div class="activity-dot"></div>
+                        <div class="activity-content">
+                            <h3>${activity.title || 'Ukendt titel'}</h3>
+                            ${activity.description ? `<p>${activity.description}</p>` : ''}
+                            ${activity.time ? `<div class="activity-time">${activity.time}</div>` : ''}
                         </div>
                     `;
-                    todayElement.appendChild(activityElement);
+                    activitiesContainer.appendChild(activityElement);
                 });
             }
-        });
-        // Cookie banner funktionalitet
-        const cookieBanner = document.getElementById('cookieBanner');
-        const acceptButton = document.getElementById('acceptCookies');
-        const cookieAccepted = localStorage.getItem('cookieAccepted');
 
-        if (!cookieAccepted) {
-            cookieBanner.style.display = 'flex';
-        }
+            // Cookie banner funktionalitet
+            const cookieBanner = document.getElementById('cookieBanner');
+            const acceptButton = document.getElementById('acceptCookies');
+            const closeButton = document.getElementById('closeCookies');
+            const cookieAccepted = localStorage.getItem('cookieAccepted');
 
-        acceptButton.addEventListener('click', () => {
-            localStorage.setItem('cookieAccepted', 'true');
-            cookieBanner.style.display = 'none';
+            if (!cookieAccepted) {
+                cookieBanner.style.display = 'block';
+            }
+
+            acceptButton.addEventListener('click', () => {
+                localStorage.setItem('cookieAccepted', 'true');
+                cookieBanner.style.display = 'none';
+            });
+
+            closeButton.addEventListener('click', () => {
+                cookieBanner.style.display = 'none';
+            });
         });
     </script>
 </body>
